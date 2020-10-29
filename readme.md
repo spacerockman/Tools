@@ -58,3 +58,14 @@ git diff --cached //when the changes have been added
 
 ## modify your last commit without a new commit
 git commit --amend
+
+## cherry pick
+git checkout master
+
+git checkout -b xxxxxxxxxxx(branch_name)
+
+//commitId ordered by timeline
+
+git cherry-pick commitId1 commitId2 ...
+
+git push origin xxxxxxxxxxx(branch_name)
