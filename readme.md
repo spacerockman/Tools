@@ -69,3 +69,6 @@ git checkout -b xxxxxxxxxxx(branch_name)
 git cherry-pick commitId1 commitId2 ...
 
 git push origin xxxxxxxxxxx(branch_name)
+
+//search the commitId of the file
+git log --pretty=oneline filename
