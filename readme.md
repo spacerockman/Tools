@@ -1,108 +1,188 @@
-## Basic
+# Git 操作指南
 
-$ git init
+## 基础配置
 
-$ git config -l
+```bash
+# 初始化仓库
+git init
 
-$ git config --global user.name "EricXu"
+# 查看当前配置
+git config -l
 
-$ git config --global user.email "test@test.com"
+# 设置全局用户名和邮箱
+git config --global user.name "YourName"
+git config --global user.email "your.email@example.com"
 
-$ git config --global color.ui true
+# 启用颜色显示
+git config --global color.ui true
+```
 
-$ git config -l
+## 工作流程
 
----
+### 1. 创建功能分支
 
-## ！！Workflow
+```bash
+git checkout -b my-feature
+```
 
-- git checkout -b my-feature
-- git diff
-- git add
-  - git add .
-  - git add `<changed_file>`
-- git commit
-- git push origin my-feature
-  - 👉If the remote main(master) branch changed during your working process
-    - git checkout master
-    - git pull origin master
-    - git checkout my-feature
-    - git rebase master 👉get lasted resource frommain(master) branch, ignoring my changes temporarily, might cause rebase conflicts which needs to be fixed manually.
-    - git push -f origin my-feature
-- create pull request
-- manager would apply「◉Sqush and merge」
-  - If the codes can be merged,
+### 2. 查看变更
 
-    - remote: delete the remote my-feature branch「◉delete branch」
-    - local:delete the remote my-feature branch
-      - git checkout master
-      - git branch -D my-feature
-      - git pull origin master
+```bash
+git diff
+```
 
-## Basic demo
+### 3. 添加文件到暂存区
 
-$ mkdir myweb
-
-$ cd myweb
-
-//create the loacl repository
-
-$ git init
-
-.... edit your local files
-
-...
-
-// check the status of your loacl folder
-
-$ git status
-
-//add your file to stage and prepare to commit
-
-$ git add index.html
-
-//check your status of folder again
-
-$ git status
-
-$ git commit -m "write down something you have changed"
-
-$ git log /git log --oneline/ git log -p/git log --stat
-
-## control your git
-
+```bash
+# 添加所有变更
 git add .
 
-git reset Head xxx
+# 添加指定文件
+git add <changed_file>
+```
 
-git checkout -- xxxxx
+### 4. 提交变更
 
-git statuts
+```bash
+git commit -m "描述性提交信息"
+```
 
-## compare your source
+### 5. 推送分支
 
-git add
+```bash
+git push origin my-feature
+```
 
-git diff
+### 6. 处理远程主分支更新
 
-git diff --cached //when the changes have been added
-
-## modify your last commit without a new commit
-
-git commit --amend
-
-## cherry pick
-
+```bash
+# 切换到主分支
 git checkout master
 
-git checkout -b xxxxxxxxxxx(branch_name)
+# 拉取最新代码
+git pull origin master
 
-//commitId ordered by timeline
+# 切换回功能分支
+git checkout my-feature
 
+# 变基操作
+git rebase master
+
+# 强制推送
+git push -f origin my-feature
+```
+
+### 7. 创建 Pull Request
+
+- 在代码托管平台创建 PR
+- 等待代码审查和合并
+
+### 8. 合并后清理
+
+```bash
+# 切换到主分支
+git checkout master
+
+# 删除本地功能分支
+git branch -D my-feature
+
+# 更新本地主分支
+git pull origin master
+```
+
+## 高级操作
+
+### 1. 撤销操作
+
+```bash
+# 撤销暂存区文件
+git reset HEAD <file>
+
+# 撤销工作区修改
+git checkout -- <file>
+```
+
+### 2. 修改最后一次提交
+
+```bash
+git commit --amend
+```
+
+### 3. Cherry-pick
+
+```bash
+# 切换到目标分支
+git checkout target-branch
+
+# 选择特定提交
 git cherry-pick commitId1 commitId2 ...
+```
 
-git push origin xxxxxxxxxxx(branch_name)
+### 4. 查看文件历史
 
-//search the commitId of the file
+```bash
+git log --pretty=oneline <filename>
+```
 
-git log --pretty=oneline filename
+## 最佳实践
+
+1. **提交信息规范**
+   - 使用英文描述
+   - 遵循 Conventional Commits 规范
+   - 示例：`feat: add user authentication`
+
+2. **分支管理**
+   - 功能分支命名：`feature/xxx`
+   - 修复分支命名：`fix/xxx`
+   - 发布分支命名：`release/xxx`
+
+3. **代码审查**
+   - 保持小规模提交
+   - 每个提交只完成一个功能
+   - 提供清晰的提交说明
+
+4. **冲突解决**
+   - 优先使用 rebase 而不是 merge
+   - 及时解决冲突
+   - 测试后再推送
+
+5. **Git 钩子**
+   - 使用 pre-commit 进行代码检查
+   - 使用 commit-msg 验证提交信息格式
+   - 使用 pre-push 进行自动化测试
+
+## 常用命令速查表
+
+| 命令 | 描述 |
+|------|------|
+| `git status` | 查看当前状态 |
+| `git log --oneline` | 查看简洁提交历史 |
+| `git stash` | 暂存当前修改 |
+| `git stash pop` | 恢复暂存修改 |
+| `git rebase -i` | 交互式变基 |
+| `git reflog` | 查看所有操作记录 |
+| `git bisect` | 二分查找问题提交 |
+
+## 常见问题处理
+
+1. **误删分支恢复**
+   ```bash
+   git reflog
+   git checkout -b <branch-name> <commit-hash>
+   ```
+
+2. **撤销已推送提交**
+   ```bash
+   git revert <commit-hash>
+   git push origin <branch-name>
+   ```
+
+3. **清理历史记录**
+   ```bash
+   git filter-branch --tree-filter 'rm -f <file>' HEAD
+   git push origin --force
+   ```
+
+## 总结
+
+通过遵循这些最佳实践和使用这些命令，您可以更高效地使用 Git 进行版本控制，保持代码库的整洁和可维护性。
