@@ -303,6 +303,116 @@ git log --pretty=oneline <filename>
    git push origin --force
    ```
 
+## Git Stash 详细教程
+
+### 基本用法
+- **暂存当前修改**（包含已 `git add` 的更改）：
+  ```bash
+  git stash
+  ```
+  或添加描述信息：
+  ```bash
+  git stash save "描述信息"
+  ```
+
+- **查看所有暂存记录**：
+  ```bash
+  git stash list
+  ```
+
+- **恢复最近暂存的修改**（并删除记录）：
+  ```bash
+  git stash pop
+  ```
+
+- **恢复指定暂存记录**（不删除记录）：
+  ```bash
+  git stash apply stash@{n}  # n 为 git stash list 中的编号
+  ```
+
+- **删除指定暂存记录**：
+  ```bash
+  git stash drop stash@{n}
+  ```
+
+- **清空所有暂存记录**：
+  ```bash
+  git stash clear
+  ```
+
+### 进阶用法
+- **暂存未跟踪的文件**（新建文件）：
+  ```bash
+  git stash -u
+  ```
+
+- **暂存指定文件**：
+  ```bash
+  git stash push path/to/file1 path/to/file2
+  ```
+
+- **从暂存记录创建新分支**：
+  ```bash
+  git stash branch new-branch-name stash@{n}
+  ```
+
+---
+
+## Git Rebase 详细教程
+
+### 合并提交
+1. **启动交互式变基**（合并最近 3 个提交）：
+   ```bash
+   git rebase -i HEAD~3
+   ```
+
+2. **编辑提交操作**（在文本编辑器中）：
+   ```text
+   pick 1a2b3c4 提交1描述
+   squash 5d6e7f8 提交2描述  # 合并到前一个提交
+   squash 9g0h1i2 提交3描述
+   ```
+   - `pick`: 保留提交
+   - `squash`/`s`: 合并到前一个提交
+   - `reword`/`r`: 修改提交信息
+   - `drop`/`d`: 删除提交
+
+3. **编辑最终提交信息**（保存后自动完成合并）
+
+### 分支变基
+- **将当前分支变基到目标分支**：
+  ```bash
+  git checkout feature-branch
+  git rebase main          # 将 feature-branch 的基准点移动到 main 最新提交
+  ```
+
+- **强制推送更新**（仅限私有分支）：
+  ```bash
+  git push --force-with-lease
+  ```
+
+### 解决冲突
+1. 变基过程中出现冲突时：
+   ```bash
+   # 手动解决冲突文件后
+   git add resolved-file.txt
+   git rebase --continue   # 继续变基
+   ```
+
+2. **中止变基**：
+   ```bash
+   git rebase --abort
+   ```
+
+### 注意事项
+- 使用前先备份分支：
+  ```bash
+  git branch backup-branch
+  ```
+- 已推送到远程的提交不要变基
+- 使用 `--force-with-lease` 比 `--force` 更安全
+
+
 ## 总结
 
 通过遵循这些最佳实践和使用这些命令，您可以更高效地使用 Git 进行版本控制，保持代码库的整洁和可维护性。
