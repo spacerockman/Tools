@@ -1,6 +1,7 @@
 # Git 操作指南
 
 ## 基础配置
+sk-t6bDIpKrbBHpJ919l67IqDUhrRb57bMnEagttYFquXtB8lJi
 
 ```bash
 # 初始化仓库
