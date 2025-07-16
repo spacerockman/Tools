@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Unlock Pro - Advanced PDF Password Recovery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-unlock-alt"></i>
+                    <span>PDF Unlock Pro</span>
+                </div>
+                <div class="header-info">
+                    <span class="version">v2.0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Unlock Your PDFs</span>
+                    <br>Instantly & Securely
+                </h1>
+                <p class="hero-subtitle">
+                    Advanced PDF password recovery with AI-powered bypass techniques.
+                    Automatic watermark removal and file optimization. Support for encrypted PDFs up to 50MB.
+                </p>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-card">
+                    <div class="upload-header">
+                        <h2>Upload Your Protected PDF</h2>
+                        <p>Choose your unlock method and let our advanced algorithms do the work</p>
+                    </div>
+
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <!-- File Upload Area -->
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">
+                                <h3>Drop your PDF here or click to browse</h3>
+                                <p>Maximum file size: 50MB</p>
+                            </div>
+                            <input type="file" id="fileInput" name="file" accept=".pdf" hidden>
+                        </div>
+
+                        <!-- File Info -->
+                        <div class="file-info" id="fileInfo" style="display: none;">
+                            <div class="file-details">
+                                <i class="fas fa-file-pdf"></i>
+                                <div class="file-text">
+                                    <span class="file-name" id="fileName"></span>
+                                    <span class="file-size" id="fileSize"></span>
+                                </div>
+                                <button type="button" class="remove-file" id="removeFile">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Method Selection -->
+                        <div class="method-selection">
+                            <h3>Select Unlock Method</h3>
+                            <div class="method-options">
+                                <label class="method-option">
+                                    <input type="radio" name="method" value="crack" checked>
+                                    <div class="method-card">
+                                        <div class="method-icon">
+                                            <i class="fas fa-magic"></i>
+                                        </div>
+                                        <div class="method-content">
+                                            <h4>Smart Crack</h4>
+                                            <p>AI-powered bypass techniques. No password needed.</p>
+                                            <div class="method-badge recommended">Recommended</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="method-option">
+                                    <input type="radio" name="method" value="password">
+                                    <div class="method-card">
+                                        <div class="method-icon">
+                                            <i class="fas fa-key"></i>
+                                        </div>
+                                        <div class="method-content">
+                                            <h4>Known Password</h4>
+                                            <p>Use this if you know the password.</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Options -->
+                        <div class="advanced-options">
+                            <h3>Advanced Processing Options</h3>
+                            <div class="option-toggles">
+                                <label class="toggle-option">
+                                    <input type="checkbox" name="remove_watermark" checked>
+                                    <div class="toggle-slider"></div>
+                                    <div class="toggle-content">
+                                        <div class="toggle-icon">
+                                            <i class="fas fa-eraser"></i>
+                                        </div>
+                                        <div class="toggle-text">
+                                            <h4>Auto Remove Watermarks</h4>
+                                            <p>Automatically detect and remove watermarks, logos, and background text</p>
+                                            <div class="toggle-badge new">New Feature</div>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="toggle-option">
+                                    <input type="checkbox" name="optimize_pdf" checked>
+                                    <div class="toggle-slider"></div>
+                                    <div class="toggle-content">
+                                        <div class="toggle-icon">
+                                            <i class="fas fa-compress-alt"></i>
+                                        </div>
+                                        <div class="toggle-text">
+                                            <h4>Optimize File Size</h4>
+                                            <p>Compress and optimize the PDF for smaller file size</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="password-section" id="passwordSection" style="display: none;">
+                            <div class="input-group">
+                                <label for="passwordInput">Enter Password</label>
+                                <div class="password-input-wrapper">
+                                    <input type="password" id="passwordInput" name="password" placeholder="Enter the PDF password">
+                                    <button type="button" class="toggle-password" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                            <span class="btn-text">
+                                <i class="fas fa-unlock"></i>
+                                Unlock PDF
+                            </span>
+                            <div class="btn-loader" style="display: none;">
+                                <div class="spinner"></div>
+                                Processing...
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h3>Processing Your PDF</h3>
+                        <div class="progress-status" id="progressStatus">Initializing...</div>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-percentage" id="progressPercentage">0%</div>
+                    </div>
+
+                    <div class="progress-details">
+                        <div class="progress-message" id="progressMessage">Starting process...</div>
+                        <div class="progress-time">
+                            <i class="fas fa-clock"></i>
+                            <span id="elapsedTime">00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection" style="display: none;">
+                <div class="result-card success" id="successResult" style="display: none;">
+                    <div class="result-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="result-content">
+                        <h3>PDF Successfully Unlocked!</h3>
+                        <p>Your PDF has been processed and is ready for download.</p>
+                        <div class="result-actions">
+                            <button class="download-btn" id="downloadBtn">
+                                <i class="fas fa-download"></i>
+                                Download Unlocked PDF
+                            </button>
+                            <button class="new-file-btn" id="newFileBtn">
+                                <i class="fas fa-plus"></i>
+                                Process Another File
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card error" id="errorResult" style="display: none;">
+                    <div class="result-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="result-content">
+                        <h3>Processing Failed</h3>
+                        <p id="errorMessage">An error occurred while processing your PDF.</p>
+                        <div class="result-actions">
+                            <button class="retry-btn" id="retryBtn">
+                                <i class="fas fa-redo"></i>
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2025 PDF Unlock Pro. Advanced PDF processing technology.</p>
+                </div>
+                <div class="footer-features">
+                    <span><i class="fas fa-shield-alt"></i> Secure Processing</span>
+                    <span><i class="fas fa-bolt"></i> Lightning Fast</span>
+                    <span><i class="fas fa-lock"></i> Privacy Protected</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
