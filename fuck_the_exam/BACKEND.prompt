@@ -1,0 +1,36 @@
+# 【上下文】
+# - 你已经阅读 MASTER.prompt
+# - 请以 DESIGN.md 为唯一设计依据
+
+# 【本轮任务】
+# 请实现【后端服务】，使用 Python + FastAPI。
+
+# 【功能要求】
+# 1. 提供 API：
+#    - 生成单选题（调用 Gemini）
+# #    - 提交答案
+# #    - 记录错题
+# #    - 查询错题
+# # 2. 使用 SQLite 作为数据库
+# # 3. 设计清晰的数据表：
+# #    - questions
+# #    - answers / attempts
+# #    - wrong_questions
+# #    - study_records
+# # 4. AI 调用层需独立封装（如 ai_client.py）
+
+# # 【必须输出】
+# # - 完整可运行的 FastAPI 项目代码
+# # - main.py
+# # - database.py / models.py
+# # - ai_client.py（示例用 Gemini）
+# # - requirements.txt
+
+# # 【严格要求】
+# # - 不要省略代码
+# # - 不要写“示意”
+# # - 所有文件请用“文件名 + 代码块”形式输出
+# # - 代码应可直接复制运行
+
+# # 【输出目标】
+# # - 内容可直接整理成 backend/ 目录
