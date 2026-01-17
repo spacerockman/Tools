@@ -186,8 +186,8 @@ def ingest_json_questions():
                             correct_answer=q_data['correct_answer'],
                             explanation=q_data.get('explanation'),
                             memorization_tip=q_data.get('memorization_tip'),
-                            knowledge_point=q_data.get('knowledge_point'),
-                            exam_type=q_data.get('exam_type', 'N1'),
+                        knowledge_point=q_data.get('knowledge_point') or os.path.basename(json_file).replace('.json', ''),
+                        exam_type=q_data.get('exam_type', 'N1'),
                             hash=q_data['hash']
                         )
                         db.add(db_q)
@@ -289,7 +289,7 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
                 correct_answer=q_data['correct_answer'],
                 explanation=q_data.get('explanation'),
                 memorization_tip=q_data.get('memorization_tip'),
-                knowledge_point=q_data.get('knowledge_point'),
+                knowledge_point=q_data.get('knowledge_point') or req.topic,
                 exam_type="N1",
                 hash=q_data['hash']
             )
@@ -388,8 +388,11 @@ def get_suggestions():
         return []
 
 @app.get("/api/questions", response_model=List[Question])
-def get_questions(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
-    questions = db.query(models.Question).offset(skip).limit(limit).all()
+def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
+    query = db.query(models.Question)
+    if topic:
+        query = query.filter(models.Question.knowledge_point == topic)
+    questions = query.offset(skip).limit(limit).all()
     results = []
     for q in questions:
         q_dict = q.__dict__.copy()
@@ -550,7 +553,16 @@ def delete_knowledge_point(name: str, db: Session = Depends(database.get_db)):
     Also removes the corresponding source JSON file.
     """
     # 1. Delete questions from DB (cascades will handle attempts and wrong_questions)
-    count = db.query(models.Question).filter(models.Question.knowledge_point == name).delete()
+    if name == "未分类":
+        # Delete questions where knowledge_point is literally "未分类", None, or empty string
+        count = db.query(models.Question).filter(
+            (models.Question.knowledge_point == "未分类") | 
+            (models.Question.knowledge_point == None) | 
+            (models.Question.knowledge_point == "")
+        ).delete(synchronize_session=False)
+    else:
+        count = db.query(models.Question).filter(models.Question.knowledge_point == name).delete()
+    
     db.commit()
     
     # 2. Delete the source JSON file if it exists

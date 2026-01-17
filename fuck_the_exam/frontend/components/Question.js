@@ -7,11 +7,13 @@ import { Button } from './ui/button';
 import { Trash2, Star } from 'lucide-react';
 
 const Question = ({ question, onNext }) => {
+  if (!question) return null;
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [result, setResult] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(question.is_favorite || false);
+  const [isFavorite, setIsFavorite] = useState(question?.is_favorite || false);
 
   const handleOptionChange = (value) => {
     if (!isSubmitted) {

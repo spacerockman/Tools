@@ -1,18 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import Link from 'next/link';
-import { Trash2, AlertTriangle, Sparkles, Loader2 } from 'lucide-react';
+import { Trash2, AlertTriangle, Sparkles, Loader2, Play } from 'lucide-react';
 import { useGeneration } from '../../contexts/GenerationContext';
 import { getAllQuestions, getSuggestions, deleteKnowledge } from '../../lib/api';
 
 export default function KnowledgePage() {
+
+    const router = useRouter();
     const { isGenerating, startGeneration, generationStatus } = useGeneration();
     const [questions, setQuestions] = useState([]);
     const [knowledgePoints, setKnowledgePoints] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [practiceLoading, setPracticeLoading] = useState(null); // Track which point is being prepped for practice
     const [deleteConfirm, setDeleteConfirm] = useState(null);
     const [genTarget, setGenTarget] = useState(null);
     const [genCount, setGenCount] = useState(10);
@@ -82,6 +86,26 @@ export default function KnowledgePage() {
             setDeleteConfirm(null);
         } catch (e) {
             console.error('Failed to delete knowledge point', e);
+        }
+    };
+
+    const handlePractice = async (topic) => {
+        setPracticeLoading(topic);
+        try {
+            const topicQuestions = await getAllQuestions(topic);
+            if (topicQuestions.length > 0) {
+                localStorage.setItem('currentQuestions', JSON.stringify(topicQuestions));
+                localStorage.setItem('currentTopic', topic);
+                router.push('/quiz/session');
+            } else {
+                // If no questions, redirect to generator with topic pre-filled
+                router.push(`/?topic=${encodeURIComponent(topic)}`);
+            }
+        } catch (e) {
+            console.error('Failed to start practice', e);
+            router.push(`/?topic=${encodeURIComponent(topic)}`);
+        } finally {
+            setPracticeLoading(null);
         }
     };
 
@@ -187,9 +211,20 @@ export default function KnowledgePage() {
                                                 ></div>
                                             </div>
                                             <div className="flex gap-1">
-                                                <Link href={`/?topic=${encodeURIComponent(point.name)}`}>
-                                                    <Button size="sm" variant="outline" className="h-8">练习</Button>
-                                                </Link>
+                                                <Button
+                                                    size="sm"
+                                                    variant={point.questionCount === 0 ? "ghost" : "outline"}
+                                                    className={`h-8 gap-1 transition-colors ${point.questionCount === 0 ? 'text-muted-foreground/30' : 'hover:bg-primary/5 hover:text-primary'}`}
+                                                    onClick={() => handlePractice(point.name)}
+                                                    disabled={practiceLoading !== null || isGenerating || point.questionCount === 0}
+                                                >
+                                                    {practiceLoading === point.name ? (
+                                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <Play className={`w-3 h-3 ${point.questionCount === 0 ? 'opacity-20' : 'fill-current'}`} />
+                                                    )}
+                                                    练习
+                                                </Button>
                                                 <Button
                                                     size="sm"
                                                     variant="outline"

@@ -83,6 +83,11 @@ export default function QuizSession() {
 
     if (loading) return <div className="flex h-screen items-center justify-center">正在加载...</div>;
 
+    if (questions.length === 0) {
+        router.push('/');
+        return null;
+    }
+
     const progress = (currentIndex / questions.length) * 100;
 
     return (

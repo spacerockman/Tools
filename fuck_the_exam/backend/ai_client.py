@@ -36,43 +36,98 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_retries: int = 3) -> List[Dict]:
     """
-    Internal helper to generate a single batch of questions.
+    Multi-Agent Pipeline: Generator -> Reviewer -> Optimizer.
     """
-    # Clean up topic to extract just the core grammar/vocab if it has a prefix
     topic = topic_raw.replace("N1 Grammar:", "").replace("N1 Vocab:", "").replace("N1 阅读:", "").strip()
     if topic.startswith("～"): topic = topic[1:]
 
-    # Fetch Grounding Info
     grounding = get_grammar_grounding(topic)
     grounding_prompt = f"\nGROUNDING DATA (Source of Truth):\n{grounding}\n" if grounding else ""
 
+    # Phase 1: Generation
     system_prompt = f"""
     You are a world-class Japanese Language Proficiency Test (JLPT) N1 examiner. 
-    Your goal is to generate {batch_size} high-stakes, realistic multiple-choice questions for the topic: "{topic}".
+    Your goal is to generate {batch_size} high-stakes, ultra-realistic, and deceptive multiple-choice questions for the topic: "{topic}".
     {grounding_prompt}
 
     STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
     1. EXAM FORMAT (穴埋め): 
        - The 'content' MUST be a full Japanese sentence with a blank marked as '（　　）'.
-       - Questions MUST NOT ask for definitions or translations. They must test usage in context.
+       - Questions MUST test usage in context, nuance, or sentence structure.
     2. LANGUAGE ISOLATION:
        - 'options' (A, B, C, D) MUST be 100% Japanese. 
-       - DO NOT include Chinese or English translations in the options.
-       - 'explanation' and 'memorization_tip' should be in professional Chinese.
-    3. TARGET GRAMMAR ACCURACY & NO LEAKAGE (CRITICAL):
-       - You must correctly identify the linguistic function of "{topic}".
-       - **CORE RULE**: The 'correct_answer' choice MUST be the "{topic}" itself OR a grammatically correct phrase that uses "{topic}".
-       - **NO LEAKAGE RULE**: The target grammar "{topic}" (and its core keywords) MUST NOT appear anywhere in the 'content' string outside of the options.
-       - Example: If `{topic}` is "～こそすれ", the 'content' MUST NOT contain "こそ" or "すれ". The 'correct_answer' option MUST be "こそすれ" or contain it.
-    4. N1-LEVEL DISTRACTORS:
-       - Distractors must be highly plausible. Use:
-         - Synonyms with different collocations.
-         - Grammar points with similar prefixes/suffixes (e.g., ～と思いきや vs ～と思えば).
-         - Formal/written-style vocabulary (硬い表现).
-    5. NO TRIVIAL OPTIONS: Every option must look like it could be correct to a non-master.
-    6. ABSOLUTE ACCURACY & VERIFICATION:
-       - The 'explanation' field must include why the correct answer is right AND why each distractor is definitively wrong in this specific context.
+       - 'explanation' and 'memorization_tip' MUST be in professional Chinese.
+    3. TARGET GRAMMAR LOGIC & DECEPTION (CRITICAL):
+       - **Primary Objective**: Test the user's ability to distinguish "{topic}" from similar structures.
+       - **DECEPTION RULE**: The correct answer does NOT always have to be "{topic}". You can choose another N1 grammar point as the correct answer and use "{topic}" as a plausible but INCORRECT distractor. This forces the user to choose the most appropriate one.
+       - **NO LEAKAGE**: The target grammar "{topic}" MUST NOT appear in the 'content' string outside of the options.
+    4. DISTRACTOR STRATEGY:
+       - Use "Strong Distractors": near-synonymous grammar, points with the same form but different meaning, or different formality (書面語 vs 口語).
+       - Ensure every option is grammatically correct in isolation but only ONE is correct in the specific context of the 'content'.
+    5. DETAILED CHINESE EXPLANATIONS:
+       - The 'explanation' field MUST be a single string containing:
+         1) [本题考点]: Breakdown of "{topic}" usage and logic based on grounding.
+         2) [语境分析]: Analyze the sentence context and why it requires a specific structure.
+         3) [选项解析]: Detailed reason why the correct answer is right and why EACH distractor is wrong (citing specific N1 nuance differences).
+    6. MEMORIZATION TIP: Provide a mnemonic or comparison rule in Chinese as a string.
     """
+
+    data = {
+        "model": MODEL_NAME,
+        "messages": [{"role": "system", "content": system_prompt}],
+        "temperature": 0.3,
+    }
+
+    questions = []
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(API_URL, headers=headers, json=data, timeout=120)
+            response.raise_for_status()
+            content = response.json()['choices'][0]['message']['content'].strip()
+            
+            # Robust JSON extraction
+            import re
+            json_match = re.search(r'(\[.*\]|\{.*\})', content, re.DOTALL)
+            if json_match:
+                content = json_match.group(0)
+            
+            questions = json.loads(content)
+            if isinstance(questions, dict) and "questions" in questions: questions = questions["questions"]
+            if isinstance(questions, dict): questions = [questions] # Handle single object return
+            
+            # Flatten explanation if it's an object
+            if questions:
+                for q in questions:
+                    if isinstance(q.get('explanation'), dict):
+                        exp = q['explanation']
+                        flat_exp = "\n".join([f"{k}: {v}" for k, v in exp.items()])
+                        q['explanation'] = flat_exp
+                break
+        except Exception as e:
+            print(f"  [Generator] Batch Attempt {attempt+1} failed: {e}")
+            if 'response' in locals() and response is not None:
+                print(f"  [Generator] Status: {response.status_code}")
+                # Print a bit of the content to see why parsing failed
+                raw_msg = response.json()['choices'][0]['message']['content'] if response.status_code == 200 else response.text
+                print(f"  [Generator] Content Snippet: {raw_msg[:300]}")
+            if attempt == max_retries - 1: return []
+
+    if not questions: return []
+
+    # Phase 2: Review
+    print(f"  [Pipeline] Running Reviewer Agent for {len(questions)} questions...")
+    review_results = _review_questions(questions, topic, grounding, headers)
+    
+    # Phase 3: Optimize if needed
+    needs_fix = any(r.get("status") == "FAIL" for r in review_results)
+    if needs_fix:
+        print(f"  [Pipeline] Issues detected by Reviewer: {json.dumps(review_results, ensure_ascii=False)}")
+        print(f"  [Pipeline] Running Optimizer Agent...")
+        questions = _optimize_questions(questions, review_results, topic, grounding, headers)
+    else:
+        print(f"  [Pipeline] Reviewer passed all questions.")
+    
+    return questions
 
 def _review_questions(questions: List[Dict], topic: str, grounding: str, headers: Dict) -> List[Dict]:
     """
@@ -114,10 +169,12 @@ def _review_questions(questions: List[Dict], topic: str, grounding: str, headers
         response = requests.post(API_URL, headers=headers, json=data, timeout=120)
         response.raise_for_status()
         content = response.json()['choices'][0]['message']['content'].strip()
-        if "```" in content:
-            content = content.split("```")[1]
-            if content.startswith("json"): content = content[4:]
-            content = content.split("```")[0].strip()
+        
+        json_start = content.find('[')
+        json_end = content.rfind(']') + 1
+        if json_start != -1 and json_end > json_start:
+            content = content[json_start:json_end]
+            
         return json.loads(content)
     except Exception as e:
         print(f"  [Reviewer] Error: {e}")
@@ -157,84 +214,17 @@ def _optimize_questions(questions: List[Dict], review_results: List[Dict], topic
         response = requests.post(API_URL, headers=headers, json=data, timeout=150)
         response.raise_for_status()
         content = response.json()['choices'][0]['message']['content'].strip()
-        if "```" in content:
-            content = content.split("```")[1]
-            if content.startswith("json"): content = content[4:]
-            content = content.split("```")[0].strip()
+        
+        json_start = content.find('[')
+        json_end = content.rfind(']') + 1
+        if json_start != -1 and json_end > json_start:
+            content = content[json_start:json_end]
+            
         fixed = json.loads(content)
         return fixed if isinstance(fixed, list) else questions
     except Exception as e:
         print(f"  [Optimizer] Error: {e}")
         return questions
-
-def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_retries: int = 3) -> List[Dict]:
-    """
-    Multi-Agent Pipeline: Generator -> Reviewer -> Optimizer.
-    """
-    topic = topic_raw.replace("N1 Grammar:", "").replace("N1 Vocab:", "").replace("N1 阅读:", "").strip()
-    if topic.startswith("～"): topic = topic[1:]
-
-    grounding = get_grammar_grounding(topic)
-    grounding_prompt = f"\nGROUNDING DATA (Source of Truth):\n{grounding}\n" if grounding else ""
-
-    # Phase 1: Generation
-    system_prompt = f"""
-    You are a world-class Japanese Language Proficiency Test (JLPT) N1 examiner. 
-    Your goal is to generate {batch_size} high-stakes, realistic multiple-choice questions for the topic: "{topic}".
-    {grounding_prompt}
-
-    STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
-    1. EXAM FORMAT (穴埋め): 
-       - The 'content' MUST be a full Japanese sentence with a blank marked as '（　　）'.
-       - Questions MUST NOT ask for definitions or translations. They must test usage in context.
-    2. LANGUAGE ISOLATION:
-       - 'options' (A, B, C, D) MUST be 100% Japanese. 
-       - 'explanation' and 'memorization_tip' should be in professional Chinese.
-    3. TARGET GRAMMAR ACCURACY & NO LEAKAGE (CRITICAL):
-       - **CORE RULE**: The 'correct_answer' choice MUST use "{topic}".
-       - **NO LEAKAGE RULE**: The target grammar "{topic}" MUST NOT appear in 'content' outside of the options.
-    4. N1-LEVEL DISTRACTORS: Use high-level synonyms or similar-looking grammar.
-    5. ABSOLUTE ACCURACY: Use GROUNDING DATA as truth. Explain why distractors are wrong.
-
-    Return a JSON list.
-    """
-
-    data = {
-        "model": MODEL_NAME,
-        "messages": [{"role": "system", "content": system_prompt}],
-        "temperature": 0.3,
-    }
-
-    questions = []
-    for attempt in range(max_retries):
-        try:
-            response = requests.post(API_URL, headers=headers, json=data, timeout=120)
-            response.raise_for_status()
-            content = response.json()['choices'][0]['message']['content'].strip()
-            if content.startswith("```"):
-                content = '\n'.join(content.split('\n')[1:-1] if '```' in content.split('\n')[-1] else content.split('\n')[1:]).strip()
-            questions = json.loads(content)
-            if isinstance(questions, dict) and "questions" in questions: questions = questions["questions"]
-            break
-        except Exception as e:
-            if attempt == max_retries - 1: return []
-
-    if not questions: return []
-
-    # Phase 2: Review
-    print(f"  [Pipeline] Running Reviewer Agent for {len(questions)} questions...")
-    review_results = _review_questions(questions, topic, grounding, headers)
-    
-    # Phase 3: Optimize if needed
-    needs_fix = any(r.get("status") == "FAIL" for r in review_results)
-    if needs_fix:
-        print(f"  [Pipeline] Issues detected by Reviewer: {json.dumps(review_results, ensure_ascii=False)}")
-        print(f"  [Pipeline] Running Optimizer Agent...")
-        questions = _optimize_questions(questions, review_results, topic, grounding, headers)
-    else:
-        print(f"  [Pipeline] Reviewer passed all questions.")
-    
-    return questions
 
 def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size: int = 2) -> List[Dict]:
     """
@@ -270,13 +260,16 @@ def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size
             batch_index = futures[future]
             try:
                 batch_questions = future.result()
+                print(f"  [Batch {batch_index+1}] Received {len(batch_questions) if batch_questions else 0} questions.")
                 if batch_questions:
                     for q in batch_questions:
                         if q.get('content'):
                             unique_string = f"{q.get('content', '')}-{json.dumps(q.get('options', {}), sort_keys=True)}"
                             q['hash'] = hashlib.sha256(unique_string.encode()).hexdigest()
                             all_questions.append(q)
-                    print(f"  [Batch {batch_index+1}] Done.")
+                        else:
+                            print(f"  [Batch {batch_index+1}] Question missing 'content' key: {list(q.keys())}")
+                    print(f"  [Batch {batch_index+1}] Done. Total appended: {len(all_questions)}")
             except Exception:
                 pass
 
