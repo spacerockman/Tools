@@ -3,27 +3,26 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { generateQuiz, getStudySession } from '../lib/api';
+import { getStudySession } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
+import { useGeneration } from '../contexts/GenerationContext';
 
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isGenerating, startGeneration } = useGeneration();
+
   const [topic, setTopic] = useState('');
   const [numQuestions, setNumQuestions] = useState(10);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isStudyLoading, setIsStudyLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   // Handle auto-fill from query params (from Training Suggestions)
   useEffect(() => {
     const topicParam = searchParams.get('topic');
-    const autoParam = searchParams.get('auto');
     if (topicParam) {
       setTopic(topicParam);
-      if (autoParam === 'true') {
-        // Could auto-trigger generation here if desired
-      }
     }
   }, [searchParams]);
 
@@ -34,30 +33,19 @@ export default function Dashboard() {
       return;
     }
 
-    setIsLoading(true);
-    setFeedback({ type: '', message: '' });
-
-    try {
-      const response = await generateQuiz(topic, numQuestions);
-      localStorage.setItem('currentQuestions', JSON.stringify(response));
-      localStorage.setItem('currentTopic', topic);
-      router.push('/quiz/session');
-    } catch (error) {
-      console.error(error);
-      const errorMessage = error.response?.data?.detail || '生成失败，请检查后端服务。';
-      setFeedback({ type: 'error', message: errorMessage });
-    } finally {
-      setIsLoading(false);
-    }
+    // Start background generation - user can navigate away
+    startGeneration(topic, numQuestions);
+    setFeedback({ type: 'info', message: '✅ 已开始后台生成，你可以继续浏览其他页面！' });
   };
 
   const handleStudy = async () => {
-    setIsLoading(true);
+    setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
       const response = await getStudySession();
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无待复习题目或新题，请先生成一些题目！' });
+        setIsStudyLoading(false);
         return;
       }
       localStorage.setItem('currentQuestions', JSON.stringify(response));
@@ -67,7 +55,7 @@ export default function Dashboard() {
       console.error(error);
       setFeedback({ type: 'error', message: '获取复习计划失败。' });
     } finally {
-      setIsLoading(false);
+      setIsStudyLoading(false);
     }
   };
 
@@ -82,6 +70,9 @@ export default function Dashboard() {
           <p className="text-muted-foreground">Keep pushing. Consistency is key.</p>
         </div>
         <div className="flex gap-4">
+          <Link href="/knowledge">
+            <Button variant="outline">📚 知识库</Button>
+          </Link>
           <Link href="/stats">
             <Button variant="outline">📊 Stats</Button>
           </Link>
@@ -103,8 +94,8 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Review due questions based on Ebbinghaus curve + Learn new items.
                 </p>
-                <Button onClick={handleStudy} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isLoading}>
-                  Start My Daily Review
+                <Button onClick={handleStudy} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isStudyLoading || isGenerating}>
+                  {isStudyLoading ? 'Loading...' : 'Start My Daily Review'}
                 </Button>
               </div>
 
@@ -126,7 +117,7 @@ export default function Dashboard() {
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="e.g. Grammar: ～なしに"
                     className="w-full flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    disabled={isLoading}
+                    disabled={isGenerating}
                   />
                 </div>
 
@@ -153,8 +144,8 @@ export default function Dashboard() {
                         type="button"
                         onClick={() => setNumQuestions(count)}
                         className={`px-4 py-2 rounded-md border text-sm font-medium transition ${numQuestions === count
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-background border-input hover:bg-accent'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-background border-input hover:bg-accent'
                           }`}
                       >
                         {count}
@@ -164,16 +155,8 @@ export default function Dashboard() {
                 </div>
 
                 <div className="pt-2">
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Generating N1 Context...
-                      </span>
-                    ) : `Generate ${numQuestions} Questions`}
+                  <Button type="submit" className="w-full" disabled={isGenerating}>
+                    {isGenerating ? '🔄 后台生成中...' : `Generate ${numQuestions} Questions`}
                   </Button>
                 </div>
 

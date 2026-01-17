@@ -158,9 +158,11 @@ def ingest_json_questions():
                         db.add(db_q)
                         count += 1
                     else:
-                         # Sync new fields if missing
-                         if q_data.get('memorization_tip') and not exists.memorization_tip:
+                         # Sync/Update fields even if question exists
+                         if q_data.get('memorization_tip'):
                              exists.memorization_tip = q_data.get('memorization_tip')
+                         if q_data.get('knowledge_point'):
+                             exists.knowledge_point = q_data.get('knowledge_point')
             except Exception as e:
                 print(f"Error loading {json_file}: {e}")
         
