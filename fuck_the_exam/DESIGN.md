@@ -12,13 +12,14 @@ graph TD
     
     subgraph "Backend Services"
         Backend -->|Query/Store| DB[(SQLite Database)]
-        Backend -->|Generate| AI[AI Service (Gemini API)]
-        Backend -->|Sync| MD[Markdown Sync Service]
+        Backend -->|High-Speed Generate| AI[AI Service (SiliconFlow DeepSeek)]
+        Backend -->|Local Grounding| MD[Markdown Knowledge Base]
     end
     
     subgraph "Storage Layer"
         DB -->|Structured Data| SQLiteFiles
-        MD -->|Human Readable| MDFiles[Markdown Knowledge Base]
+        MD -->|Grounding Reference| MDFiles[MD Knowledge Base]
+        Backend -->|Study Logs| LogFiles[Markdown Study Logs]
     end
 ```
 

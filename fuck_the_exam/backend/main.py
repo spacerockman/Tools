@@ -34,8 +34,11 @@ analysis_service = AnalysisService(ai_client=ai_client)
 # Add CORS middleware
 origins = [
     "http://localhost",
+    "http://localhost",
     "http://localhost:3000",
+    "http://localhost:23333",
     "http://192.168.0.39:3000", # Mobile access
+    "http://192.168.0.39:23333",
     "*", # Allow all for local dev flexibility
 ]
 
@@ -705,4 +708,4 @@ def remove_question_from_json(q_hash: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=28888)

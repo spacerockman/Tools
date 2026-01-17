@@ -3,7 +3,6 @@ import json
 import hashlib
 import requests
 from typing import List, Dict
-from .services.rag_service import rag
 
 # SiliconFlow API Configuration
 API_URL = "https://api.siliconflow.cn/v1/chat/completions"
@@ -78,23 +77,18 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
 def _review_questions(questions: List[Dict], topic: str, grounding: str, headers: Dict) -> List[Dict]:
     """
     Agent 2: Reviewer. Audits questions for N1 quality and accuracy.
-    Includes RAG textbook context for academic grounding.
+    Includes local markdown context for academic grounding.
     """
-    # Fetch RAG context from textbooks
-    textbook_context = rag.query(topic, top_k=2)
-    rag_snippet = f"\nACADEMIC REFERENCE (From N1 Textbooks):\n{textbook_context}\n" if textbook_context else ""
-
     grounding_text = f"GROUNDING DATA:\n{grounding}" if grounding else ""
     review_prompt = f"""
     You are a Senior JLPT N1 Quality Auditor. Your job is to strictly review the following questions for the topic "{topic}".
     {grounding_text}
-    {rag_snippet}
 
     CHECKLIST:
     1. LINGUISTIC ACCURACY: Is the grammar usage 100% correct for N1?
     2. NO LEAKAGE: Does the target grammar "{topic}" appear in the 'content' outside the blank? (FAIL if yes)
     3. DISTRACTOR QUALITY: Are distractors N1-level and plausible, yet definitively wrong?
-    4. EXPLANATION: Does the explanation correctly analyze the grammar based on GROUNDING and ACADEMIC REFERENCE?
+    4. EXPLANATION: Does the explanation correctly analyze the grammar based on GROUNDING context?
 
     OUTPUT FORMAT:
     Return a JSON list of objects, one for each question:

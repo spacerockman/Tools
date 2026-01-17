@@ -5,12 +5,7 @@ import { useRouter } from 'next/navigation';
 import Question from '../../../components/Question';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
-import axios from 'axios';
-
-// We use axios directly for the finish call or import from api.js if we added it
-// For simplicity let's stick to the pattern and import if valid, but I didn't add finishQuizSession to api.js yet.
-// So I will make a direct call or update api.js. Direct call for MVP speed.
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { finishQuiz } from '../../../lib/api';
 
 export default function QuizSession() {
     const router = useRouter();
@@ -47,20 +42,17 @@ export default function QuizSession() {
         } else {
             // Quiz Finished
             if (currentResults.length > 0) {
-                await finishQuiz(currentResults);
+                await handleFinish(currentResults);
             } else {
                 router.push('/');
             }
         }
     };
 
-    const finishQuiz = async (finalResults) => {
+    const handleFinish = async (finalResults) => {
         try {
             // Log session to backend
-            await axios.post(`${API_URL}/api/quiz/finish`, {
-                topic: topic,
-                session_data: finalResults
-            });
+            await finishQuiz(topic, finalResults);
             // Clear storage
             localStorage.removeItem('currentQuestions');
             localStorage.removeItem('currentTopic');
@@ -76,7 +68,7 @@ export default function QuizSession() {
     const handleQuit = async () => {
         if (results.length > 0) {
             if (window.confirm(`已完成 ${results.length} 道题。是否保存进度并退出？`)) {
-                await finishQuiz(results);
+                await handleFinish(results);
             } else if (window.confirm('确定要直接退出吗？（本次练习进度将不会被记录）')) {
                 localStorage.removeItem('currentQuestions');
                 localStorage.removeItem('currentTopic');

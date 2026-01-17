@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/button';
 import Link from 'next/link';
 import { Trash2, AlertTriangle, Sparkles, Loader2 } from 'lucide-react';
 import { useGeneration } from '../../contexts/GenerationContext';
+import { getAllQuestions, getSuggestions, deleteKnowledge } from '../../lib/api';
 
 export default function KnowledgePage() {
     const { isGenerating, startGeneration, generationStatus } = useGeneration();
@@ -19,36 +20,51 @@ export default function KnowledgePage() {
     useEffect(() => {
         async function fetchData() {
             try {
-                // Fetch all questions to get unique knowledge points
-                const questionsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/questions`);
-                if (questionsRes.ok) {
-                    const data = await questionsRes.json();
-                    setQuestions(data);
+                // 1. Fetch suggestions (the master list from MD files)
+                const suggestions = await getSuggestions();
 
-                    // Extract unique knowledge points
-                    const pointsMap = new Map();
-                    data.forEach(q => {
-                        const point = q.knowledge_point || '未分类';
-                        if (!pointsMap.has(point)) {
-                            pointsMap.set(point, { count: 0, topics: new Set() });
-                        }
-                        const entry = pointsMap.get(point);
-                        entry.count++;
-                    });
+                // 2. Fetch all questions (to get counts)
+                const allQs = await getAllQuestions();
+                setQuestions(allQs);
 
-                    const pointsList = Array.from(pointsMap.entries()).map(([point, info]) => ({
-                        name: point,
-                        questionCount: info.count,
-                    })).sort((a, b) => b.questionCount - a.questionCount);
+                // 3. Extract counts from questions
+                const countsMap = new Map();
+                allQs.forEach(q => {
+                    const point = q.knowledge_point || '未分类';
+                    countsMap.set(point, (countsMap.get(point) || 0) + 1);
+                });
 
-                    setKnowledgePoints(pointsList);
-                }
+                // 4. Build the final list
+                // Start with suggestions from MD
+                const masterList = suggestions.map(s => ({
+                    name: s.point,
+                    description: s.description,
+                    questionCount: countsMap.get(s.point) || 0,
+                    source: s.source_file
+                }));
 
-                // Also try to fetch knowledge base files
-                const suggestionsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/suggestions`);
-                if (suggestionsRes.ok) {
-                    // This would be parsed knowledge from markdown files
-                }
+                // Add any points that exist in DB but NOT in MD
+                const mdPointNames = new Set(suggestions.map(s => s.point));
+                countsMap.forEach((count, name) => {
+                    if (!mdPointNames.has(name)) {
+                        masterList.push({
+                            name: name,
+                            description: '数据库中存在的记录',
+                            questionCount: count,
+                            source: 'Database'
+                        });
+                    }
+                });
+
+                // Sort: Most questions first, then alphabetical
+                masterList.sort((a, b) => {
+                    if (b.questionCount !== a.questionCount) {
+                        return b.questionCount - a.questionCount;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+
+                setKnowledgePoints(masterList);
             } catch (e) {
                 console.error('Failed to load knowledge data', e);
             } finally {
@@ -60,14 +76,10 @@ export default function KnowledgePage() {
 
     const handleDelete = async (name) => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/knowledge?name=${encodeURIComponent(name)}`, {
-                method: 'DELETE'
-            });
-            if (res.ok) {
-                setKnowledgePoints(prev => prev.filter(p => p.name !== name));
-                setQuestions(prev => prev.filter(q => q.knowledge_point !== name));
-                setDeleteConfirm(null);
-            }
+            await deleteKnowledge(name);
+            setKnowledgePoints(prev => prev.filter(p => p.name !== name));
+            setQuestions(prev => prev.filter(q => q.knowledge_point !== name));
+            setDeleteConfirm(null);
         } catch (e) {
             console.error('Failed to delete knowledge point', e);
         }

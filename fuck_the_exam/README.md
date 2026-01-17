@@ -24,8 +24,8 @@ docker-compose up --build
 ```
 
 The application will be available at:
-- **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend API**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Frontend**: [http://localhost:23333](http://localhost:23333)
+- **Backend API**: [http://localhost:28888/docs](http://localhost:28888/docs)
 
 *Note: You need to set the `GOOGLE_API_KEY` in environment variable or `.env` file for the backend to work correctly with AI features.*
 
@@ -40,7 +40,7 @@ If you prefer to run the services locally without Docker:
 uv sync
 
 # 2. Run the server
-# This will start the backend on http://0.0.0.0:8000
+# This will start the backend on http://0.0.0.0:28888
 python backend/main.py
 ```
 *Note: If you are not using `uv`, you can verify dependencies in `pyproject.toml`.*
@@ -68,3 +68,8 @@ npm run dev
 ### Configuration
 - The backend listens on `0.0.0.0`, allowing access from other devices on your local network.
 - Ensure your `knowledge_base` has the correct directory structure if you are adding new quizzes manually.
+
+### ⚡ Performance Optimization
+- **Lightweight Build**: All heavy RAG dependencies (PyTorch, FAISS, Tesseract OCR) have been removed to ensure the Docker build takes < 2 minutes.
+- **Domestic Mirrors**: Dockerfiles are pre-configured with Tsinghua and Aliyun mirrors for ultra-fast dependency installation in China.
+- **Markdown Knowledge Base**: The system uses a high-performance local markdown parser for grammar grounding instead of a vector database.
