@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from .database import Base
@@ -15,6 +15,7 @@ class Question(Base):
     knowledge_point = Column(Text, nullable=True)
     exam_type = Column(String(20), default='N1')
     hash = Column(String(64), unique=True, index=True)
+    is_favorite = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     attempts = relationship("AnswerAttempt", back_populates="question")
@@ -23,7 +24,7 @@ class AnswerAttempt(Base):
     __tablename__ = "answer_attempts"
 
     id = Column(Integer, primary_key=True, index=True)
-    question_id = Column(Integer, ForeignKey("questions.id"))
+    question_id = Column(Integer, ForeignKey("questions.id", ondelete="CASCADE"))
     selected_answer = Column(String(1), nullable=False)
     is_correct = Column(Integer, nullable=False) # 1 for true, 0 for false
     attempted_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -34,7 +35,7 @@ class WrongQuestion(Base):
     __tablename__ = "wrong_questions"
 
     id = Column(Integer, primary_key=True, index=True)
-    question_id = Column(Integer, ForeignKey("questions.id"))
+    question_id = Column(Integer, ForeignKey("questions.id", ondelete="CASCADE"))
     review_count = Column(Integer, default=0)
     last_reviewed_at = Column(DateTime(timezone=True), onupdate=func.now())
 

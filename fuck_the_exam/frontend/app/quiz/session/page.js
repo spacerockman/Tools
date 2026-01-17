@@ -36,14 +36,21 @@ export default function QuizSession() {
     }, [router]);
 
     const handleNext = async (result) => {
-        const newResults = [...results, result];
-        setResults(newResults);
+        let currentResults = results;
+        if (!result.deleted) {
+            currentResults = [...results, result];
+            setResults(currentResults);
+        }
 
         if (currentIndex < questions.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
             // Quiz Finished
-            await finishQuiz(newResults);
+            if (currentResults.length > 0) {
+                await finishQuiz(currentResults);
+            } else {
+                router.push('/');
+            }
         }
     };
 
@@ -66,7 +73,7 @@ export default function QuizSession() {
         }
     };
 
-    if (loading) return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    if (loading) return <div className="flex h-screen items-center justify-center">正在加载...</div>;
 
     const progress = ((currentIndex) / questions.length) * 100;
 
@@ -93,7 +100,7 @@ export default function QuizSession() {
 
             <div className="mt-8 text-center">
                 <Button variant="ghost" onClick={() => router.push('/')} size="sm">
-                    Quit Session
+                    中途退出
                 </Button>
             </div>
         </div>

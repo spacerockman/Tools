@@ -30,7 +30,7 @@ export default function TrainingSuggestions({ suggestions }) {
         <div className="space-y-4">
             <h3 className="font-bold text-xl flex items-center gap-2">
                 <Dumbbell className="w-5 h-5 text-indigo-500" />
-                Recommended Training
+                推荐针对性训练
             </h3>
             <div className="grid grid-cols-1 gap-3">
                 {suggestions.map((item, idx) => (
@@ -45,7 +45,7 @@ export default function TrainingSuggestions({ suggestions }) {
                             className="ml-4 gap-1"
                             onClick={() => handleTrain(item.point)}
                         >
-                            Train 10 <ArrowRight className="w-3 h-3" />
+                            练习 10 题 <ArrowRight className="w-3 h-3" />
                         </Button>
                     </div>
                 ))}

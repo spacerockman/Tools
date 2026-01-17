@@ -59,22 +59,22 @@ export default function Dashboard() {
     }
   };
 
-  const quickTopics = ["N1 Grammar: ～ざるを得ない", "N1 Reading: Philosophy", "N1 Vocabulary: Synonyms"];
+  const quickTopics = ["N1 语法: ～ざるを得ない", "N1 阅读: 哲学", "N1 词汇: 同义词"];
   const questionCounts = [5, 10, 15, 20, 25];
 
   return (
     <div className="min-h-screen bg-background p-8">
       <header className="mb-12 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">My N1 Journey</h1>
-          <p className="text-muted-foreground">Keep pushing. Consistency is key.</p>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">我的 N1 之路</h1>
+          <p className="text-muted-foreground">坚持不懈，久久为功。</p>
         </div>
         <div className="flex gap-4">
           <Link href="/knowledge">
             <Button variant="outline">📚 知识库</Button>
           </Link>
           <Link href="/stats">
-            <Button variant="outline">📊 Stats</Button>
+            <Button variant="outline">📊 学习统计</Button>
           </Link>
           <div className="h-10 w-10 rounded-full bg-secondary"></div>
         </div>
@@ -86,16 +86,16 @@ export default function Dashboard() {
         <div className="md:col-span-2 space-y-8">
           <Card>
             <CardHeader>
-              <CardTitle>⚡️ Quick Start Quiz</CardTitle>
+              <CardTitle>⚡️ 快速开始测试</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-lg border border-blue-100 dark:border-slate-700">
-                <h3 className="font-bold text-lg mb-2">📅 Daily Study Session (SRS)</h3>
+                <h3 className="font-bold text-lg mb-2">📅 每日学习课（SRS）</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Review due questions based on Ebbinghaus curve + Learn new items.
+                  基于艾宾浩斯记忆曲线复习错题 + 学习新考点。
                 </p>
                 <Button onClick={handleStudy} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isStudyLoading || isGenerating}>
-                  {isStudyLoading ? 'Loading...' : 'Start My Daily Review'}
+                  {isStudyLoading ? '正在加载...' : '开始我的每日复习'}
                 </Button>
               </div>
 
@@ -104,18 +104,18 @@ export default function Dashboard() {
                   <span className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or Generate New</span>
+                  <span className="bg-background px-2 text-muted-foreground">或者生成新题目</span>
                 </div>
               </div>
 
               <form onSubmit={handleGenerate} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Target Topic</label>
+                  <label className="block text-sm font-medium mb-2">目标考点</label>
                   <input
                     type="text"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    placeholder="e.g. Grammar: ～なしに"
+                    placeholder="例如：语法：～なしに"
                     className="w-full flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={isGenerating}
                   />
@@ -136,7 +136,7 @@ export default function Dashboard() {
 
                 {/* Question Count Selector */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Number of Questions</label>
+                  <label className="block text-sm font-medium mb-2">生成题目数量</label>
                   <div className="flex flex-wrap gap-2">
                     {questionCounts.map(count => (
                       <button
@@ -156,7 +156,7 @@ export default function Dashboard() {
 
                 <div className="pt-2">
                   <Button type="submit" className="w-full" disabled={isGenerating}>
-                    {isGenerating ? '🔄 后台生成中...' : `Generate ${numQuestions} Questions`}
+                    {isGenerating ? '🔄 后台生成中...' : `立即生成 ${numQuestions} 道题`}
                   </Button>
                 </div>
 
@@ -173,20 +173,20 @@ export default function Dashboard() {
             <Link href="/wrong-questions" className="block">
               <Card className="hover:bg-accent/50 transition cursor-pointer h-full">
                 <CardHeader>
-                  <CardTitle className="text-lg">📖 Review Mistakes</CardTitle>
+                  <CardTitle className="text-lg">📖 错题复习</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">Target your weak points. Repetition is the mother of learning.</p>
+                  <p className="text-muted-foreground text-sm">精准打击薄弱环节。重复是学习之母。</p>
                 </CardContent>
               </Card>
             </Link>
             <Link href="/stats" className="block">
               <Card className="hover:bg-accent/50 transition cursor-pointer h-full">
                 <CardHeader>
-                  <CardTitle className="text-lg">📊 View Statistics</CardTitle>
+                  <CardTitle className="text-lg">📊 查看统计</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">Track your progress and identify weak areas.</p>
+                  <p className="text-muted-foreground text-sm">追踪你的进度，识别薄弱环节。</p>
                 </CardContent>
               </Card>
             </Link>
@@ -197,11 +197,11 @@ export default function Dashboard() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Daily Progress</CardTitle>
+              <CardTitle className="text-base">今日进度</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold mb-1">--</div>
-              <p className="text-xs text-muted-foreground">Start practicing to see your stats!</p>
+              <p className="text-xs text-muted-foreground">开始练习查看你的统计数据！</p>
               <div className="mt-4 h-2 bg-secondary rounded-full overflow-hidden">
                 <div className="h-full bg-primary w-[0%]"></div>
               </div>
@@ -210,21 +210,21 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Recent Logs</CardTitle>
+              <CardTitle className="text-base">最近记录</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
                 <li className="flex justify-between items-center text-sm">
                   <span className="truncate max-w-[150px]">Grammar: ～ざるを得ない</span>
-                  <span className="text-muted-foreground">10m ago</span>
+                  <span className="text-muted-foreground">10分钟前</span>
                 </li>
                 <li className="flex justify-between items-center text-sm">
                   <span className="truncate max-w-[150px]">Reading: Philosophy</span>
-                  <span className="text-muted-foreground">2h ago</span>
+                  <span className="text-muted-foreground">2小时前</span>
                 </li>
                 <li className="flex justify-between items-center text-sm">
                   <span className="truncate max-w-[150px]">Vocab: Compound Verbs</span>
-                  <span className="text-muted-foreground">Yesterday</span>
+                  <span className="text-muted-foreground">昨天</span>
                 </li>
               </ul>
             </CardContent>

@@ -25,19 +25,19 @@ export default function WrongQuestions() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="text-center p-8">Loading review data...</div>;
+  if (loading) return <div className="text-center p-8">正在加载复习数据...</div>;
 
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Wrong Questions Review</h1>
+          <h1 className="text-3xl font-bold">错题集复习</h1>
           <div className="flex gap-2">
             <Link href="/stats">
-              <Button variant="outline">📊 Stats</Button>
+              <Button variant="outline">📊 统计结果</Button>
             </Link>
             <Link href="/">
-              <Button variant="outline">← Back</Button>
+              <Button variant="outline">← 返回</Button>
             </Link>
           </div>
         </div>
@@ -45,9 +45,9 @@ export default function WrongQuestions() {
         {data.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
-              <p className="text-muted-foreground mb-4">No wrong questions recorded yet. Keep practicing!</p>
+              <p className="text-muted-foreground mb-4">暂无错题记录。继续加油！</p>
               <Link href="/">
-                <Button>Start a Quiz</Button>
+                <Button>开始测试</Button>
               </Link>
             </CardContent>
           </Card>

@@ -1,15 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { submitAnswer } from '../lib/api';
+import { submitAnswer, deleteQuestion, toggleFavorite } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Button } from './ui/button';
+import { Trash2, Star } from 'lucide-react';
 
 const Question = ({ question, onNext }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [result, setResult] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(question.is_favorite || false);
 
   const handleOptionChange = (value) => {
     if (!isSubmitted) {
@@ -32,6 +34,27 @@ const Question = ({ question, onNext }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (window.confirm('确定要删除这道题目吗？此操作不可撤销。')) {
+      try {
+        await deleteQuestion(question.id);
+        onNext({ skipped: true, deleted: true });
+      } catch (error) {
+        console.error("Failed to delete question:", error);
+        alert('删除失败，请稍后重试。');
+      }
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    try {
+      await toggleFavorite(question.id);
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+    }
+  };
+
   // Callback to parent when user is ready for next question
   const handleNext = () => {
     // Pass the result up so the session can track it
@@ -51,8 +74,28 @@ const Question = ({ question, onNext }) => {
         <CardHeader>
           <div className="flex justify-between items-start">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-secondary px-2 py-1 rounded">
-              N1 • {question.knowledge_point || 'General'}
+              N1 • {question.knowledge_point || '常规'}
             </span>
+            <div className="flex gap-1 -mr-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-8 w-8 ${isFavorite ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground'} hover:text-yellow-600`}
+                onClick={handleToggleFavorite}
+                title={isFavorite ? "取消标记" : "标记此题"}
+              >
+                <Star className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={handleDelete}
+                title="删除此题"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
           <CardTitle className="text-xl leading-relaxed mt-4 font-serif">
             {question.content}
@@ -97,23 +140,23 @@ const Question = ({ question, onNext }) => {
           disabled={!selectedOption || isSubmitting}
           className="w-full text-lg h-12"
         >
-          {isSubmitting ? 'Checking...' : 'Check Answer'}
+          {isSubmitting ? '正在提交...' : '确认答案'}
         </Button>
       ) : (
         <div className="space-y-4 animate-accordion-down">
           <Card className={`border-l-4 ${result?.is_correct ? 'border-l-green-500' : 'border-l-red-500'}`}>
             <CardContent className="pt-6">
               <h4 className={`font-bold text-lg mb-2 ${result?.is_correct ? 'text-green-700' : 'text-red-700'}`}>
-                {result?.is_correct ? 'Correct! 🎉' : 'Incorrect 😅'}
+                {result?.is_correct ? '正确! 🎉' : '再想想 😅'}
               </h4>
               <div className="space-y-2 text-sm text-foreground/80">
-                <p className="font-semibold text-foreground">Explanation:</p>
+                <p className="font-semibold text-foreground">解析:</p>
                 <p className="leading-relaxed">{result?.explanation}</p>
               </div>
             </CardContent>
           </Card>
           <Button onClick={handleNext} className="w-full" variant="outline">
-            Next Question →
+            下一题 →
           </Button>
         </div>
       )}

@@ -11,10 +11,10 @@ const Navbar = () => {
           </Link>
           <div className="flex gap-4">
             <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
-              Dashboard
+              仪表盘
             </Link>
             <Link href="/wrong-questions" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary whitespace-nowrap">
-              Review
+              复习
             </Link>
           </div>
         </div>

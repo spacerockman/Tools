@@ -12,7 +12,8 @@ from datetime import date, datetime, timedelta
 from . import models, database, ai_client
 from .services.markdown_service import MarkdownService
 from .services.knowledge_service import KnowledgeService
-from .database import engine
+from .services.backup_service import BackupService
+from .database import engine, SessionLocal
 from pydantic import BaseModel, Json
 
 # Ensure DB tables are created
@@ -23,6 +24,10 @@ app = FastAPI(title="Japanese N1 Quiz App")
 # Initialize Services
 markdown_service = MarkdownService(base_path=os.path.join(os.getcwd(), "knowledge_base"))
 knowledge_service = KnowledgeService(base_path=os.path.join(os.getcwd(), "backend"))
+backup_service = BackupService(
+    db_path=os.path.join(os.getcwd(), "backend", "n1_app.db"),
+    backup_dir=os.path.join(os.getcwd(), "backend", "backups")
+)
 
 # Add CORS middleware
 origins = [
@@ -57,6 +62,7 @@ class QuestionCreate(QuestionBase):
 class Question(QuestionBase):
     id: int
     hash: Optional[str] = None
+    is_favorite: bool = False
 
     class Config:
         from_attributes = True
@@ -89,7 +95,31 @@ class StatsResponse(BaseModel):
 @app.on_event("startup")
 def on_startup():
     database.create_db_and_tables()
+    # Migration: Add is_favorite column if it doesn't exist
+    try:
+        from sqlalchemy import text
+        db = database.SessionLocal()
+        db.execute(text('ALTER TABLE questions ADD COLUMN is_favorite BOOLEAN DEFAULT 0'))
+        db.commit()
+        db.close()
+        print("Migration: Added is_favorite column to questions table.")
+    except Exception as e:
+        # Probable cause: column already exists
+        pass
+    
     ingest_json_questions()
+
+    # Data Recovery: If no wrong questions but backup exists, restore from JSON.
+    db_rec = SessionLocal()
+    try:
+        if db_rec.query(models.WrongQuestion).count() == 0:
+            restored = backup_service.restore_progress_from_json(db_rec)
+            if restored > 0:
+                print(f"Recovery: Restored {restored} SRS records from backup.")
+    except Exception as e:
+        print(f"Recovery failed: {e}")
+    finally:
+        db_rec.close()
 
 def ingest_json_questions():
     """
@@ -263,6 +293,16 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
             saved_questions.append(db_q)
     
     db.commit()
+
+    # 4. Filter mastered questions (unless favorite)
+    subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
+    
+    final_questions = []
+    for q in saved_questions:
+        # Check if mastered
+        is_mastered = db.query(subquery.filter(models.AnswerAttempt.question_id == q.id).exists()).scalar()
+        if not is_mastered or q.is_favorite:
+            final_questions.append(q)
     
     return [
         {
@@ -272,8 +312,9 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
             "correct_answer": q.correct_answer,
             "explanation": q.explanation,
             "memorization_tip": q.memorization_tip,
-            "knowledge_point": q.knowledge_point
-        } for q in saved_questions
+            "knowledge_point": q.knowledge_point,
+            "is_favorite": q.is_favorite
+        } for q in final_questions
     ]
 
 @app.get("/api/stats", response_model=StatsResponse)
@@ -372,7 +413,7 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
 
     subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
     new_qs = db.query(models.Question)\
-        .filter(~models.Question.id.in_(subquery))\
+        .filter((~models.Question.id.in_(subquery)) | (models.Question.is_favorite == True))\
         .limit(limit_new)\
         .all()
 
@@ -444,6 +485,12 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
 
     db.commit()
     
+    # Backup after progress change
+    try:
+        backup_service.export_progress_to_json(db)
+    except Exception as e:
+        print(f"Backup failed: {e}")
+    
     return {
         "is_correct": is_correct,
         "correct_answer": db_question.correct_answer,
@@ -481,6 +528,141 @@ def get_wrong_questions_api(db: Session = Depends(database.get_db)):
             "review_count": w.review_count
         })
     return results
+
+@app.delete("/api/questions/{question_id}")
+def delete_question(question_id: int, db: Session = Depends(database.get_db)):
+    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    if not db_question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    q_hash = db_question.hash
+    db.delete(db_question)
+    db.commit()
+    
+    # Backup after deletion
+    try:
+        backup_service.export_progress_to_json(db)
+    except Exception as e:
+        print(f"Backup failed: {e}")
+
+    if q_hash:
+        try:
+            remove_question_from_json(q_hash)
+        except Exception as e:
+            print(f"Failed to remove question from JSON: {e}")
+
+    return {"message": "Question deleted successfully"}
+
+@app.post("/api/admin/backup")
+def create_manual_backup():
+    try:
+        path = backup_service.backup_db_file()
+        return {"message": "Backup created successfully", "path": path}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/questions/{question_id}/favorite")
+def toggle_favorite(question_id: int, db: Session = Depends(database.get_db)):
+    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    if not db_question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    db_question.is_favorite = not db_question.is_favorite
+    db.commit()
+    
+    # Sync to source JSON and update backup
+    try:
+        sync_question_state_to_json(db_question.hash, {"is_favorite": db_question.is_favorite})
+        backup_service.export_progress_to_json(db)
+    except Exception as e:
+        print(f"State sync/backup failed: {e}")
+
+    return {"id": db_question.id, "is_favorite": db_question.is_favorite}
+
+def sync_question_state_to_json(q_hash: str, updates: Dict):
+    import glob
+    json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
+    files = glob.glob(os.path.join(json_dir, "*.json"))
+    for json_file in files:
+        updated = False
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            if not data: continue
+            if isinstance(data, dict): data = [data]
+            
+            for q in data:
+                # Direct hash match
+                if q.get('hash') == q_hash:
+                    q.update(updates)
+                    updated = True
+                else:
+                    # Content/Options match
+                    content = q.get('content', q.get('question'))
+                    options = q.get('options')
+                    if content and options:
+                        h = hashlib.sha256(f"{content}-{json.dumps(options, sort_keys=True)}".encode()).hexdigest()
+                        if h == q_hash:
+                            q.update(updates)
+                            updated = True
+            
+            if updated:
+                with open(json_file, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error syncing to {json_file}: {e}")
+
+def remove_question_from_json(q_hash: str):
+    import glob
+    json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
+    if not os.path.exists(json_dir):
+        return
+
+    files = glob.glob(os.path.join(json_dir, "*.json"))
+    for json_file in files:
+        updated = False
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            if not data: continue
+            if isinstance(data, dict):
+                data = [data]
+            
+            new_data = []
+            for q in data:
+                # Content normalization (matching ingestion)
+                content = q.get('content', q.get('question'))
+                options = q.get('options')
+                if not options and 'option_a' in q:
+                    options = {
+                        'A': q.get('option_a'),
+                        'B': q.get('option_b'),
+                        'C': q.get('option_c'),
+                        'D': q.get('option_d')
+                    }
+                
+                # Check hash
+                if q.get('hash') == q_hash:
+                    updated = True
+                    continue
+                
+                if content and options:
+                    unique_string = f"{content}-{json.dumps(options, sort_keys=True)}"
+                    h = hashlib.sha256(unique_string.encode()).hexdigest()
+                    if h == q_hash:
+                        updated = True
+                        continue
+                
+                new_data.append(q)
+            
+            if updated:
+                with open(json_file, 'w', encoding='utf-8') as f:
+                    json.dump(new_data, f, indent=2, ensure_ascii=False)
+                print(f"Removed question {q_hash} from {json_file}")
+                
+        except Exception as e:
+            print(f"Error processing {json_file} for removal: {e}")
 
 if __name__ == "__main__":
     import uvicorn

@@ -60,11 +60,11 @@ export default function StatsPage() {
 
                 <header className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Your Progress</h1>
-                        <p className="text-muted-foreground">Analyze your strengths and weaknesses.</p>
+                        <h1 className="text-3xl font-bold tracking-tight">你的进度</h1>
+                        <p className="text-muted-foreground">分析你的优势和薄弱环节。</p>
                     </div>
                     <Link href="/">
-                        <Button variant="outline">Back to Dashboard</Button>
+                        <Button variant="outline">返回仪表盘</Button>
                     </Link>
                 </header>
 
@@ -72,7 +72,7 @@ export default function StatsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <Card>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Total Answered</CardTitle>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">总回答数</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">{stats?.total_answered}</div>
@@ -80,22 +80,22 @@ export default function StatsPage() {
                     </Card>
                     <Card>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Correct Rate</CardTitle>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">正确率</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold text-green-600">
                                 {stats?.total_answered ? ((stats.correct_count / stats.total_answered) * 100).toFixed(1) : 0}%
                             </div>
-                            <p className="text-xs text-muted-foreground">{stats?.correct_count} Correct / {stats?.wrong_count} Wrong</p>
+                            <p className="text-xs text-muted-foreground">{stats?.correct_count} 正确 / {stats?.wrong_count} 错误</p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Current Streak</CardTitle>
+                            <CardTitle className="text-sm font-medium text-muted-foreground">当前连胜</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">--</div>
-                            <p className="text-xs text-muted-foreground">Keep it up!</p>
+                            <p className="text-xs text-muted-foreground">继续加油！</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -105,7 +105,7 @@ export default function StatsPage() {
                     {/* Daily Accuracy Trend */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-lg">Daily Accuracy Trend</CardTitle>
+                            <CardTitle className="text-lg">每日正确率趋势</CardTitle>
                         </CardHeader>
                         <CardContent className="h-[300px]">
                             <ResponsiveContainer width="100%" height="100%">
@@ -116,8 +116,8 @@ export default function StatsPage() {
                                     <RechartsTooltip
                                         contentStyle={{ backgroundColor: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}
                                     />
-                                    <Line type="monotone" dataKey="correct" stroke="#16a34a" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="Correct" />
-                                    <Line type="monotone" dataKey="wrong" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="Wrong" />
+                                    <Line type="monotone" dataKey="correct" stroke="#16a34a" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="正确" />
+                                    <Line type="monotone" dataKey="wrong" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="错误" />
                                 </LineChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -126,7 +126,7 @@ export default function StatsPage() {
                     {/* Weakest Points Bar Chart */}
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-lg">Top 5 Weak Points</CardTitle>
+                            <CardTitle className="text-lg">前 5 个薄弱环节</CardTitle>
                         </CardHeader>
                         <CardContent className="h-[300px]">
                             <ResponsiveContainer width="100%" height="100%">
@@ -135,7 +135,7 @@ export default function StatsPage() {
                                     <XAxis type="number" hide />
                                     <YAxis dataKey="point" type="category" width={120} fontSize={11} tickLine={false} axisLine={false} />
                                     <RechartsTooltip cursor={{ fill: 'transparent' }} />
-                                    <Bar dataKey="count" fill="#f59e0b" radius={[0, 4, 4, 0]} barSize={20} name="Mistakes" />
+                                    <Bar dataKey="count" fill="#f59e0b" radius={[0, 4, 4, 0]} barSize={20} name="错误数" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -155,12 +155,12 @@ export default function StatsPage() {
                         <Link href="/wrong-questions" className="block h-full">
                             <Card className="h-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white hover:opacity-90 transition">
                                 <CardContent className="flex flex-col items-center justify-center h-full p-8 text-center space-y-4">
-                                    <h3 className="text-2xl font-bold">Review Black Book</h3>
+                                    <h3 className="text-2xl font-bold">复习错题集</h3>
                                     <p className="text-indigo-100">
-                                        42 Questions pending review.
+                                        待复习题目。
                                     </p>
                                     <Button variant="secondary" size="lg" className="w-full">
-                                        Start Review
+                                        开始复习
                                     </Button>
                                 </CardContent>
                             </Card>
