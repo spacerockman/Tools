@@ -47,8 +47,16 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
     # Phase 1: Generation
     system_prompt = f"""
     You are a world-class Japanese Language Proficiency Test (JLPT) N1 examiner. 
-    Your goal is to generate {batch_size} high-stakes, ultra-realistic, and deceptive multiple-choice questions for the topic: "{topic}".
+    Your goal is to generate exactly {batch_size} high-stakes, ultra-realistic, and deceptive multiple-choice questions for the topic: "{topic}".
     {grounding_prompt}
+
+    OUTPUT FORMAT:
+    You MUST return a JSON ARRAY of {batch_size} objects. Each object must have:
+    - "content": string, Japanese sentence with （　　）
+    - "options": dictionary with keys A, B, C, D (values in Japanese)
+    - "correct_answer": string (A, B, C, or D)
+    - "explanation": string, detailed breakdown in professional Chinese
+    - "memorization_tip": string, mnemonic or comparison rule in Chinese
 
     STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
     1. EXAM FORMAT (穴埋め): 
@@ -226,7 +234,7 @@ def _optimize_questions(questions: List[Dict], review_results: List[Dict], topic
         print(f"  [Optimizer] Error: {e}")
         return questions
 
-def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size: int = 2) -> List[Dict]:
+def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size: int = 5) -> List[Dict]:
     """
     Generates N1-level Japanese questions using SiliconFlow API.
     Uses ultra-fast models and high concurrency for maximum speed.
@@ -270,8 +278,10 @@ def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size
                         else:
                             print(f"  [Batch {batch_index+1}] Question missing 'content' key: {list(q.keys())}")
                     print(f"  [Batch {batch_index+1}] Done. Total appended: {len(all_questions)}")
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"  [Batch {batch_index+1}] Critical error: {e}")
+                import traceback
+                traceback.print_exc()
 
     print(f"Completed: {len(all_questions)}/{num_questions} questions.")
     return all_questions
