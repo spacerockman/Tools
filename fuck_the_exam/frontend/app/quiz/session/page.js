@@ -73,9 +73,25 @@ export default function QuizSession() {
         }
     };
 
+    const handleQuit = async () => {
+        if (results.length > 0) {
+            if (window.confirm(`已完成 ${results.length} 道题。是否保存进度并退出？`)) {
+                await finishQuiz(results);
+            } else if (window.confirm('确定要直接退出吗？（本次练习进度将不会被记录）')) {
+                localStorage.removeItem('currentQuestions');
+                localStorage.removeItem('currentTopic');
+                router.push('/');
+            }
+        } else {
+            localStorage.removeItem('currentQuestions');
+            localStorage.removeItem('currentTopic');
+            router.push('/');
+        }
+    };
+
     if (loading) return <div className="flex h-screen items-center justify-center">正在加载...</div>;
 
-    const progress = ((currentIndex) / questions.length) * 100;
+    const progress = (currentIndex / questions.length) * 100;
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">
@@ -99,7 +115,7 @@ export default function QuizSession() {
             />
 
             <div className="mt-8 text-center">
-                <Button variant="ghost" onClick={() => router.push('/')} size="sm">
+                <Button variant="ghost" onClick={handleQuit} size="sm">
                     中途退出
                 </Button>
             </div>

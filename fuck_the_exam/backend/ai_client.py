@@ -20,13 +20,18 @@ def _single_generate_batch(topic: str, batch_size: int, headers: Dict, max_retri
     """
     system_prompt = f"""
     You are a strict Japanese N1 Exam expert. 
-    Generate {batch_size} multiple-choice questions testing the following topic: "{topic}".
+    Generate {batch_size} high-quality multiple-choice questions testing the following topic: "{topic}".
 
-    Constraint Checklist:
-    1. Strict N1 level? Yes.
-    2. No duplicate questions? Yes.
-    3. JSON output only? Yes.
-    4. IMPORTANT: The "knowledge_point" field MUST be exactly "{topic}" for ALL questions.
+    CRITICAL QUALITY RULES for N1 REALISM:
+    1. STRICT N1 LEVEL: Questions must use formal/advanced vocabulary and complex sentence structures typical of the JLPT N1.
+    2. PLAUSIBLE DISTRACTORS: Incorrect options MUST NOT be random or obviously wrong. They must be "traps" based on:
+       - SYNONYMS: Words with similar meanings but slightly different usage/nuance.
+       - SIMILAR GRAMMAR: Grammar points that share the same Kanji or particles but have different meanings (e.g., ～と思いきや vs ～と思えば).
+       - CONTEXTUAL TRAPS: Options that are grammatically correct in isolation but incorrect in this specific sentence context.
+    3. AT LEAST 2 HIGHLY CONFUSING OPTIONS: Ensure that for a student, choosing between the correct answer and at least two distractors is difficult.
+    4. NO DUPLICATES: Each question in this batch must be unique.
+    5. JSON ONLY: Return only valid JSON.
+    6. KNOWLEDGE POINT TAGGING: The "knowledge_point" field MUST be exactly "{topic}".
 
     Output Format (strictly valid JSON list, no markdown):
     [
@@ -39,8 +44,8 @@ def _single_generate_batch(topic: str, batch_size: int, headers: Dict, max_retri
             "D": "OPTION_D_TEXT"
         }},
         "correct_answer": "A",
-        "explanation": "Detailed explanation in Chinese/Japanese.",
-        "memorization_tip": "A short, catchy tip.",
+        "explanation": "Detailed professional explanation in Chinese.",
+        "memorization_tip": "A short, catchy tip for distinguishing from distractors.",
         "knowledge_point": "{topic}"
       }}
     ]

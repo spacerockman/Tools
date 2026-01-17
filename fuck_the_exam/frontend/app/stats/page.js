@@ -10,8 +10,10 @@ import { Button } from '../../components/ui/button';
 
 export default function StatsPage() {
     const [stats, setStats] = useState(null);
+    const [analysis, setAnalysis] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [analyzing, setAnalyzing] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -21,21 +23,15 @@ export default function StatsPage() {
                 const statsData = await statsRes.json();
                 setStats(statsData);
 
-                // Fetch Suggestions (Mock/Real)
-                // Since we don't have a real filtering logic in KnowledgeService yet matching stats,
-                // we'll fetch general suggestions. Ideally backend does this join.
-                // Let's use the top wrong points from stats to filter knowledge points if possible,
-                // or just rely on backend suggestions endpoint if it was smart. 
-                // Our planned backend endpoint just returns all points.
-                // Let's just map "Top Wrong" to suggestions for UI.
-
                 const wrongPoints = statsData.top_wrong_points || [];
-                // Convert to suggestion format
                 const sugData = wrongPoints.map(wp => ({
                     point: wp.point,
-                    description: `You missed this ${wp.count} times.`
+                    description: `错题解析正在后台分析中... 已累积错误 ${wp.count} 次。`
                 }));
                 setSuggestions(sugData);
+
+                // Start AI Analysis in background
+                fetchAnalysis();
 
             } catch (e) {
                 console.error("Failed to load stats", e);
@@ -45,6 +41,19 @@ export default function StatsPage() {
         }
         fetchData();
     }, []);
+
+    const fetchAnalysis = async () => {
+        setAnalyzing(true);
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats/analysis`);
+            const data = await res.json();
+            setAnalysis(data);
+        } catch (e) {
+            console.error("AI Analysis failed:", e);
+        } finally {
+            setAnalyzing(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -58,115 +67,179 @@ export default function StatsPage() {
         <div className="min-h-screen bg-background p-8">
             <div className="max-w-6xl mx-auto space-y-8">
 
-                <header className="flex justify-between items-center">
+                <header className="flex justify-between items-end border-b pb-6">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">你的进度</h1>
-                        <p className="text-muted-foreground">分析你的优势和薄弱环节。</p>
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wider">AI Diagnostic Center</div>
+                            {analyzing && <span className="text-xs text-muted-foreground animate-pulse">正在深度分析中...</span>}
+                        </div>
+                        <h1 className="text-4xl font-extrabold tracking-tight">日语 N1 诊断报告</h1>
+                        <p className="text-muted-foreground mt-1">基于 AI 的全方位语言能力评估与预测中心。</p>
                     </div>
                     <Link href="/">
-                        <Button variant="outline">返回仪表盘</Button>
+                        <Button variant="outline" className="rounded-full">返回仪表盘</Button>
                     </Link>
                 </header>
 
-                {/* Key Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">总回答数</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{stats?.total_answered}</div>
+                {/* AI Summary Highlight */}
+                {analysis && (
+                    <Card className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white border-none shadow-xl">
+                        <CardContent className="p-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                                <div className="md:col-span-2">
+                                    <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">
+                                        ✨ AI 核心诊断
+                                    </h2>
+                                    <p className="text-blue-50 text-lg leading-relaxed mb-4">
+                                        {analysis.summary}
+                                    </p>
+                                    <div className="flex gap-4">
+                                        <div className="bg-white/10 px-4 py-2 rounded-lg">
+                                            <div className="text-xs text-blue-200">备考状态预测</div>
+                                            <div className="font-bold">{analysis.prediction}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    <div className="text-sm font-medium opacity-80 uppercase tracking-widest">Mastery Overview</div>
+                                    {Object.entries(analysis.mastery_scores || {}).map(([key, value]) => (
+                                        <div key={key} className="space-y-1">
+                                            <div className="flex justify-between text-xs font-bold">
+                                                <span>{key === 'grammar' ? '语法' : key === 'vocab' ? '词汇' : '阅读'}</span>
+                                                <span>{value}%</span>
+                                            </div>
+                                            <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                                <div className="h-full bg-white transition-all duration-1000" style={{ width: `${value}%` }}></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">正确率</CardTitle>
+                )}
+
+                {/* Key Metrics Dashboard */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="bg-secondary/30 border-none">
+                        <CardHeader className="pb-1">
+                            <CardTitle className="text-xs font-bold text-muted-foreground uppercase">累计练习</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold text-green-600">
+                            <div className="text-2xl font-black">{stats?.total_answered} <span className="text-xs font-normal">题</span></div>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/30 border-none">
+                        <CardHeader className="pb-1">
+                            <CardTitle className="text-xs font-bold text-muted-foreground uppercase">综合正确率</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-black text-green-500">
                                 {stats?.total_answered ? ((stats.correct_count / stats.total_answered) * 100).toFixed(1) : 0}%
                             </div>
-                            <p className="text-xs text-muted-foreground">{stats?.correct_count} 正确 / {stats?.wrong_count} 错误</p>
                         </CardContent>
                     </Card>
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">当前连胜</CardTitle>
+                    <Card className="bg-secondary/30 border-none">
+                        <CardHeader className="pb-1">
+                            <CardTitle className="text-xs font-bold text-muted-foreground uppercase">薄弱考点数</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-bold">--</div>
-                            <p className="text-xs text-muted-foreground">继续加油！</p>
+                            <div className="text-2xl font-black text-orange-500">{stats?.top_wrong_points?.length || 0}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/30 border-none">
+                        <CardHeader className="pb-1">
+                            <CardTitle className="text-xs font-bold text-muted-foreground uppercase">预测等级</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-black">N1 <span className="text-xs font-normal opacity-50">Level</span></div>
                         </CardContent>
                     </Card>
                 </div>
 
-                {/* Charts Row */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Daily Accuracy Trend */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-lg">每日正确率趋势</CardTitle>
-                        </CardHeader>
-                        <CardContent className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={stats?.daily_stats}>
-                                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                                    <XAxis dataKey="date" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis fontSize={12} tickLine={false} axisLine={false} />
-                                    <RechartsTooltip
-                                        contentStyle={{ backgroundColor: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}
-                                    />
-                                    <Line type="monotone" dataKey="correct" stroke="#16a34a" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="正确" />
-                                    <Line type="monotone" dataKey="wrong" stroke="#ef4444" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} name="错误" />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-
-                    {/* Weakest Points Bar Chart */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-lg">前 5 个薄弱环节</CardTitle>
-                        </CardHeader>
-                        <CardContent className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart layout="vertical" data={stats?.top_wrong_points}>
-                                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} horizontal={true} vertical={false} />
-                                    <XAxis type="number" hide />
-                                    <YAxis dataKey="point" type="category" width={120} fontSize={11} tickLine={false} axisLine={false} />
-                                    <RechartsTooltip cursor={{ fill: 'transparent' }} />
-                                    <Bar dataKey="count" fill="#f59e0b" radius={[0, 4, 4, 0]} barSize={20} name="错误数" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Suggestions & Wrong Questions Link */}
+                {/* Deep Analysis Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
+
+                    {/* Mastery Charts */}
+                    <div className="lg:col-span-2 space-y-8">
                         <Card>
-                            <CardContent className="pt-6">
-                                <TrainingSuggestions suggestions={suggestions} />
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <CardTitle className="text-xl">能力演进趋势</CardTitle>
+                                <span className="text-xs text-muted-foreground font-mono">Real-time performance trajectory</span>
+                            </CardHeader>
+                            <CardContent className="h-[350px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={stats?.daily_stats}>
+                                        <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
+                                        <XAxis dataKey="date" fontSize={10} tickLine={false} axisLine={false} />
+                                        <YAxis fontSize={10} tickLine={false} axisLine={false} />
+                                        <RechartsTooltip
+                                            contentStyle={{ backgroundColor: 'hsl(var(--card))', borderRadius: '12px', border: '1px solid hsl(var(--border))', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                        />
+                                        <Line type="stepAfter" dataKey="correct" stroke="hsl(var(--primary))" strokeWidth={4} dot={{ r: 4, fill: 'hsl(var(--primary))' }} activeDot={{ r: 6 }} name="正确回答" />
+                                        <Line type="stepAfter" dataKey="wrong" stroke="#ef4444" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 2 }} name="错误记录" />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+
+                        {/* Weakness Breakdown */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-xl">知识薄弱项分布</CardTitle>
+                            </CardHeader>
+                            <CardContent className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart layout="vertical" data={stats?.top_wrong_points}>
+                                        <XAxis type="number" hide />
+                                        <YAxis dataKey="point" type="category" width={140} fontSize={11} tickLine={false} axisLine={false} />
+                                        <RechartsTooltip cursor={{ fill: 'hsl(var(--secondary))', opacity: 0.5 }} />
+                                        <Bar dataKey="count" fill="hsl(var(--primary))" radius={[0, 8, 8, 0]} barSize={24} name="错误频次" />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </CardContent>
                         </Card>
                     </div>
-                    <div>
-                        <Link href="/wrong-questions" className="block h-full">
-                            <Card className="h-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white hover:opacity-90 transition">
-                                <CardContent className="flex flex-col items-center justify-center h-full p-8 text-center space-y-4">
-                                    <h3 className="text-2xl font-bold">复习错题集</h3>
-                                    <p className="text-indigo-100">
-                                        待复习题目。
-                                    </p>
-                                    <Button variant="secondary" size="lg" className="w-full">
-                                        开始复习
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Link>
+
+                    {/* AI Suggestions Column */}
+                    <div className="space-y-8">
+                        <Card className="h-full border-primary/20 bg-primary/5">
+                            <CardHeader>
+                                <CardTitle className="text-xl flex items-center gap-2">
+                                    💡 改进建议
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-6">
+                                    {analysis?.weakness_analysis?.map((w, i) => (
+                                        <div key={i} className="bg-white/50 dark:bg-black/20 p-4 rounded-xl border border-primary/10 transition-all hover:shadow-md">
+                                            <div className="font-bold text-primary mb-1 underline decoration-dotted">{w.point}</div>
+                                            <div className="text-xs text-muted-foreground mb-2 italic">"{w.reason}"</div>
+                                            <div className="text-sm border-l-2 border-primary/30 pl-3 py-1 bg-primary/5 rounded-r-md">
+                                                {w.advice}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {(!analysis || !analysis.weakness_analysis) && (
+                                        <div className="text-center py-12 text-muted-foreground italic">
+                                            正在生成深度改进建议...
+                                        </div>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
+
+                {/* Training Recommendations */}
+                <Card className="border-t-4 border-t-indigo-500 overflow-hidden shadow-2xl">
+                    <CardHeader className="bg-indigo-50/50 dark:bg-indigo-950/20">
+                        <CardTitle className="text-xl">🎯 针对性强化方案</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <TrainingSuggestions suggestions={suggestions} />
+                    </CardContent>
+                </Card>
 
             </div>
         </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getStudySession } from '../lib/api';
+import { getStudySession, getStats } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { useGeneration } from '../contexts/GenerationContext';
@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [numQuestions, setNumQuestions] = useState(10);
   const [isStudyLoading, setIsStudyLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [stats, setStats] = useState(null);
 
   // Handle auto-fill from query params (from Training Suggestions)
   useEffect(() => {
@@ -24,6 +25,17 @@ export default function Dashboard() {
     if (topicParam) {
       setTopic(topicParam);
     }
+
+    // Fetch real stats
+    const fetchStats = async () => {
+      try {
+        const data = await getStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
+      }
+    };
+    fetchStats();
   }, [searchParams]);
 
   const handleGenerate = async (e) => {
@@ -42,7 +54,7 @@ export default function Dashboard() {
     setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
-      const response = await getStudySession();
+      const response = await getStudySession(15, 15);
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无待复习题目或新题，请先生成一些题目！' });
         setIsStudyLoading(false);
@@ -62,11 +74,17 @@ export default function Dashboard() {
   const quickTopics = ["N1 语法: ～ざるを得ない", "N1 阅读: 哲学", "N1 词汇: 同义词"];
   const questionCounts = [5, 10, 15, 20, 25];
 
+  // Calculate today's stats from daily_stats
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStats = stats?.daily_stats?.find(s => s.date === todayStr) || { correct: 0, wrong: 0 };
+  const todayTotal = todayStats.correct + todayStats.wrong;
+  const accuracy = todayTotal > 0 ? Math.round((todayStats.correct / todayTotal) * 100) : 0;
+
   return (
     <div className="min-h-screen bg-background p-8">
       <header className="mb-12 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">我的 N1 之路</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">日语 N1 学习中心</h1>
           <p className="text-muted-foreground">坚持不懈，久久为功。</p>
         </div>
         <div className="flex gap-4">
@@ -116,7 +134,7 @@ export default function Dashboard() {
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="例如：语法：～なしに"
-                    className="w-full flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={isGenerating}
                   />
                 </div>
@@ -200,10 +218,12 @@ export default function Dashboard() {
               <CardTitle className="text-base">今日进度</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-1">--</div>
-              <p className="text-xs text-muted-foreground">开始练习查看你的统计数据！</p>
+              <div className="text-3xl font-bold mb-1">{todayTotal} 道题</div>
+              <p className="text-xs text-muted-foreground">
+                今日正确率: {accuracy}% ({todayStats.correct} 正确 / {todayStats.wrong} 错误)
+              </p>
               <div className="mt-4 h-2 bg-secondary rounded-full overflow-hidden">
-                <div className="h-full bg-primary w-[0%]"></div>
+                <div className="h-full bg-primary transition-all" style={{ width: `${accuracy}%` }}></div>
               </div>
             </CardContent>
           </Card>
@@ -214,18 +234,15 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-4">
-                <li className="flex justify-between items-center text-sm">
-                  <span className="truncate max-w-[150px]">Grammar: ～ざるを得ない</span>
-                  <span className="text-muted-foreground">10分钟前</span>
-                </li>
-                <li className="flex justify-between items-center text-sm">
-                  <span className="truncate max-w-[150px]">Reading: Philosophy</span>
-                  <span className="text-muted-foreground">2小时前</span>
-                </li>
-                <li className="flex justify-between items-center text-sm">
-                  <span className="truncate max-w-[150px]">Vocab: Compound Verbs</span>
-                  <span className="text-muted-foreground">昨天</span>
-                </li>
+                {stats?.daily_stats?.slice(0, 5).map((s, idx) => (
+                  <li key={idx} className="flex justify-between items-center text-sm">
+                    <span className="truncate max-w-[150px] font-medium">{s.date} 练习</span>
+                    <span className="text-muted-foreground">{s.correct + s.wrong} 题</span>
+                  </li>
+                ))}
+                {(!stats?.daily_stats || stats.daily_stats.length === 0) && (
+                  <li className="text-sm text-muted-foreground py-4 text-center italic">暂无记录</li>
+                )}
               </ul>
             </CardContent>
           </Card>

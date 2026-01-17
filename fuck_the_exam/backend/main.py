@@ -10,10 +10,11 @@ from typing import List, Optional, Dict, Any
 from datetime import date, datetime, timedelta
 
 from . import models, database, ai_client
+from .database import engine, SessionLocal
 from .services.markdown_service import MarkdownService
 from .services.knowledge_service import KnowledgeService
 from .services.backup_service import BackupService
-from .database import engine, SessionLocal
+from .services.analysis_service import AnalysisService
 from pydantic import BaseModel, Json
 
 # Ensure DB tables are created
@@ -28,6 +29,7 @@ backup_service = BackupService(
     db_path=os.path.join(os.getcwd(), "backend", "n1_app.db"),
     backup_dir=os.path.join(os.getcwd(), "backend", "backups")
 )
+analysis_service = AnalysisService(ai_client=ai_client)
 
 # Add CORS middleware
 origins = [
@@ -348,13 +350,14 @@ def get_stats(db: Session = Depends(database.get_db)):
     # Join WrongQuestion -> Question -> group by knowledge_point
     wrong_points = db.query(
         models.Question.knowledge_point,
-        func.sum(models.WrongQuestion.review_count).label('count')
-    ).join(models.WrongQuestion, models.Question.id == models.WrongQuestion.question_id)\
-     .group_by(models.Question.knowledge_point)\
-     .order_by(func.sum(models.WrongQuestion.review_count).desc())\
+        func.count(models.AnswerAttempt.id).label('count')
+    ).join(models.AnswerAttempt, models.Question.id == models.AnswerAttempt.question_id) \
+     .filter(models.AnswerAttempt.is_correct == 0) \
+     .group_by(models.Question.knowledge_point) \
+     .order_by(func.count(models.AnswerAttempt.id).desc()) \
      .limit(5).all()
 
-    top_wrong = [{"point": wp.knowledge_point, "count": wp.count} for wp in wrong_points if wp.knowledge_point]
+    top_wrong = [{"point": p[0], "count": p[1]} for p in wrong_points if p[0]]
 
     return {
         "total_answered": total,
@@ -363,6 +366,14 @@ def get_stats(db: Session = Depends(database.get_db)):
         "daily_stats": daily_stats,
         "top_wrong_points": top_wrong
     }
+
+@app.get("/api/stats/analysis")
+def get_ai_analysis(db: Session = Depends(database.get_db)):
+    """
+    Returns high-level diagnostic report generated locally.
+    Note: This uses deterministic logic and is token-free.
+    """
+    return analysis_service.generate_diagnostic_report(db)
 
 @app.get("/api/suggestions")
 def get_suggestions():
