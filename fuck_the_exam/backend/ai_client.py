@@ -3,6 +3,7 @@ import json
 import hashlib
 import requests
 from typing import List, Dict
+from .services.rag_service import rag
 
 # SiliconFlow API Configuration
 API_URL = "https://api.siliconflow.cn/v1/chat/completions"
@@ -10,83 +11,236 @@ API_URL = "https://api.siliconflow.cn/v1/chat/completions"
 # Using the provided key for now as requested
 API_KEY = "sk-dghfpxoqxxsahxgcljjlkoyjebiyulmwdegyrhmztqecyiwt"
 
-MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct" # Light, fast, and fully compatible with the standard chat API
+MODEL_NAME = "deepseek-ai/DeepSeek-V3"
+
+def get_grammar_grounding(topic: str) -> str:
+    """
+    Looks up the topic in backend/知识点/语法.md to provide grounding.
+    """
+    kb_path = os.path.join(os.path.dirname(__file__), "知识点", "语法.md")
+    if not os.path.exists(kb_path):
+        return ""
+    
+    try:
+        with open(kb_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+            for line in lines:
+                if "|" in line and topic in line:
+                    parts = [p.strip() for p in line.split("|")]
+                    if len(parts) >= 7:
+                        return f"【语法逻辑】: {parts[3]}\n【核心含义】: {parts[4]}\n【常见搭配】: {parts[5]}\n【易错点】: {parts[6]}\n【典型例句】: {parts[7]}"
+    except Exception:
+        pass
+    return ""
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-def _single_generate_batch(topic: str, batch_size: int, headers: Dict, max_retries: int = 3) -> List[Dict]:
+def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_retries: int = 3) -> List[Dict]:
     """
     Internal helper to generate a single batch of questions.
     """
+    # Clean up topic to extract just the core grammar/vocab if it has a prefix
+    topic = topic_raw.replace("N1 Grammar:", "").replace("N1 Vocab:", "").replace("N1 阅读:", "").strip()
+    if topic.startswith("～"): topic = topic[1:]
+
+    # Fetch Grounding Info
+    grounding = get_grammar_grounding(topic)
+    grounding_prompt = f"\nGROUNDING DATA (Source of Truth):\n{grounding}\n" if grounding else ""
+
     system_prompt = f"""
-    You are a strict Japanese N1 Exam expert. 
-    Generate {batch_size} high-quality multiple-choice questions testing the following topic: "{topic}".
+    You are a world-class Japanese Language Proficiency Test (JLPT) N1 examiner. 
+    Your goal is to generate {batch_size} high-stakes, realistic multiple-choice questions for the topic: "{topic}".
+    {grounding_prompt}
 
-    CRITICAL QUALITY RULES for N1 REALISM:
-    1. STRICT N1 LEVEL: Questions must use formal/advanced vocabulary and complex sentence structures typical of the JLPT N1.
-    2. PLAUSIBLE DISTRACTORS: Incorrect options MUST NOT be random or obviously wrong. They must be "traps" based on:
-       - SYNONYMS: Words with similar meanings but slightly different usage/nuance.
-       - SIMILAR GRAMMAR: Grammar points that share the same Kanji or particles but have different meanings (e.g., ～と思いきや vs ～と思えば).
-       - CONTEXTUAL TRAPS: Options that are grammatically correct in isolation but incorrect in this specific sentence context.
-    3. AT LEAST 2 HIGHLY CONFUSING OPTIONS: Ensure that for a student, choosing between the correct answer and at least two distractors is difficult.
-    4. NO DUPLICATES: Each question in this batch must be unique.
-    5. JSON ONLY: Return only valid JSON.
-    6. KNOWLEDGE POINT TAGGING: The "knowledge_point" field MUST be exactly "{topic}".
+    STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
+    1. EXAM FORMAT (穴埋め): 
+       - The 'content' MUST be a full Japanese sentence with a blank marked as '（　　）'.
+       - Questions MUST NOT ask for definitions or translations. They must test usage in context.
+    2. LANGUAGE ISOLATION:
+       - 'options' (A, B, C, D) MUST be 100% Japanese. 
+       - DO NOT include Chinese or English translations in the options.
+       - 'explanation' and 'memorization_tip' should be in professional Chinese.
+    3. TARGET GRAMMAR ACCURACY & NO LEAKAGE (CRITICAL):
+       - You must correctly identify the linguistic function of "{topic}".
+       - **CORE RULE**: The 'correct_answer' choice MUST be the "{topic}" itself OR a grammatically correct phrase that uses "{topic}".
+       - **NO LEAKAGE RULE**: The target grammar "{topic}" (and its core keywords) MUST NOT appear anywhere in the 'content' string outside of the options.
+       - Example: If `{topic}` is "～こそすれ", the 'content' MUST NOT contain "こそ" or "すれ". The 'correct_answer' option MUST be "こそすれ" or contain it.
+    4. N1-LEVEL DISTRACTORS:
+       - Distractors must be highly plausible. Use:
+         - Synonyms with different collocations.
+         - Grammar points with similar prefixes/suffixes (e.g., ～と思いきや vs ～と思えば).
+         - Formal/written-style vocabulary (硬い表现).
+    5. NO TRIVIAL OPTIONS: Every option must look like it could be correct to a non-master.
+    6. ABSOLUTE ACCURACY & VERIFICATION:
+       - The 'explanation' field must include why the correct answer is right AND why each distractor is definitively wrong in this specific context.
+    """
 
-    Output Format (strictly valid JSON list, no markdown):
+def _review_questions(questions: List[Dict], topic: str, grounding: str, headers: Dict) -> List[Dict]:
+    """
+    Agent 2: Reviewer. Audits questions for N1 quality and accuracy.
+    Includes RAG textbook context for academic grounding.
+    """
+    # Fetch RAG context from textbooks
+    textbook_context = rag.query(topic, top_k=2)
+    rag_snippet = f"\nACADEMIC REFERENCE (From N1 Textbooks):\n{textbook_context}\n" if textbook_context else ""
+
+    grounding_text = f"GROUNDING DATA:\n{grounding}" if grounding else ""
+    review_prompt = f"""
+    You are a Senior JLPT N1 Quality Auditor. Your job is to strictly review the following questions for the topic "{topic}".
+    {grounding_text}
+    {rag_snippet}
+
+    CHECKLIST:
+    1. LINGUISTIC ACCURACY: Is the grammar usage 100% correct for N1?
+    2. NO LEAKAGE: Does the target grammar "{topic}" appear in the 'content' outside the blank? (FAIL if yes)
+    3. DISTRACTOR QUALITY: Are distractors N1-level and plausible, yet definitively wrong?
+    4. EXPLANATION: Does the explanation correctly analyze the grammar based on GROUNDING and ACADEMIC REFERENCE?
+
+    OUTPUT FORMAT:
+    Return a JSON list of objects, one for each question:
     [
       {{
-        "content": "JAPANESE_QUESTION_TEXT",
-        "options": {{
-            "A": "OPTION_A_TEXT",
-            "B": "OPTION_B_TEXT",
-            "C": "OPTION_C_TEXT",
-            "D": "OPTION_D_TEXT"
-        }},
-        "correct_answer": "A",
-        "explanation": "Detailed professional explanation in Chinese.",
-        "memorization_tip": "A short, catchy tip for distinguishing from distractors.",
-        "knowledge_point": "{topic}"
+        "id": 0,
+        "status": "PASS" or "FAIL",
+        "issues": ["List of specific linguistic or formatting issues"]
       }}
     ]
+    """
+    
+    data = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": review_prompt},
+            {"role": "user", "content": json.dumps(questions, ensure_ascii=False)}
+        ],
+        "temperature": 0.1,
+    }
+    
+    try:
+        response = requests.post(API_URL, headers=headers, json=data, timeout=120)
+        response.raise_for_status()
+        content = response.json()['choices'][0]['message']['content'].strip()
+        if "```" in content:
+            content = content.split("```")[1]
+            if content.startswith("json"): content = content[4:]
+            content = content.split("```")[0].strip()
+        return json.loads(content)
+    except Exception as e:
+        print(f"  [Reviewer] Error: {e}")
+        return [{"status": "PASS", "issues": []} for _ in questions]
+
+def _optimize_questions(questions: List[Dict], review_results: List[Dict], topic: str, grounding: str, headers: Dict) -> List[Dict]:
+    """
+    Agent 3: Optimizer (Corrector). Fixes questions based on reviewer feedback.
+    """
+    grounding_text = f"GROUNDING DATA:\n{grounding}" if grounding else ""
+    optimize_prompt = f"""
+    You are a JLPT N1 Master Editor. Your task is to FIX the following questions based on the Quality Auditor's report for the topic "{topic}".
+    {grounding_text}
+
+    Rules:
+    - Keep the same JSON format.
+    - Fix all linguistic errors.
+    - Ensure NO LEAKAGE of "{topic}" in the content.
+    - Improve distractors if marked as too easy.
+    """
+    
+    input_data = {
+        "questions": questions,
+        "review_report": review_results
+    }
+    
+    data = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": optimize_prompt},
+            {"role": "user", "content": json.dumps(input_data, ensure_ascii=False)}
+        ],
+        "temperature": 0.2,
+    }
+    
+    try:
+        response = requests.post(API_URL, headers=headers, json=data, timeout=150)
+        response.raise_for_status()
+        content = response.json()['choices'][0]['message']['content'].strip()
+        if "```" in content:
+            content = content.split("```")[1]
+            if content.startswith("json"): content = content[4:]
+            content = content.split("```")[0].strip()
+        fixed = json.loads(content)
+        return fixed if isinstance(fixed, list) else questions
+    except Exception as e:
+        print(f"  [Optimizer] Error: {e}")
+        return questions
+
+def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_retries: int = 3) -> List[Dict]:
+    """
+    Multi-Agent Pipeline: Generator -> Reviewer -> Optimizer.
+    """
+    topic = topic_raw.replace("N1 Grammar:", "").replace("N1 Vocab:", "").replace("N1 阅读:", "").strip()
+    if topic.startswith("～"): topic = topic[1:]
+
+    grounding = get_grammar_grounding(topic)
+    grounding_prompt = f"\nGROUNDING DATA (Source of Truth):\n{grounding}\n" if grounding else ""
+
+    # Phase 1: Generation
+    system_prompt = f"""
+    You are a world-class Japanese Language Proficiency Test (JLPT) N1 examiner. 
+    Your goal is to generate {batch_size} high-stakes, realistic multiple-choice questions for the topic: "{topic}".
+    {grounding_prompt}
+
+    STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
+    1. EXAM FORMAT (穴埋め): 
+       - The 'content' MUST be a full Japanese sentence with a blank marked as '（　　）'.
+       - Questions MUST NOT ask for definitions or translations. They must test usage in context.
+    2. LANGUAGE ISOLATION:
+       - 'options' (A, B, C, D) MUST be 100% Japanese. 
+       - 'explanation' and 'memorization_tip' should be in professional Chinese.
+    3. TARGET GRAMMAR ACCURACY & NO LEAKAGE (CRITICAL):
+       - **CORE RULE**: The 'correct_answer' choice MUST use "{topic}".
+       - **NO LEAKAGE RULE**: The target grammar "{topic}" MUST NOT appear in 'content' outside of the options.
+    4. N1-LEVEL DISTRACTORS: Use high-level synonyms or similar-looking grammar.
+    5. ABSOLUTE ACCURACY: Use GROUNDING DATA as truth. Explain why distractors are wrong.
+
+    Return a JSON list.
     """
 
     data = {
         "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Please generate {batch_size} questions about {topic}."}
-        ],
+        "messages": [{"role": "system", "content": system_prompt}],
         "temperature": 0.3,
-        "max_tokens": 2000,
     }
 
+    questions = []
     for attempt in range(max_retries):
         try:
-            timeout = 100 + (attempt * 40)
-            response = requests.post(API_URL, headers=headers, json=data, timeout=timeout)
+            response = requests.post(API_URL, headers=headers, json=data, timeout=120)
             response.raise_for_status()
-            
-            result_json = response.json()
-            content = result_json['choices'][0]['message']['content'].strip()
-            
-            # Clean up code blocks
+            content = response.json()['choices'][0]['message']['content'].strip()
             if content.startswith("```"):
-                lines = content.split('\n')
-                content = '\n'.join(lines[1:-1] if lines[-1].strip() == '```' else lines[1:])
-                content = content.strip()
-            
+                content = '\n'.join(content.split('\n')[1:-1] if '```' in content.split('\n')[-1] else content.split('\n')[1:]).strip()
             questions = json.loads(content)
-            if isinstance(questions, dict) and "questions" in questions:
-                questions = questions["questions"]
-                
-            return questions if isinstance(questions, list) else []
-            
-        except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
-            if attempt == max_retries - 1:
-                print(f"  [Batch Request] Final Error: {e}")
-                return []
-    return []
+            if isinstance(questions, dict) and "questions" in questions: questions = questions["questions"]
+            break
+        except Exception as e:
+            if attempt == max_retries - 1: return []
+
+    if not questions: return []
+
+    # Phase 2: Review
+    print(f"  [Pipeline] Running Reviewer Agent for {len(questions)} questions...")
+    review_results = _review_questions(questions, topic, grounding, headers)
+    
+    # Phase 3: Optimize if needed
+    needs_fix = any(r.get("status") == "FAIL" for r in review_results)
+    if needs_fix:
+        print(f"  [Pipeline] Issues detected by Reviewer: {json.dumps(review_results, ensure_ascii=False)}")
+        print(f"  [Pipeline] Running Optimizer Agent...")
+        questions = _optimize_questions(questions, review_results, topic, grounding, headers)
+    else:
+        print(f"  [Pipeline] Reviewer passed all questions.")
+    
+    return questions
 
 def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size: int = 2) -> List[Dict]:
     """
@@ -140,5 +294,5 @@ def generate_questions_from_topic(topic: str, num_questions: int = 5, batch_size
 if __name__ == "__main__":
     # Test run
     print("Testing SiliconFlow API...")
-    result = generate_questions_from_topic("N1 Grammar: ～ざるを得ない", num_questions=1)
+    result = generate_questions_from_topic("こそすれ", num_questions=1)
     print(json.dumps(result, indent=2, ensure_ascii=False))

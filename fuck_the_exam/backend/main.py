@@ -540,6 +540,34 @@ def get_wrong_questions_api(db: Session = Depends(database.get_db)):
         })
     return results
 
+@app.delete("/api/knowledge")
+def delete_knowledge_point(name: str, db: Session = Depends(database.get_db)):
+    """
+    Deletes all questions associated with a specific knowledge point.
+    Also removes the corresponding source JSON file.
+    """
+    # 1. Delete questions from DB (cascades will handle attempts and wrong_questions)
+    count = db.query(models.Question).filter(models.Question.knowledge_point == name).delete()
+    db.commit()
+    
+    # 2. Delete the source JSON file if it exists
+    json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
+    json_path = os.path.join(json_dir, f"{name}.json")
+    
+    if os.path.exists(json_path):
+        try:
+            os.remove(json_path)
+        except Exception as e:
+            print(f"Failed to delete JSON file {json_path}: {e}")
+            
+    # 3. Trigger backup to reflect changes in JSON mirrors
+    try:
+        backup_service.export_progress_to_json(db)
+    except Exception as e:
+        print(f"Post-knowledge-deletion backup failed: {e}")
+        
+    return {"message": f"Successfully deleted knowledge point '{name}' and {count} associated questions."}
+
 @app.delete("/api/questions/{question_id}")
 def delete_question(question_id: int, db: Session = Depends(database.get_db)):
     db_question = db.query(models.Question).filter(models.Question.id == question_id).first()

@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   backend:
     build: 
       context: ./backend
-      dockerfile: Dockerfile  # We need to ensure we have a Dockerfile here, or use image
+      dockerfile: Dockerfile
     command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./backend:/app/backend

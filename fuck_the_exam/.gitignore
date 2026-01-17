@@ -62,3 +62,11 @@ dist/
 # Logs
 logs
 *.log
+
+# RAG Cache
+backend/rag_cache/
+
+# Database
+*.db
+*.db-shm
+*.db-wal

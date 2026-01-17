@@ -4,3 +4,10 @@ sqlalchemy
 pydantic
 requests
 python-dotenv
+pymupdf
+faiss-cpu
+numpy
+sentence-transformers
+pytesseract
+Pillow
+

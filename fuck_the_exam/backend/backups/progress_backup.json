@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "question_hash": "31e53300f82ce4e3e95211a07ee8bbe2bc411d9885e10f84ce295e62ed49206a",
+    "review_count": 1,
+    "interval": 1,
+    "ease_factor": 250,
+    "next_review_at": "2026-01-18T13:06:45.367984",
+    "last_reviewed_at": null
+  },
+  {
+    "question_hash": "e0b2d6a9f9c339d0e7b07ecf55728a5907b029ba24c03e8abaa133bfc094da3a",
+    "review_count": 1,
+    "interval": 1,
+    "ease_factor": 250,
+    "next_review_at": "2026-01-18T13:09:22.818202",
+    "last_reviewed_at": null
+  }
+]

@@ -14,12 +14,12 @@ engine = create_engine(
 )
 
 # Enable WAL mode for resilience
-from sqlalchemy import event
-@event.listens_for(engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA journal_mode=WAL")
-    cursor.close()
+# Revert to default journal mode (DELETE) instead of WAL for better stability on Docker volumes (macOS/VirtioFS)
+# @event.listens_for(engine, "connect")
+# def set_sqlite_pragma(dbapi_connection, connection_record):
+#     cursor = dbapi_connection.cursor()
+#     cursor.execute("PRAGMA journal_mode=WAL")
+#     cursor.close()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
