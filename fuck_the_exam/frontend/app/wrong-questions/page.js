@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { getWrongQuestions } from '../../lib/api';
-import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
+import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import Link from 'next/link';
+import WrongQuestionCard from '../../components/WrongQuestionCard';
 
 export default function WrongQuestions() {
   const [data, setData] = useState([]);
@@ -31,9 +32,14 @@ export default function WrongQuestions() {
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Wrong Questions Review</h1>
-          <Link href="/">
-            <Button variant="outline">← Back to Dashboard</Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/stats">
+              <Button variant="outline">📊 Stats</Button>
+            </Link>
+            <Link href="/">
+              <Button variant="outline">← Back</Button>
+            </Link>
+          </div>
         </div>
 
         {data.length === 0 ? (
@@ -46,29 +52,15 @@ export default function WrongQuestions() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-4">
             {data.map((item) => (
-              <Card key={item.id} className="border-l-4 border-l-red-500">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                    <span className="text-xs font-bold text-red-500 uppercase tracking-wider">
-                      Missed {item.review_count} times
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {item.question.knowledge_point}
-                    </span>
-                  </div>
-                  <CardTitle className="text-lg font-serif mt-2">{item.question.content}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-accent/50 p-4 rounded-md text-sm space-y-2">
-                    <div className="flex justify-between">
-                      <span className="font-semibold text-green-600">Correct Answer: {item.question.correct_answer}</span>
-                    </div>
-                    <p className="text-muted-foreground">{item.question.explanation}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <WrongQuestionCard
+                key={item.id}
+                question={{
+                  ...item.question,
+                  review_count: item.review_count
+                }}
+              />
             ))}
           </div>
         )}

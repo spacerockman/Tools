@@ -1,0 +1,1868 @@
+2025-03-11 14:13:35,453 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:13:36,176 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:13:36,177 - INFO - Starting to scrape 503 S&P 500 stocks
+2025-03-11 14:13:36,177 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:13:36,737 - INFO - Successfully scraped data for MMM
+2025-03-11 14:13:37,743 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:13:38,598 - INFO - Successfully scraped data for AOS
+2025-03-11 14:13:39,604 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:13:40,277 - INFO - Successfully scraped data for ABT
+2025-03-11 14:13:41,284 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:13:41,850 - INFO - Successfully scraped data for ABBV
+2025-03-11 14:13:42,856 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:13:43,574 - INFO - Successfully scraped data for ACN
+2025-03-11 14:13:44,578 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:13:45,008 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:13:46,014 - INFO - Fetching data for ADBE (attempt 2/3)
+2025-03-11 14:13:46,563 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:13:48,568 - INFO - Fetching data for ADBE (attempt 3/3)
+2025-03-11 14:13:48,987 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:13:49,993 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:13:50,421 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:13:51,426 - INFO - Fetching data for AMD (attempt 2/3)
+2025-03-11 14:13:51,848 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:13:53,853 - INFO - Fetching data for AMD (attempt 3/3)
+2025-03-11 14:13:54,313 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:13:55,319 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:13:55,817 - INFO - Successfully scraped data for AES
+2025-03-11 14:13:56,823 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:13:57,407 - INFO - Successfully scraped data for AFL
+2025-03-11 14:13:58,413 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:13:59,143 - INFO - Successfully scraped data for A
+2025-03-11 14:14:00,149 - INFO - Fetching data for APD (attempt 1/3)
+2025-03-11 14:14:00,748 - INFO - Successfully scraped data for APD
+2025-03-11 14:14:01,754 - INFO - Fetching data for ABNB (attempt 1/3)
+2025-03-11 14:14:02,142 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:14:03,146 - INFO - Fetching data for ABNB (attempt 2/3)
+2025-03-11 14:14:03,792 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:14:05,796 - INFO - Fetching data for ABNB (attempt 3/3)
+2025-03-11 14:14:06,423 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:14:07,429 - INFO - Fetching data for AKAM (attempt 1/3)
+2025-03-11 14:14:08,074 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:14:09,078 - INFO - Fetching data for AKAM (attempt 2/3)
+2025-03-11 14:14:09,506 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:14:11,513 - INFO - Fetching data for AKAM (attempt 3/3)
+2025-03-11 14:14:12,132 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:14:13,138 - INFO - Fetching data for ALB (attempt 1/3)
+2025-03-11 14:14:14,050 - INFO - Successfully scraped data for ALB
+2025-03-11 14:14:15,057 - INFO - Fetching data for ARE (attempt 1/3)
+2025-03-11 14:14:15,830 - INFO - Successfully scraped data for ARE
+2025-03-11 14:14:16,836 - INFO - Fetching data for ALGN (attempt 1/3)
+2025-03-11 14:14:17,284 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:14:18,289 - INFO - Fetching data for ALGN (attempt 2/3)
+2025-03-11 14:14:18,940 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:14:20,945 - INFO - Fetching data for ALGN (attempt 3/3)
+2025-03-11 14:14:21,358 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:14:22,364 - INFO - Fetching data for ALLE (attempt 1/3)
+2025-03-11 14:14:23,003 - INFO - Successfully scraped data for ALLE
+2025-03-11 14:14:24,009 - INFO - Fetching data for LNT (attempt 1/3)
+2025-03-11 14:14:24,644 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:14:25,644 - INFO - Fetching data for LNT (attempt 2/3)
+2025-03-11 14:14:26,107 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:14:28,113 - INFO - Fetching data for LNT (attempt 3/3)
+2025-03-11 14:14:28,744 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:14:29,750 - INFO - Fetching data for ALL (attempt 1/3)
+2025-03-11 14:14:30,487 - INFO - Successfully scraped data for ALL
+2025-03-11 14:14:31,493 - INFO - Fetching data for GOOGL (attempt 1/3)
+2025-03-11 14:14:32,081 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:14:33,086 - INFO - Fetching data for GOOGL (attempt 2/3)
+2025-03-11 14:14:33,668 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:14:35,673 - INFO - Fetching data for GOOGL (attempt 3/3)
+2025-03-11 14:14:36,313 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:14:37,319 - INFO - Fetching data for GOOG (attempt 1/3)
+2025-03-11 14:14:37,987 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:14:38,992 - INFO - Fetching data for GOOG (attempt 2/3)
+2025-03-11 14:14:39,478 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:14:41,483 - INFO - Fetching data for GOOG (attempt 3/3)
+2025-03-11 14:14:42,127 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:14:43,134 - INFO - Fetching data for MO (attempt 1/3)
+2025-03-11 14:14:43,747 - INFO - Successfully scraped data for MO
+2025-03-11 14:14:44,753 - INFO - Fetching data for AMZN (attempt 1/3)
+2025-03-11 14:14:45,252 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:14:46,257 - INFO - Fetching data for AMZN (attempt 2/3)
+2025-03-11 14:14:46,903 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:14:48,908 - INFO - Fetching data for AMZN (attempt 3/3)
+2025-03-11 14:14:49,553 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:14:50,559 - INFO - Fetching data for AMCR (attempt 1/3)
+2025-03-11 14:14:51,235 - INFO - Successfully scraped data for AMCR
+2025-03-11 14:14:52,242 - INFO - Fetching data for AEE (attempt 1/3)
+2025-03-11 14:14:53,086 - INFO - Successfully scraped data for AEE
+2025-03-11 14:14:54,092 - INFO - Fetching data for AEP (attempt 1/3)
+2025-03-11 14:14:54,745 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:14:55,751 - INFO - Fetching data for AEP (attempt 2/3)
+2025-03-11 14:14:56,482 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:14:58,488 - INFO - Fetching data for AEP (attempt 3/3)
+2025-03-11 14:14:59,085 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:15:00,092 - INFO - Fetching data for AXP (attempt 1/3)
+2025-03-11 14:15:00,805 - INFO - Successfully scraped data for AXP
+2025-03-11 14:15:01,812 - INFO - Fetching data for AIG (attempt 1/3)
+2025-03-11 14:15:02,613 - INFO - Successfully scraped data for AIG
+2025-03-11 14:15:03,620 - INFO - Fetching data for AMT (attempt 1/3)
+2025-03-11 14:15:04,382 - INFO - Successfully scraped data for AMT
+2025-03-11 14:15:05,389 - INFO - Fetching data for AWK (attempt 1/3)
+2025-03-11 14:15:06,127 - INFO - Successfully scraped data for AWK
+2025-03-11 14:15:07,133 - INFO - Fetching data for AMP (attempt 1/3)
+2025-03-11 14:15:07,922 - INFO - Successfully scraped data for AMP
+2025-03-11 14:15:08,927 - INFO - Fetching data for AME (attempt 1/3)
+2025-03-11 14:15:09,567 - INFO - Successfully scraped data for AME
+2025-03-11 14:15:10,571 - INFO - Fetching data for AMGN (attempt 1/3)
+2025-03-11 14:15:11,019 - ERROR - Error scraping AMGN: Could not extract price data
+2025-03-11 14:15:12,024 - INFO - Fetching data for AMGN (attempt 2/3)
+2025-03-11 14:15:12,642 - ERROR - Error scraping AMGN: Could not extract price data
+2025-03-11 14:15:52,456 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:15:53,167 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:15:53,168 - INFO - Starting to scrape 503 S&P 500 stocks using 20 workers
+2025-03-11 14:15:53,168 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:15:53,168 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:15:53,169 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:15:53,169 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:15:53,170 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:15:53,171 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:15:53,172 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:15:53,172 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:15:53,172 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:15:53,172 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:15:53,173 - INFO - Fetching data for APD (attempt 1/3)
+2025-03-11 14:15:53,173 - INFO - Fetching data for ABNB (attempt 1/3)
+2025-03-11 14:15:53,174 - INFO - Fetching data for AKAM (attempt 1/3)
+2025-03-11 14:15:53,175 - INFO - Fetching data for ALB (attempt 1/3)
+2025-03-11 14:15:53,176 - INFO - Fetching data for ARE (attempt 1/3)
+2025-03-11 14:15:53,176 - INFO - Fetching data for ALGN (attempt 1/3)
+2025-03-11 14:15:53,177 - INFO - Fetching data for ALLE (attempt 1/3)
+2025-03-11 14:15:53,177 - INFO - Fetching data for LNT (attempt 1/3)
+2025-03-11 14:15:53,177 - INFO - Fetching data for ALL (attempt 1/3)
+2025-03-11 14:15:53,178 - INFO - Fetching data for GOOGL (attempt 1/3)
+2025-03-11 14:15:53,729 - INFO - Successfully scraped data for ABBV
+2025-03-11 14:15:53,731 - INFO - Fetching data for GOOG (attempt 1/3)
+2025-03-11 14:15:53,769 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:15:53,777 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:15:53,835 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:15:53,840 - INFO - Successfully scraped data for ALLE
+2025-03-11 14:15:53,841 - INFO - Fetching data for MO (attempt 1/3)
+2025-03-11 14:15:53,864 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:15:53,927 - INFO - Successfully scraped data for AOS
+2025-03-11 14:15:53,953 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:15:53,978 - INFO - Fetching data for AMZN (attempt 1/3)
+2025-03-11 14:15:54,010 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:15:54,025 - INFO - Successfully scraped data for AES
+2025-03-11 14:15:54,028 - INFO - Successfully scraped data for ALB
+2025-03-11 14:15:54,030 - INFO - Fetching data for AMCR (attempt 1/3)
+2025-03-11 14:15:54,032 - INFO - Fetching data for AEE (attempt 1/3)
+2025-03-11 14:15:54,095 - INFO - Successfully scraped data for ACN
+2025-03-11 14:15:54,097 - INFO - Fetching data for AEP (attempt 1/3)
+2025-03-11 14:15:54,165 - INFO - Successfully scraped data for ABT
+2025-03-11 14:15:54,179 - INFO - Fetching data for AXP (attempt 1/3)
+2025-03-11 14:15:54,187 - INFO - Successfully scraped data for ALL
+2025-03-11 14:15:54,189 - INFO - Fetching data for AIG (attempt 1/3)
+2025-03-11 14:15:54,218 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:15:54,261 - INFO - Successfully scraped data for MMM
+2025-03-11 14:15:54,300 - INFO - Fetching data for AMT (attempt 1/3)
+2025-03-11 14:15:54,315 - INFO - Successfully scraped data for APD
+2025-03-11 14:15:54,329 - INFO - Fetching data for AWK (attempt 1/3)
+2025-03-11 14:15:54,346 - INFO - Successfully scraped data for ARE
+2025-03-11 14:15:54,347 - INFO - Fetching data for AMP (attempt 1/3)
+2025-03-11 14:15:54,428 - INFO - Successfully scraped data for A
+2025-03-11 14:15:54,430 - INFO - Fetching data for AME (attempt 1/3)
+2025-03-11 14:15:54,452 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:15:54,499 - INFO - Successfully scraped data for AFL
+2025-03-11 14:15:54,500 - INFO - Fetching data for AMGN (attempt 1/3)
+2025-03-11 14:15:54,540 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:15:54,561 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:15:54,671 - INFO - Successfully scraped data for MO
+2025-03-11 14:15:54,674 - INFO - Fetching data for APH (attempt 1/3)
+2025-03-11 14:15:54,720 - INFO - Successfully scraped data for AEE
+2025-03-11 14:15:54,721 - INFO - Fetching data for ADI (attempt 1/3)
+2025-03-11 14:15:54,771 - INFO - Fetching data for LNT (attempt 2/3)
+2025-03-11 14:15:54,776 - INFO - Successfully scraped data for AMCR
+2025-03-11 14:15:54,780 - INFO - Fetching data for ANSS (attempt 1/3)
+2025-03-11 14:15:54,787 - INFO - Fetching data for AKAM (attempt 2/3)
+2025-03-11 14:15:54,837 - INFO - Fetching data for ADBE (attempt 2/3)
+2025-03-11 14:15:54,870 - INFO - Fetching data for ALGN (attempt 2/3)
+2025-03-11 14:15:54,937 - INFO - Successfully scraped data for AIG
+2025-03-11 14:15:54,938 - INFO - Fetching data for AON (attempt 1/3)
+2025-03-11 14:15:54,993 - INFO - Fetching data for ABNB (attempt 2/3)
+2025-03-11 14:15:55,025 - ERROR - Error scraping AMGN: Could not extract price data
+2025-03-11 14:15:55,032 - INFO - Fetching data for AMD (attempt 2/3)
+2025-03-11 14:15:55,033 - INFO - Successfully scraped data for AXP
+2025-03-11 14:15:55,035 - INFO - Fetching data for APA (attempt 1/3)
+2025-03-11 14:15:55,081 - INFO - Successfully scraped data for AWK
+2025-03-11 14:15:55,083 - INFO - Fetching data for APO (attempt 1/3)
+2025-03-11 14:15:55,134 - INFO - Successfully scraped data for AMP
+2025-03-11 14:15:55,135 - INFO - Fetching data for AAPL (attempt 1/3)
+2025-03-11 14:15:55,179 - INFO - Successfully scraped data for AMT
+2025-03-11 14:15:55,181 - INFO - Fetching data for AMAT (attempt 1/3)
+2025-03-11 14:15:55,232 - INFO - Successfully scraped data for AME
+2025-03-11 14:15:55,244 - INFO - Fetching data for GOOGL (attempt 2/3)
+2025-03-11 14:15:55,252 - INFO - Fetching data for APTV (attempt 1/3)
+2025-03-11 14:15:55,255 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:15:55,294 - ERROR - Error scraping ANSS: Could not extract price data
+2025-03-11 14:15:55,299 - ERROR - Error scraping ADI: Could not extract price data
+2025-03-11 14:15:55,322 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:15:55,373 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:15:55,416 - INFO - Successfully scraped data for APH
+2025-03-11 14:15:55,417 - INFO - Fetching data for ACGL (attempt 1/3)
+2025-03-11 14:15:55,468 - INFO - Fetching data for GOOG (attempt 2/3)
+2025-03-11 14:15:55,471 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:15:55,492 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:15:55,516 - ERROR - Error scraping APA: Could not extract price data
+2025-03-11 14:15:55,545 - INFO - Fetching data for AMZN (attempt 2/3)
+2025-03-11 14:15:55,566 - INFO - Fetching data for AEP (attempt 2/3)
+2025-03-11 14:15:55,653 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:15:55,696 - INFO - Successfully scraped data for APO
+2025-03-11 14:15:55,697 - INFO - Fetching data for ADM (attempt 1/3)
+2025-03-11 14:15:55,717 - ERROR - Error scraping AAPL: Could not extract price data
+2025-03-11 14:15:55,867 - INFO - Successfully scraped data for APTV
+2025-03-11 14:15:55,868 - INFO - Fetching data for ANET (attempt 1/3)
+2025-03-11 14:15:55,891 - ERROR - Error scraping AMAT: Could not extract price data
+2025-03-11 14:15:55,931 - INFO - Successfully scraped data for AON
+2025-03-11 14:15:55,932 - INFO - Fetching data for AJG (attempt 1/3)
+2025-03-11 14:15:55,988 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:15:56,014 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:15:56,026 - INFO - Fetching data for AMGN (attempt 2/3)
+2025-03-11 14:15:56,072 - ERROR - Error scraping ACGL: Could not extract price data
+2025-03-11 14:15:56,104 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:15:56,140 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:15:56,295 - INFO - Fetching data for ANSS (attempt 2/3)
+2025-03-11 14:15:56,303 - INFO - Fetching data for ADI (attempt 2/3)
+2025-03-11 14:15:56,387 - INFO - Successfully scraped data for ANET
+2025-03-11 14:15:56,389 - INFO - Fetching data for AIZ (attempt 1/3)
+2025-03-11 14:15:56,468 - INFO - Successfully scraped data for ADM
+2025-03-11 14:15:56,469 - INFO - Fetching data for T (attempt 1/3)
+2025-03-11 14:15:56,517 - INFO - Fetching data for APA (attempt 2/3)
+2025-03-11 14:15:56,519 - ERROR - Error scraping AMGN: Could not extract price data
+2025-03-11 14:15:56,728 - INFO - Successfully scraped data for AJG
+2025-03-11 14:15:56,730 - INFO - Fetching data for ATO (attempt 1/3)
+2025-03-11 14:15:56,730 - INFO - Fetching data for AAPL (attempt 2/3)
+2025-03-11 14:15:56,754 - ERROR - Error scraping ANSS: Could not extract price data
+2025-03-11 14:15:56,776 - ERROR - Error scraping ADI: Could not extract price data
+2025-03-11 14:15:56,895 - INFO - Fetching data for AMAT (attempt 2/3)
+2025-03-11 14:15:56,973 - ERROR - Error scraping APA: Could not extract price data
+2025-03-11 14:15:57,079 - INFO - Fetching data for ACGL (attempt 2/3)
+2025-03-11 14:15:57,088 - INFO - Successfully scraped data for T
+2025-03-11 14:15:57,089 - INFO - Fetching data for ADSK (attempt 1/3)
+2025-03-11 14:15:57,131 - INFO - Successfully scraped data for AIZ
+2025-03-11 14:15:57,132 - INFO - Fetching data for ADP (attempt 1/3)
+2025-03-11 14:15:57,261 - INFO - Fetching data for LNT (attempt 3/3)
+2025-03-11 14:15:57,330 - INFO - Fetching data for ALGN (attempt 3/3)
+2025-03-11 14:15:57,351 - INFO - Successfully scraped data for ATO
+2025-03-11 14:15:57,366 - INFO - Fetching data for AZO (attempt 1/3)
+2025-03-11 14:15:57,374 - ERROR - Error scraping AMAT: Could not extract price data
+2025-03-11 14:15:57,389 - INFO - Fetching data for AKAM (attempt 3/3)
+2025-03-11 14:15:57,398 - ERROR - Error scraping AAPL: Could not extract price data
+2025-03-11 14:15:57,486 - INFO - Fetching data for AMD (attempt 3/3)
+2025-03-11 14:15:57,498 - ERROR - Error scraping ADSK: Could not extract price data
+2025-03-11 14:15:57,498 - INFO - Fetching data for ADBE (attempt 3/3)
+2025-03-11 14:15:57,520 - ERROR - Error scraping ACGL: Could not extract price data
+2025-03-11 14:15:57,542 - ERROR - Error scraping ADP: Could not extract price data
+2025-03-11 14:15:57,655 - INFO - Fetching data for ABNB (attempt 3/3)
+2025-03-11 14:15:57,719 - ERROR - Error scraping LNT: Could not extract price data
+2025-03-11 14:15:57,721 - INFO - Fetching data for AVB (attempt 1/3)
+2025-03-11 14:15:57,788 - ERROR - Error scraping AKAM: Could not extract price data
+2025-03-11 14:15:57,790 - INFO - Fetching data for AVY (attempt 1/3)
+2025-03-11 14:15:58,016 - INFO - Successfully scraped data for AZO
+2025-03-11 14:15:58,028 - INFO - Fetching data for GOOG (attempt 3/3)
+2025-03-11 14:15:58,029 - INFO - Fetching data for AXON (attempt 1/3)
+2025-03-11 14:15:58,029 - INFO - Fetching data for AEP (attempt 3/3)
+2025-03-11 14:15:58,039 - ERROR - Error scraping ADBE: Could not extract price data
+2025-03-11 14:15:58,042 - INFO - Fetching data for BKR (attempt 1/3)
+2025-03-11 14:15:58,066 - ERROR - Error scraping ALGN: Could not extract price data
+2025-03-11 14:15:58,067 - INFO - Fetching data for BALL (attempt 1/3)
+2025-03-11 14:15:58,107 - ERROR - Error scraping ABNB: Could not extract price data
+2025-03-11 14:15:58,108 - INFO - Fetching data for BAC (attempt 1/3)
+2025-03-11 14:15:58,109 - INFO - Fetching data for GOOGL (attempt 3/3)
+2025-03-11 14:15:58,130 - ERROR - Error scraping AMD: Could not extract price data
+2025-03-11 14:15:58,131 - INFO - Fetching data for BAX (attempt 1/3)
+2025-03-11 14:15:58,144 - INFO - Fetching data for AMZN (attempt 3/3)
+2025-03-11 14:15:58,348 - INFO - Successfully scraped data for AVY
+2025-03-11 14:15:58,349 - INFO - Fetching data for BDX (attempt 1/3)
+2025-03-11 14:15:58,398 - INFO - Successfully scraped data for AVB
+2025-03-11 14:15:58,399 - INFO - Fetching data for BRK.B (attempt 1/3)
+2025-03-11 14:15:58,431 - ERROR - Error scraping BKR: Could not extract price data
+2025-03-11 14:15:58,463 - ERROR - Error scraping AXON: Could not extract price data
+2025-03-11 14:15:58,486 - ERROR - Error scraping AEP: Could not extract price data
+2025-03-11 14:15:58,487 - INFO - Fetching data for BBY (attempt 1/3)
+2025-03-11 14:15:58,509 - INFO - Fetching data for ADSK (attempt 2/3)
+2025-03-11 14:15:58,509 - ERROR - Error scraping GOOG: Could not extract price data
+2025-03-11 14:15:58,511 - INFO - Fetching data for TECH (attempt 1/3)
+2025-03-11 14:15:58,521 - INFO - Fetching data for AMGN (attempt 3/3)
+2025-03-11 14:15:58,546 - ERROR - Error scraping GOOGL: Could not extract price data
+2025-03-11 14:15:58,547 - INFO - Fetching data for ADP (attempt 2/3)
+2025-03-11 14:15:58,548 - INFO - Fetching data for BIIB (attempt 1/3)
+2025-03-11 14:15:58,721 - INFO - Successfully scraped data for BALL
+2025-03-11 14:15:58,723 - INFO - Fetching data for BLK (attempt 1/3)
+2025-03-11 14:15:58,759 - INFO - Fetching data for ANSS (attempt 3/3)
+2025-03-11 14:15:58,772 - INFO - Successfully scraped data for BAC
+2025-03-11 14:15:58,774 - INFO - Fetching data for BX (attempt 1/3)
+2025-03-11 14:15:58,779 - INFO - Fetching data for ADI (attempt 3/3)
+2025-03-11 14:15:58,820 - INFO - Successfully scraped data for BAX
+2025-03-11 14:15:58,822 - INFO - Fetching data for BK (attempt 1/3)
+2025-03-11 14:15:58,850 - ERROR - Error scraping AMZN: Could not extract price data
+2025-03-11 14:15:58,853 - INFO - Fetching data for BA (attempt 1/3)
+2025-03-11 14:15:58,973 - ERROR - Error scraping TECH: Could not extract price data
+2025-03-11 14:15:58,981 - INFO - Fetching data for APA (attempt 3/3)
+2025-03-11 14:15:58,998 - ERROR - Error scraping ADP: Could not extract price data
+2025-03-11 14:15:59,048 - INFO - Successfully scraped data for BRK.B
+2025-03-11 14:15:59,049 - INFO - Fetching data for BKNG (attempt 1/3)
+2025-03-11 14:15:59,129 - INFO - Successfully scraped data for BBY
+2025-03-11 14:15:59,130 - INFO - Fetching data for BWA (attempt 1/3)
+2025-03-11 14:15:59,157 - ERROR - Error scraping ADSK: Could not extract price data
+2025-03-11 14:15:59,255 - ERROR - Error scraping AMGN: Could not extract price data
+2025-03-11 14:15:59,263 - INFO - Fetching data for BSX (attempt 1/3)
+2025-03-11 14:15:59,275 - ERROR - Error scraping BIIB: Could not extract price data
+2025-03-11 14:15:59,280 - INFO - Successfully scraped data for BDX
+2025-03-11 14:15:59,282 - INFO - Fetching data for BMY (attempt 1/3)
+2025-03-11 14:15:59,309 - ERROR - Error scraping ANSS: Could not extract price data
+2025-03-11 14:15:59,311 - INFO - Fetching data for AVGO (attempt 1/3)
+2025-03-11 14:15:59,334 - ERROR - Error scraping ADI: Could not extract price data
+2025-03-11 14:15:59,335 - INFO - Fetching data for BR (attempt 1/3)
+2025-03-11 14:15:59,375 - INFO - Successfully scraped data for BLK
+2025-03-11 14:15:59,376 - INFO - Fetching data for BRO (attempt 1/3)
+2025-03-11 14:15:59,377 - INFO - Fetching data for AMAT (attempt 3/3)
+2025-03-11 14:15:59,413 - INFO - Fetching data for AAPL (attempt 3/3)
+2025-03-11 14:15:59,450 - INFO - Fetching data for BKR (attempt 2/3)
+2025-03-11 14:15:59,459 - INFO - Successfully scraped data for BA
+2025-03-11 14:15:59,466 - INFO - Successfully scraped data for BK
+2025-03-11 14:15:59,466 - INFO - Fetching data for AXON (attempt 2/3)
+2025-03-11 14:15:59,468 - INFO - Fetching data for BF.B (attempt 1/3)
+2025-03-11 14:15:59,470 - INFO - Fetching data for BLDR (attempt 1/3)
+2025-03-11 14:15:59,514 - INFO - Successfully scraped data for BX
+2025-03-11 14:15:59,516 - INFO - Fetching data for BG (attempt 1/3)
+2025-03-11 14:15:59,521 - INFO - Fetching data for ACGL (attempt 3/3)
+2025-03-11 14:15:59,547 - ERROR - Error scraping BKNG: Could not extract price data
+2025-03-11 14:15:59,776 - INFO - Successfully scraped data for BWA
+2025-03-11 14:15:59,778 - INFO - Fetching data for BXP (attempt 1/3)
+2025-03-11 14:15:59,806 - ERROR - Error scraping APA: Could not extract price data
+2025-03-11 14:15:59,809 - INFO - Fetching data for CHRW (attempt 1/3)
+2025-03-11 14:15:59,860 - INFO - Successfully scraped data for BSX
+2025-03-11 14:15:59,861 - INFO - Fetching data for CDNS (attempt 1/3)
+2025-03-11 14:15:59,902 - ERROR - Error scraping AMAT: Could not extract price data
+2025-03-11 14:15:59,903 - INFO - Fetching data for CZR (attempt 1/3)
+2025-03-11 14:15:59,929 - ERROR - Error scraping ACGL: Could not extract price data
+2025-03-11 14:15:59,930 - INFO - Fetching data for CPT (attempt 1/3)
+2025-03-11 14:15:59,992 - INFO - Fetching data for TECH (attempt 2/3)
+2025-03-11 14:15:59,992 - ERROR - Error scraping BKR: Could not extract price data
+2025-03-11 14:16:00,002 - INFO - Successfully scraped data for BRO
+2025-03-11 14:16:00,003 - INFO - Fetching data for CPB (attempt 1/3)
+2025-03-11 14:16:00,026 - ERROR - Error scraping AXON: Could not extract price data
+2025-03-11 14:16:00,049 - ERROR - Error scraping AAPL: Could not extract price data
+2025-03-11 14:16:00,050 - INFO - Fetching data for COF (attempt 1/3)
+2025-03-11 14:16:00,072 - ERROR - Error scraping AVGO: Could not extract price data
+2025-03-11 14:16:00,125 - INFO - Successfully scraped data for BMY
+2025-03-11 14:16:00,126 - INFO - Fetching data for CAH (attempt 1/3)
+2025-03-11 14:16:00,191 - INFO - Successfully scraped data for BG
+2025-03-11 14:16:00,199 - INFO - Fetching data for KMX (attempt 1/3)
+2025-03-11 14:16:00,235 - INFO - Successfully scraped data for BF.B
+2025-03-11 14:16:00,236 - INFO - Fetching data for CCL (attempt 1/3)
+2025-03-11 14:16:00,281 - INFO - Successfully scraped data for BR
+2025-03-11 14:16:00,281 - INFO - Fetching data for BIIB (attempt 2/3)
+2025-03-11 14:16:00,282 - INFO - Fetching data for CARR (attempt 1/3)
+2025-03-11 14:16:00,333 - INFO - Successfully scraped data for BLDR
+2025-03-11 14:16:00,334 - INFO - Fetching data for CAT (attempt 1/3)
+2025-03-11 14:16:00,360 - ERROR - Error scraping CHRW: Could not extract price data
+2025-03-11 14:16:00,386 - ERROR - Error scraping CZR: Could not extract price data
+2025-03-11 14:16:00,407 - ERROR - Error scraping CDNS: Could not extract price data
+2025-03-11 14:16:00,552 - INFO - Fetching data for BKNG (attempt 2/3)
+2025-03-11 14:16:00,618 - INFO - Successfully scraped data for CPT
+2025-03-11 14:16:00,619 - INFO - Fetching data for CBOE (attempt 1/3)
+2025-03-11 14:16:00,729 - INFO - Successfully scraped data for BXP
+2025-03-11 14:16:00,731 - INFO - Fetching data for CBRE (attempt 1/3)
+2025-03-11 14:16:00,806 - INFO - Successfully scraped data for COF
+2025-03-11 14:16:00,807 - INFO - Fetching data for CDW (attempt 1/3)
+2025-03-11 14:16:00,828 - ERROR - Error scraping CPB: Could not extract price data
+2025-03-11 14:16:00,899 - INFO - Successfully scraped data for CARR
+2025-03-11 14:16:00,907 - INFO - Fetching data for CE (attempt 1/3)
+2025-03-11 14:16:00,923 - ERROR - Error scraping TECH: Could not extract price data
+2025-03-11 14:16:00,969 - INFO - Successfully scraped data for CAT
+2025-03-11 14:16:00,970 - INFO - Fetching data for COR (attempt 1/3)
+2025-03-11 14:16:01,012 - INFO - Successfully scraped data for CAH
+2025-03-11 14:16:01,012 - INFO - Fetching data for ADP (attempt 3/3)
+2025-03-11 14:16:01,014 - INFO - Fetching data for CNC (attempt 1/3)
+2025-03-11 14:16:01,038 - ERROR - Error scraping BIIB: Could not extract price data
+2025-03-11 14:16:01,076 - INFO - Fetching data for AVGO (attempt 2/3)
+2025-03-11 14:16:01,154 - INFO - Successfully scraped data for CCL
+2025-03-11 14:16:01,169 - ERROR - Error scraping BKNG: Could not extract price data
+2025-03-11 14:16:01,170 - INFO - Fetching data for ADSK (attempt 3/3)
+2025-03-11 14:16:01,170 - INFO - Successfully scraped data for KMX
+2025-03-11 14:16:01,172 - INFO - Fetching data for CNP (attempt 1/3)
+2025-03-11 14:16:01,173 - INFO - Fetching data for CF (attempt 1/3)
+2025-03-11 14:16:01,195 - ERROR - Error scraping CBOE: Could not extract price data
+2025-03-11 14:16:01,332 - ERROR - Error scraping CDW: Could not extract price data
+2025-03-11 14:16:01,363 - INFO - Fetching data for CHRW (attempt 2/3)
+2025-03-11 14:16:01,391 - INFO - Fetching data for CZR (attempt 2/3)
+2025-03-11 14:16:01,430 - INFO - Fetching data for CDNS (attempt 2/3)
+2025-03-11 14:16:01,500 - INFO - Successfully scraped data for CBRE
+2025-03-11 14:16:01,522 - ERROR - Error scraping ADP: Could not extract price data
+2025-03-11 14:16:01,523 - INFO - Fetching data for CRL (attempt 1/3)
+2025-03-11 14:16:01,524 - INFO - Fetching data for SCHW (attempt 1/3)
+2025-03-11 14:16:01,566 - INFO - Successfully scraped data for CE
+2025-03-11 14:16:01,568 - INFO - Fetching data for CHTR (attempt 1/3)
+2025-03-11 14:16:01,613 - INFO - Successfully scraped data for COR
+2025-03-11 14:16:01,614 - INFO - Fetching data for CVX (attempt 1/3)
+2025-03-11 14:16:01,667 - INFO - Successfully scraped data for CNC
+2025-03-11 14:16:01,669 - INFO - Fetching data for CMG (attempt 1/3)
+2025-03-11 14:16:01,692 - ERROR - Error scraping ADSK: Could not extract price data
+2025-03-11 14:16:01,693 - INFO - Fetching data for CB (attempt 1/3)
+2025-03-11 14:16:01,787 - ERROR - Error scraping AVGO: Could not extract price data
+2025-03-11 14:16:01,854 - INFO - Fetching data for CPB (attempt 2/3)
+2025-03-11 14:16:01,875 - INFO - Successfully scraped data for CF
+2025-03-11 14:16:01,877 - INFO - Fetching data for CHD (attempt 1/3)
+2025-03-11 14:16:01,901 - ERROR - Error scraping CHRW: Could not extract price data
+2025-03-11 14:16:01,927 - ERROR - Error scraping CDNS: Could not extract price data
+2025-03-11 14:16:01,998 - INFO - Fetching data for BKR (attempt 3/3)
+2025-03-11 14:16:02,031 - INFO - Fetching data for AXON (attempt 3/3)
+2025-03-11 14:16:02,061 - ERROR - Error scraping CZR: Could not extract price data
+2025-03-11 14:16:02,139 - ERROR - Error scraping CHTR: Could not extract price data
+2025-03-11 14:16:02,142 - INFO - Successfully scraped data for CNP
+2025-03-11 14:16:02,144 - INFO - Fetching data for CI (attempt 1/3)
+2025-03-11 14:16:02,208 - INFO - Fetching data for CBOE (attempt 2/3)
+2025-03-11 14:16:02,238 - INFO - Successfully scraped data for CRL
+2025-03-11 14:16:02,239 - INFO - Fetching data for CINF (attempt 1/3)
+2025-03-11 14:16:02,279 - INFO - Successfully scraped data for CB
+2025-03-11 14:16:02,281 - INFO - Fetching data for CTAS (attempt 1/3)
+2025-03-11 14:16:02,320 - INFO - Successfully scraped data for CMG
+2025-03-11 14:16:02,321 - INFO - Fetching data for CSCO (attempt 1/3)
+2025-03-11 14:16:02,349 - INFO - Fetching data for CDW (attempt 2/3)
+2025-03-11 14:16:02,398 - INFO - Successfully scraped data for SCHW
+2025-03-11 14:16:02,400 - INFO - Fetching data for C (attempt 1/3)
+2025-03-11 14:16:02,478 - INFO - Successfully scraped data for CVX
+2025-03-11 14:16:02,480 - INFO - Fetching data for CFG (attempt 1/3)
+2025-03-11 14:16:02,503 - ERROR - Error scraping CPB: Could not extract price data
+2025-03-11 14:16:02,579 - ERROR - Error scraping BKR: Could not extract price data
+2025-03-11 14:16:02,581 - INFO - Fetching data for CLX (attempt 1/3)
+2025-03-11 14:16:02,674 - ERROR - Error scraping AXON: Could not extract price data
+2025-03-11 14:16:02,676 - INFO - Fetching data for CME (attempt 1/3)
+2025-03-11 14:16:02,798 - INFO - Successfully scraped data for CHD
+2025-03-11 14:16:02,800 - INFO - Fetching data for CMS (attempt 1/3)
+2025-03-11 14:16:02,847 - ERROR - Error scraping CBOE: Could not extract price data
+2025-03-11 14:16:02,870 - ERROR - Error scraping CDW: Could not extract price data
+2025-03-11 14:16:02,918 - INFO - Successfully scraped data for CI
+2025-03-11 14:16:02,920 - INFO - Fetching data for KO (attempt 1/3)
+2025-03-11 14:16:02,927 - INFO - Fetching data for TECH (attempt 3/3)
+2025-03-11 14:16:02,956 - ERROR - Error scraping CINF: Could not extract price data
+2025-03-11 14:16:02,998 - INFO - Successfully scraped data for C
+2025-03-11 14:16:02,999 - INFO - Fetching data for CTSH (attempt 1/3)
+2025-03-11 14:16:03,064 - ERROR - Error scraping CSCO: Could not extract price data
+2025-03-11 14:16:03,064 - INFO - Fetching data for BIIB (attempt 3/3)
+2025-03-11 14:16:03,086 - ERROR - Error scraping CTAS: Could not extract price data
+2025-03-11 14:16:03,155 - INFO - Fetching data for CHTR (attempt 2/3)
+2025-03-11 14:16:03,157 - INFO - Successfully scraped data for CLX
+2025-03-11 14:16:03,158 - INFO - Fetching data for CL (attempt 1/3)
+2025-03-11 14:16:03,173 - INFO - Fetching data for BKNG (attempt 3/3)
+2025-03-11 14:16:03,200 - INFO - Successfully scraped data for CFG
+2025-03-11 14:16:03,203 - INFO - Fetching data for CMCSA (attempt 1/3)
+2025-03-11 14:16:03,420 - ERROR - Error scraping TECH: Could not extract price data
+2025-03-11 14:16:03,422 - INFO - Fetching data for CAG (attempt 1/3)
+2025-03-11 14:16:03,457 - ERROR - Error scraping CME: Could not extract price data
+2025-03-11 14:16:03,589 - INFO - Successfully scraped data for CMS
+2025-03-11 14:16:03,591 - INFO - Fetching data for COP (attempt 1/3)
+2025-03-11 14:16:03,614 - ERROR - Error scraping CHTR: Could not extract price data
+2025-03-11 14:16:03,666 - ERROR - Error scraping CTSH: Could not extract price data
+2025-03-11 14:16:03,686 - ERROR - Error scraping CMCSA: Could not extract price data
+2025-03-11 14:16:03,706 - ERROR - Error scraping BIIB: Could not extract price data
+2025-03-11 14:16:03,708 - INFO - Fetching data for ED (attempt 1/3)
+2025-03-11 14:16:03,830 - INFO - Successfully scraped data for KO
+2025-03-11 14:16:03,830 - INFO - Fetching data for AVGO (attempt 3/3)
+2025-03-11 14:16:03,832 - INFO - Fetching data for STZ (attempt 1/3)
+2025-03-11 14:16:03,871 - INFO - Successfully scraped data for CL
+2025-03-11 14:16:03,872 - INFO - Fetching data for CEG (attempt 1/3)
+2025-03-11 14:16:03,906 - INFO - Fetching data for CHRW (attempt 3/3)
+2025-03-11 14:16:03,934 - INFO - Fetching data for CDNS (attempt 3/3)
+2025-03-11 14:16:03,967 - INFO - Fetching data for CINF (attempt 2/3)
+2025-03-11 14:16:03,992 - INFO - Successfully scraped data for CAG
+2025-03-11 14:16:03,993 - INFO - Fetching data for COO (attempt 1/3)
+2025-03-11 14:16:04,037 - INFO - Data saved to sp500_data/sp500_data_20250311_141604_intermediate.json
+2025-03-11 14:16:04,037 - INFO - Progress: 50/503 stocks processed (Success rate: 80.00%)
+2025-03-11 14:16:04,066 - INFO - Fetching data for CZR (attempt 3/3)
+2025-03-11 14:16:04,067 - INFO - Fetching data for CSCO (attempt 2/3)
+2025-03-11 14:16:04,088 - INFO - Fetching data for CTAS (attempt 2/3)
+2025-03-11 14:16:04,323 - INFO - Successfully scraped data for COP
+2025-03-11 14:16:04,324 - INFO - Fetching data for CPRT (attempt 1/3)
+2025-03-11 14:16:04,349 - ERROR - Error scraping BKNG: Could not extract price data
+2025-03-11 14:16:04,351 - INFO - Fetching data for GLW (attempt 1/3)
+2025-03-11 14:16:04,375 - ERROR - Error scraping CEG: Could not extract price data
+2025-03-11 14:16:04,404 - ERROR - Error scraping CDNS: Could not extract price data
+2025-03-11 14:16:04,405 - INFO - Fetching data for CPAY (attempt 1/3)
+2025-03-11 14:16:04,428 - ERROR - Error scraping CHRW: Could not extract price data
+2025-03-11 14:16:04,430 - INFO - Fetching data for CTVA (attempt 1/3)
+2025-03-11 14:16:04,456 - ERROR - Error scraping CINF: Could not extract price data
+2025-03-11 14:16:04,460 - INFO - Fetching data for CME (attempt 2/3)
+2025-03-11 14:16:04,488 - ERROR - Error scraping AVGO: Could not extract price data
+2025-03-11 14:16:04,496 - INFO - Fetching data for CSGP (attempt 1/3)
+2025-03-11 14:16:04,514 - INFO - Fetching data for CPB (attempt 3/3)
+2025-03-11 14:16:04,524 - ERROR - Error scraping CTAS: Could not extract price data
+2025-03-11 14:16:04,535 - ERROR - Error scraping CZR: Could not extract price data
+2025-03-11 14:16:04,536 - INFO - Fetching data for COST (attempt 1/3)
+2025-03-11 14:16:04,624 - INFO - Successfully scraped data for STZ
+2025-03-11 14:16:04,626 - INFO - Fetching data for CTRA (attempt 1/3)
+2025-03-11 14:16:04,648 - ERROR - Error scraping CSCO: Could not extract price data
+2025-03-11 14:16:04,681 - INFO - Fetching data for CTSH (attempt 2/3)
+2025-03-11 14:16:04,689 - INFO - Successfully scraped data for ED
+2025-03-11 14:16:04,689 - INFO - Fetching data for CMCSA (attempt 2/3)
+2025-03-11 14:16:04,691 - INFO - Fetching data for CRWD (attempt 1/3)
+2025-03-11 14:16:04,717 - ERROR - Error scraping COO: Could not extract price data
+2025-03-11 14:16:04,851 - INFO - Fetching data for CBOE (attempt 3/3)
+2025-03-11 14:16:04,874 - INFO - Fetching data for CDW (attempt 3/3)
+2025-03-11 14:16:04,942 - INFO - Successfully scraped data for GLW
+2025-03-11 14:16:04,944 - INFO - Fetching data for CCI (attempt 1/3)
+2025-03-11 14:16:04,967 - ERROR - Error scraping CPRT: Could not extract price data
+2025-03-11 14:16:05,016 - INFO - Successfully scraped data for CPAY
+2025-03-11 14:16:05,024 - INFO - Fetching data for CSX (attempt 1/3)
+2025-03-11 14:16:05,040 - ERROR - Error scraping CME: Could not extract price data
+2025-03-11 14:16:05,085 - INFO - Successfully scraped data for CTVA
+2025-03-11 14:16:05,088 - INFO - Fetching data for CMI (attempt 1/3)
+2025-03-11 14:16:05,164 - ERROR - Error scraping COST: Could not extract price data
+2025-03-11 14:16:05,190 - ERROR - Error scraping CPB: Could not extract price data
+2025-03-11 14:16:05,191 - INFO - Fetching data for CVS (attempt 1/3)
+2025-03-11 14:16:05,216 - ERROR - Error scraping CRWD: Could not extract price data
+2025-03-11 14:16:05,240 - ERROR - Error scraping CMCSA: Could not extract price data
+2025-03-11 14:16:05,281 - ERROR - Error scraping CTSH: Could not extract price data
+2025-03-11 14:16:05,307 - INFO - Successfully scraped data for CTRA
+2025-03-11 14:16:05,310 - INFO - Fetching data for DHR (attempt 1/3)
+2025-03-11 14:16:05,337 - ERROR - Error scraping CSGP: Could not extract price data
+2025-03-11 14:16:05,361 - ERROR - Error scraping CBOE: Could not extract price data
+2025-03-11 14:16:05,363 - INFO - Fetching data for DRI (attempt 1/3)
+2025-03-11 14:16:05,379 - INFO - Fetching data for CEG (attempt 2/3)
+2025-03-11 14:16:05,518 - ERROR - Error scraping CDW: Could not extract price data
+2025-03-11 14:16:05,519 - INFO - Fetching data for DVA (attempt 1/3)
+2025-03-11 14:16:05,543 - ERROR - Error scraping CSX: Could not extract price data
+2025-03-11 14:16:05,622 - INFO - Fetching data for CHTR (attempt 3/3)
+2025-03-11 14:16:05,658 - INFO - Successfully scraped data for CCI
+2025-03-11 14:16:05,661 - INFO - Fetching data for DAY (attempt 1/3)
+2025-03-11 14:16:05,722 - INFO - Fetching data for COO (attempt 2/3)
+2025-03-11 14:16:05,832 - ERROR - Error scraping CEG: Could not extract price data
+2025-03-11 14:16:05,909 - INFO - Successfully scraped data for CVS
+2025-03-11 14:16:05,910 - INFO - Fetching data for DECK (attempt 1/3)
+2025-03-11 14:16:05,964 - INFO - Successfully scraped data for DRI
+2025-03-11 14:16:05,971 - INFO - Fetching data for CPRT (attempt 2/3)
+2025-03-11 14:16:05,972 - INFO - Fetching data for DE (attempt 1/3)
+2025-03-11 14:16:05,994 - INFO - Successfully scraped data for DHR
+2025-03-11 14:16:05,996 - INFO - Fetching data for DELL (attempt 1/3)
+2025-03-11 14:16:06,037 - INFO - Successfully scraped data for CMI
+2025-03-11 14:16:06,038 - INFO - Fetching data for DAL (attempt 1/3)
+2025-03-11 14:16:06,171 - INFO - Fetching data for COST (attempt 2/3)
+2025-03-11 14:16:06,202 - INFO - Successfully scraped data for DAY
+2025-03-11 14:16:06,204 - INFO - Fetching data for DVN (attempt 1/3)
+2025-03-11 14:16:06,238 - INFO - Fetching data for CRWD (attempt 2/3)
+2025-03-11 14:16:06,248 - INFO - Successfully scraped data for DVA
+2025-03-11 14:16:06,251 - INFO - Fetching data for DXCM (attempt 1/3)
+2025-03-11 14:16:06,342 - INFO - Fetching data for CSGP (attempt 2/3)
+2025-03-11 14:16:06,347 - ERROR - Error scraping CHTR: Could not extract price data
+2025-03-11 14:16:06,349 - INFO - Fetching data for FANG (attempt 1/3)
+2025-03-11 14:16:06,384 - ERROR - Error scraping COO: Could not extract price data
+2025-03-11 14:16:06,407 - ERROR - Error scraping CPRT: Could not extract price data
+2025-03-11 14:16:06,461 - INFO - Fetching data for CINF (attempt 3/3)
+2025-03-11 14:16:06,552 - INFO - Fetching data for CSX (attempt 2/3)
+2025-03-11 14:16:06,558 - INFO - Successfully scraped data for DE
+2025-03-11 14:16:06,558 - INFO - Fetching data for CTAS (attempt 3/3)
+2025-03-11 14:16:06,561 - INFO - Fetching data for DLR (attempt 1/3)
+2025-03-11 14:16:06,608 - INFO - Successfully scraped data for DELL
+2025-03-11 14:16:06,610 - INFO - Fetching data for DFS (attempt 1/3)
+2025-03-11 14:16:06,635 - ERROR - Error scraping CRWD: Could not extract price data
+2025-03-11 14:16:06,654 - INFO - Fetching data for CSCO (attempt 3/3)
+2025-03-11 14:16:06,711 - INFO - Successfully scraped data for DECK
+2025-03-11 14:16:06,713 - INFO - Fetching data for DG (attempt 1/3)
+2025-03-11 14:16:06,826 - ERROR - Error scraping CSGP: Could not extract price data
+2025-03-11 14:16:06,849 - ERROR - Error scraping COST: Could not extract price data
+2025-03-11 14:16:06,914 - INFO - Successfully scraped data for DAL
+2025-03-11 14:16:06,922 - INFO - Fetching data for DLTR (attempt 1/3)
+2025-03-11 14:16:06,931 - INFO - Successfully scraped data for DVN
+2025-03-11 14:16:06,934 - INFO - Fetching data for D (attempt 1/3)
+2025-03-11 14:16:06,956 - ERROR - Error scraping DXCM: Could not extract price data
+2025-03-11 14:16:07,033 - ERROR - Error scraping CSX: Could not extract price data
+2025-03-11 14:16:07,043 - INFO - Fetching data for CME (attempt 3/3)
+2025-03-11 14:16:07,059 - ERROR - Error scraping CSCO: Could not extract price data
+2025-03-11 14:16:07,061 - INFO - Fetching data for DPZ (attempt 1/3)
+2025-03-11 14:16:07,169 - ERROR - Error scraping CINF: Could not extract price data
+2025-03-11 14:16:07,170 - INFO - Fetching data for DOV (attempt 1/3)
+2025-03-11 14:16:07,193 - ERROR - Error scraping CTAS: Could not extract price data
+2025-03-11 14:16:07,196 - INFO - Fetching data for DOW (attempt 1/3)
+2025-03-11 14:16:07,239 - INFO - Successfully scraped data for DLR
+2025-03-11 14:16:07,240 - INFO - Fetching data for DHI (attempt 1/3)
+2025-03-11 14:16:07,248 - INFO - Fetching data for CMCSA (attempt 3/3)
+2025-03-11 14:16:07,265 - ERROR - Error scraping FANG: Could not extract price data
+2025-03-11 14:16:07,308 - INFO - Successfully scraped data for DFS
+2025-03-11 14:16:07,309 - INFO - Fetching data for DTE (attempt 1/3)
+2025-03-11 14:16:07,309 - INFO - Fetching data for CTSH (attempt 3/3)
+2025-03-11 14:16:07,352 - INFO - Successfully scraped data for DG
+2025-03-11 14:16:07,354 - INFO - Fetching data for DUK (attempt 1/3)
+2025-03-11 14:16:07,379 - ERROR - Error scraping DLTR: Could not extract price data
+2025-03-11 14:16:07,515 - ERROR - Error scraping DPZ: Could not extract price data
+2025-03-11 14:16:07,620 - INFO - Successfully scraped data for D
+2025-03-11 14:16:07,621 - INFO - Fetching data for DD (attempt 1/3)
+2025-03-11 14:16:07,717 - ERROR - Error scraping CME: Could not extract price data
+2025-03-11 14:16:07,719 - INFO - Fetching data for EMN (attempt 1/3)
+2025-03-11 14:16:07,796 - ERROR - Error scraping CTSH: Could not extract price data
+2025-03-11 14:16:07,797 - INFO - Fetching data for ETN (attempt 1/3)
+2025-03-11 14:16:07,837 - INFO - Fetching data for CEG (attempt 3/3)
+2025-03-11 14:16:07,946 - INFO - Successfully scraped data for DUK
+2025-03-11 14:16:07,948 - INFO - Fetching data for EBAY (attempt 1/3)
+2025-03-11 14:16:07,962 - INFO - Fetching data for DXCM (attempt 2/3)
+2025-03-11 14:16:07,972 - ERROR - Error scraping CMCSA: Could not extract price data
+2025-03-11 14:16:07,974 - INFO - Fetching data for ECL (attempt 1/3)
+2025-03-11 14:16:08,042 - INFO - Successfully scraped data for DOV
+2025-03-11 14:16:08,043 - INFO - Fetching data for EIX (attempt 1/3)
+2025-03-11 14:16:08,057 - INFO - Successfully scraped data for DOW
+2025-03-11 14:16:08,058 - INFO - Fetching data for EW (attempt 1/3)
+2025-03-11 14:16:08,101 - INFO - Successfully scraped data for DTE
+2025-03-11 14:16:08,102 - INFO - Fetching data for EA (attempt 1/3)
+2025-03-11 14:16:08,185 - INFO - Successfully scraped data for DHI
+2025-03-11 14:16:08,186 - INFO - Fetching data for ELV (attempt 1/3)
+2025-03-11 14:16:08,271 - INFO - Fetching data for FANG (attempt 2/3)
+2025-03-11 14:16:08,322 - INFO - Successfully scraped data for EMN
+2025-03-11 14:16:08,323 - INFO - Fetching data for EMR (attempt 1/3)
+2025-03-11 14:16:08,404 - INFO - Fetching data for COO (attempt 3/3)
+2025-03-11 14:16:08,411 - INFO - Fetching data for CPRT (attempt 3/3)
+2025-03-11 14:16:08,411 - INFO - Fetching data for DLTR (attempt 2/3)
+2025-03-11 14:16:08,419 - INFO - Successfully scraped data for DD
+2025-03-11 14:16:08,422 - INFO - Fetching data for ENPH (attempt 1/3)
+2025-03-11 14:16:08,446 - ERROR - Error scraping EBAY: Could not extract price data
+2025-03-11 14:16:08,520 - INFO - Fetching data for DPZ (attempt 2/3)
+2025-03-11 14:16:08,586 - ERROR - Error scraping EA: Could not extract price data
+2025-03-11 14:16:08,629 - INFO - Successfully scraped data for ETN
+2025-03-11 14:16:08,630 - INFO - Fetching data for ETR (attempt 1/3)
+2025-03-11 14:16:08,653 - ERROR - Error scraping DXCM: Could not extract price data
+2025-03-11 14:16:08,654 - INFO - Fetching data for CRWD (attempt 3/3)
+2025-03-11 14:16:08,715 - INFO - Successfully scraped data for ECL
+2025-03-11 14:16:08,716 - INFO - Fetching data for EOG (attempt 1/3)
+2025-03-11 14:16:08,718 - ERROR - Error scraping CEG: Could not extract price data
+2025-03-11 14:16:08,719 - INFO - Fetching data for EPAM (attempt 1/3)
+2025-03-11 14:16:08,769 - INFO - Successfully scraped data for ELV
+2025-03-11 14:16:08,770 - INFO - Fetching data for EQT (attempt 1/3)
+2025-03-11 14:16:08,832 - INFO - Fetching data for CSGP (attempt 3/3)
+2025-03-11 14:16:08,832 - ERROR - Error scraping CPRT: Could not extract price data
+2025-03-11 14:16:08,834 - INFO - Fetching data for EFX (attempt 1/3)
+2025-03-11 14:16:08,860 - INFO - Fetching data for COST (attempt 3/3)
+2025-03-11 14:16:08,875 - INFO - Successfully scraped data for EW
+2025-03-11 14:16:08,876 - INFO - Fetching data for EQIX (attempt 1/3)
+2025-03-11 14:16:08,939 - ERROR - Error scraping ENPH: Could not extract price data
+2025-03-11 14:16:08,963 - ERROR - Error scraping DLTR: Could not extract price data
+2025-03-11 14:16:09,004 - INFO - Successfully scraped data for EIX
+2025-03-11 14:16:09,005 - INFO - Fetching data for EQR (attempt 1/3)
+2025-03-11 14:16:09,045 - INFO - Fetching data for CSX (attempt 3/3)
+2025-03-11 14:16:09,054 - INFO - Successfully scraped data for EMR
+2025-03-11 14:16:09,056 - INFO - Fetching data for ERIE (attempt 1/3)
+2025-03-11 14:16:09,084 - ERROR - Error scraping FANG: Could not extract price data
+2025-03-11 14:16:09,111 - ERROR - Error scraping COO: Could not extract price data
+2025-03-11 14:16:09,112 - INFO - Fetching data for ESS (attempt 1/3)
+2025-03-11 14:16:09,160 - ERROR - Error scraping DPZ: Could not extract price data
+2025-03-11 14:16:09,238 - INFO - Successfully scraped data for EOG
+2025-03-11 14:16:09,239 - INFO - Fetching data for EL (attempt 1/3)
+2025-03-11 14:16:09,282 - ERROR - Error scraping CRWD: Could not extract price data
+2025-03-11 14:16:09,283 - INFO - Fetching data for EG (attempt 1/3)
+2025-03-11 14:16:09,348 - INFO - Successfully scraped data for EPAM
+2025-03-11 14:16:09,350 - INFO - Fetching data for EVRG (attempt 1/3)
+2025-03-11 14:16:09,376 - ERROR - Error scraping EQIX: Could not extract price data
+2025-03-11 14:16:09,459 - INFO - Fetching data for EBAY (attempt 2/3)
+2025-03-11 14:16:09,468 - INFO - Successfully scraped data for ETR
+2025-03-11 14:16:09,470 - INFO - Fetching data for ES (attempt 1/3)
+2025-03-11 14:16:09,498 - ERROR - Error scraping CSGP: Could not extract price data
+2025-03-11 14:16:09,500 - INFO - Fetching data for EXC (attempt 1/3)
+2025-03-11 14:16:09,537 - ERROR - Error scraping COST: Could not extract price data
+2025-03-11 14:16:09,538 - INFO - Fetching data for EXPE (attempt 1/3)
+2025-03-11 14:16:09,562 - ERROR - Error scraping CSX: Could not extract price data
+2025-03-11 14:16:09,564 - INFO - Fetching data for EXPD (attempt 1/3)
+2025-03-11 14:16:09,594 - INFO - Fetching data for EA (attempt 2/3)
+2025-03-11 14:16:09,608 - INFO - Successfully scraped data for EQT
+2025-03-11 14:16:09,609 - INFO - Fetching data for EXR (attempt 1/3)
+2025-03-11 14:16:09,653 - INFO - Successfully scraped data for EFX
+2025-03-11 14:16:09,655 - INFO - Fetching data for XOM (attempt 1/3)
+2025-03-11 14:16:09,696 - INFO - Successfully scraped data for EQR
+2025-03-11 14:16:09,697 - INFO - Fetching data for FFIV (attempt 1/3)
+2025-03-11 14:16:09,719 - ERROR - Error scraping ERIE: Could not extract price data
+2025-03-11 14:16:09,825 - INFO - Successfully scraped data for ESS
+2025-03-11 14:16:09,826 - INFO - Fetching data for FDS (attempt 1/3)
+2025-03-11 14:16:09,945 - INFO - Successfully scraped data for EL
+2025-03-11 14:16:09,947 - INFO - Fetching data for FICO (attempt 1/3)
+2025-03-11 14:16:09,947 - INFO - Fetching data for ENPH (attempt 2/3)
+2025-03-11 14:16:09,999 - ERROR - Error scraping EXC: Could not extract price data
+2025-03-11 14:16:10,015 - INFO - Successfully scraped data for EG
+2025-03-11 14:16:10,017 - INFO - Fetching data for FAST (attempt 1/3)
+2025-03-11 14:16:10,045 - ERROR - Error scraping EXPE: Could not extract price data
+2025-03-11 14:16:10,066 - ERROR - Error scraping EVRG: Could not extract price data
+2025-03-11 14:16:10,095 - ERROR - Error scraping EBAY: Could not extract price data
+2025-03-11 14:16:10,115 - ERROR - Error scraping EA: Could not extract price data
+2025-03-11 14:16:10,202 - INFO - Successfully scraped data for EXPD
+2025-03-11 14:16:10,204 - INFO - Fetching data for FRT (attempt 1/3)
+2025-03-11 14:16:10,224 - ERROR - Error scraping FFIV: Could not extract price data
+2025-03-11 14:16:10,284 - INFO - Successfully scraped data for ES
+2025-03-11 14:16:10,285 - INFO - Fetching data for FDX (attempt 1/3)
+2025-03-11 14:16:10,356 - INFO - Successfully scraped data for EXR
+2025-03-11 14:16:10,357 - INFO - Fetching data for FIS (attempt 1/3)
+2025-03-11 14:16:10,402 - INFO - Fetching data for EQIX (attempt 2/3)
+2025-03-11 14:16:10,420 - INFO - Successfully scraped data for XOM
+2025-03-11 14:16:10,422 - INFO - Fetching data for FITB (attempt 1/3)
+2025-03-11 14:16:10,626 - ERROR - Error scraping ENPH: Could not extract price data
+2025-03-11 14:16:10,663 - INFO - Fetching data for DXCM (attempt 3/3)
+2025-03-11 14:16:10,669 - INFO - Successfully scraped data for FDS
+2025-03-11 14:16:10,684 - INFO - Fetching data for FSLR (attempt 1/3)
+2025-03-11 14:16:10,689 - ERROR - Error scraping FAST: Could not extract price data
+2025-03-11 14:16:10,723 - INFO - Fetching data for ERIE (attempt 2/3)
+2025-03-11 14:16:10,857 - INFO - Successfully scraped data for FRT
+2025-03-11 14:16:10,858 - INFO - Fetching data for FE (attempt 1/3)
+2025-03-11 14:16:10,962 - INFO - Successfully scraped data for FICO
+2025-03-11 14:16:10,963 - INFO - Fetching data for FI (attempt 1/3)
+2025-03-11 14:16:10,964 - INFO - Fetching data for DLTR (attempt 3/3)
+2025-03-11 14:16:10,997 - ERROR - Error scraping EQIX: Could not extract price data
+2025-03-11 14:16:11,001 - INFO - Fetching data for EXC (attempt 2/3)
+2025-03-11 14:16:11,041 - ERROR - Error scraping FITB: Could not extract price data
+2025-03-11 14:16:11,048 - INFO - Fetching data for EXPE (attempt 2/3)
+2025-03-11 14:16:11,069 - INFO - Fetching data for EVRG (attempt 2/3)
+2025-03-11 14:16:11,092 - INFO - Successfully scraped data for FIS
+2025-03-11 14:16:11,092 - INFO - Fetching data for FANG (attempt 3/3)
+2025-03-11 14:16:11,094 - INFO - Fetching data for FMC (attempt 1/3)
+2025-03-11 14:16:11,156 - ERROR - Error scraping DXCM: Could not extract price data
+2025-03-11 14:16:11,158 - INFO - Fetching data for F (attempt 1/3)
+2025-03-11 14:16:11,173 - INFO - Fetching data for DPZ (attempt 3/3)
+2025-03-11 14:16:11,203 - INFO - Successfully scraped data for FDX
+2025-03-11 14:16:11,206 - INFO - Fetching data for FTNT (attempt 1/3)
+2025-03-11 14:16:11,229 - ERROR - Error scraping ERIE: Could not extract price data
+2025-03-11 14:16:11,229 - INFO - Fetching data for FFIV (attempt 2/3)
+2025-03-11 14:16:11,274 - ERROR - Error scraping FSLR: Could not extract price data
+2025-03-11 14:16:11,422 - ERROR - Error scraping EXC: Could not extract price data
+2025-03-11 14:16:11,549 - INFO - Successfully scraped data for FI
+2025-03-11 14:16:11,551 - INFO - Fetching data for FTV (attempt 1/3)
+2025-03-11 14:16:11,579 - ERROR - Error scraping DLTR: Could not extract price data
+2025-03-11 14:16:11,580 - INFO - Fetching data for FOXA (attempt 1/3)
+2025-03-11 14:16:11,604 - ERROR - Error scraping EVRG: Could not extract price data
+2025-03-11 14:16:11,647 - INFO - Successfully scraped data for FE
+2025-03-11 14:16:11,648 - INFO - Fetching data for FOX (attempt 1/3)
+2025-03-11 14:16:11,671 - ERROR - Error scraping FANG: Could not extract price data
+2025-03-11 14:16:11,672 - INFO - Fetching data for BEN (attempt 1/3)
+2025-03-11 14:16:11,701 - ERROR - Error scraping EXPE: Could not extract price data
+2025-03-11 14:16:11,702 - INFO - Fetching data for FAST (attempt 2/3)
+2025-03-11 14:16:11,843 - INFO - Successfully scraped data for F
+2025-03-11 14:16:11,845 - INFO - Fetching data for FCX (attempt 1/3)
+2025-03-11 14:16:11,867 - ERROR - Error scraping FTNT: Could not extract price data
+2025-03-11 14:16:11,907 - INFO - Successfully scraped data for FMC
+2025-03-11 14:16:11,908 - INFO - Fetching data for GRMN (attempt 1/3)
+2025-03-11 14:16:11,931 - ERROR - Error scraping DPZ: Could not extract price data
+2025-03-11 14:16:11,934 - INFO - Fetching data for IT (attempt 1/3)
+2025-03-11 14:16:11,958 - ERROR - Error scraping FFIV: Could not extract price data
+2025-03-11 14:16:12,046 - INFO - Fetching data for FITB (attempt 2/3)
+2025-03-11 14:16:12,097 - INFO - Fetching data for EBAY (attempt 3/3)
+2025-03-11 14:16:12,106 - ERROR - Error scraping FAST: Could not extract price data
+2025-03-11 14:16:12,129 - ERROR - Error scraping FOX: Could not extract price data
+2025-03-11 14:16:12,129 - INFO - Fetching data for EA (attempt 3/3)
+2025-03-11 14:16:12,216 - ERROR - Error scraping FOXA: Could not extract price data
+2025-03-11 14:16:12,258 - INFO - Successfully scraped data for FTV
+2025-03-11 14:16:12,259 - INFO - Fetching data for GE (attempt 1/3)
+2025-03-11 14:16:12,279 - INFO - Fetching data for FSLR (attempt 2/3)
+2025-03-11 14:16:12,402 - INFO - Successfully scraped data for FCX
+2025-03-11 14:16:12,403 - INFO - Fetching data for GEHC (attempt 1/3)
+2025-03-11 14:16:12,481 - INFO - Successfully scraped data for BEN
+2025-03-11 14:16:12,482 - INFO - Fetching data for GEV (attempt 1/3)
+2025-03-11 14:16:12,556 - INFO - Successfully scraped data for IT
+2025-03-11 14:16:12,565 - INFO - Fetching data for GEN (attempt 1/3)
+2025-03-11 14:16:12,567 - INFO - Successfully scraped data for GRMN
+2025-03-11 14:16:12,570 - INFO - Fetching data for GNRC (attempt 1/3)
+2025-03-11 14:16:12,595 - ERROR - Error scraping FITB: Could not extract price data
+2025-03-11 14:16:12,619 - ERROR - Error scraping EBAY: Could not extract price data
+2025-03-11 14:16:12,620 - INFO - Fetching data for GD (attempt 1/3)
+2025-03-11 14:16:12,628 - INFO - Fetching data for ENPH (attempt 3/3)
+2025-03-11 14:16:12,755 - ERROR - Error scraping EA: Could not extract price data
+2025-03-11 14:16:12,756 - INFO - Fetching data for GIS (attempt 1/3)
+2025-03-11 14:16:12,782 - ERROR - Error scraping FSLR: Could not extract price data
+2025-03-11 14:16:12,845 - ERROR - Error scraping GEHC: Could not extract price data
+2025-03-11 14:16:12,868 - INFO - Fetching data for FTNT (attempt 2/3)
+2025-03-11 14:16:12,990 - INFO - Successfully scraped data for GE
+2025-03-11 14:16:12,991 - INFO - Fetching data for GM (attempt 1/3)
+2025-03-11 14:16:13,003 - INFO - Fetching data for EQIX (attempt 3/3)
+2025-03-11 14:16:13,014 - ERROR - Error scraping GEN: Could not extract price data
+2025-03-11 14:16:13,051 - ERROR - Error scraping ENPH: Could not extract price data
+2025-03-11 14:16:13,052 - INFO - Fetching data for GPC (attempt 1/3)
+2025-03-11 14:16:13,141 - INFO - Fetching data for FOX (attempt 2/3)
+2025-03-11 14:16:13,146 - INFO - Successfully scraped data for GEV
+2025-03-11 14:16:13,148 - INFO - Fetching data for GILD (attempt 1/3)
+2025-03-11 14:16:13,191 - INFO - Successfully scraped data for GNRC
+2025-03-11 14:16:13,193 - INFO - Fetching data for GPN (attempt 1/3)
+2025-03-11 14:16:13,221 - INFO - Fetching data for FOXA (attempt 2/3)
+2025-03-11 14:16:13,233 - INFO - Fetching data for ERIE (attempt 3/3)
+2025-03-11 14:16:13,268 - ERROR - Error scraping FTNT: Could not extract price data
+2025-03-11 14:16:13,307 - INFO - Successfully scraped data for GIS
+2025-03-11 14:16:13,309 - INFO - Fetching data for GL (attempt 1/3)
+2025-03-11 14:16:13,381 - INFO - Successfully scraped data for GD
+2025-03-11 14:16:13,384 - INFO - Fetching data for GDDY (attempt 1/3)
+2025-03-11 14:16:13,427 - INFO - Fetching data for EXC (attempt 3/3)
+2025-03-11 14:16:13,491 - ERROR - Error scraping EQIX: Could not extract price data
+2025-03-11 14:16:13,492 - INFO - Fetching data for GS (attempt 1/3)
+2025-03-11 14:16:13,552 - ERROR - Error scraping GILD: Could not extract price data
+2025-03-11 14:16:13,609 - INFO - Fetching data for EVRG (attempt 3/3)
+2025-03-11 14:16:13,666 - ERROR - Error scraping FOX: Could not extract price data
+2025-03-11 14:16:13,690 - INFO - Successfully scraped data for GM
+2025-03-11 14:16:13,691 - INFO - Fetching data for HAL (attempt 1/3)
+2025-03-11 14:16:13,702 - INFO - Fetching data for EXPE (attempt 3/3)
+2025-03-11 14:16:13,741 - ERROR - Error scraping ERIE: Could not extract price data
+2025-03-11 14:16:13,743 - ERROR - Error scraping FOXA: Could not extract price data
+2025-03-11 14:16:13,745 - INFO - Fetching data for HIG (attempt 1/3)
+2025-03-11 14:16:13,833 - INFO - Successfully scraped data for GPC
+2025-03-11 14:16:13,835 - INFO - Fetching data for HAS (attempt 1/3)
+2025-03-11 14:16:13,872 - INFO - Fetching data for GEHC (attempt 2/3)
+2025-03-11 14:16:13,889 - ERROR - Error scraping EXC: Could not extract price data
+2025-03-11 14:16:13,890 - INFO - Fetching data for HCA (attempt 1/3)
+2025-03-11 14:16:13,933 - INFO - Successfully scraped data for GPN
+2025-03-11 14:16:13,934 - INFO - Fetching data for DOC (attempt 1/3)
+2025-03-11 14:16:13,967 - INFO - Fetching data for FFIV (attempt 3/3)
+2025-03-11 14:16:13,976 - INFO - Successfully scraped data for GL
+2025-03-11 14:16:13,978 - INFO - Fetching data for HSIC (attempt 1/3)
+2025-03-11 14:16:14,020 - INFO - Successfully scraped data for GDDY
+2025-03-11 14:16:14,021 - INFO - Fetching data for GEN (attempt 2/3)
+2025-03-11 14:16:14,022 - INFO - Fetching data for HSY (attempt 1/3)
+2025-03-11 14:16:14,110 - INFO - Fetching data for FAST (attempt 3/3)
+2025-03-11 14:16:14,158 - INFO - Successfully scraped data for GS
+2025-03-11 14:16:14,179 - ERROR - Error scraping EVRG: Could not extract price data
+2025-03-11 14:16:14,181 - INFO - Fetching data for HES (attempt 1/3)
+2025-03-11 14:16:14,182 - INFO - Fetching data for HPE (attempt 1/3)
+2025-03-11 14:16:14,207 - ERROR - Error scraping EXPE: Could not extract price data
+2025-03-11 14:16:14,208 - INFO - Fetching data for HLT (attempt 1/3)
+2025-03-11 14:16:14,326 - ERROR - Error scraping HAS: Could not extract price data
+2025-03-11 14:16:14,413 - INFO - Successfully scraped data for HAL
+2025-03-11 14:16:14,415 - INFO - Fetching data for HOLX (attempt 1/3)
+2025-03-11 14:16:14,440 - ERROR - Error scraping FFIV: Could not extract price data
+2025-03-11 14:16:14,441 - INFO - Fetching data for HD (attempt 1/3)
+2025-03-11 14:16:14,463 - ERROR - Error scraping GEHC: Could not extract price data
+2025-03-11 14:16:14,510 - INFO - Successfully scraped data for HIG
+2025-03-11 14:16:14,511 - INFO - Fetching data for HON (attempt 1/3)
+2025-03-11 14:16:14,537 - ERROR - Error scraping HSIC: Could not extract price data
+2025-03-11 14:16:14,569 - INFO - Fetching data for GILD (attempt 2/3)
+2025-03-11 14:16:14,578 - INFO - Successfully scraped data for HCA
+2025-03-11 14:16:14,579 - INFO - Fetching data for HRL (attempt 1/3)
+2025-03-11 14:16:14,607 - ERROR - Error scraping GEN: Could not extract price data
+2025-03-11 14:16:14,607 - INFO - Fetching data for FITB (attempt 3/3)
+2025-03-11 14:16:14,631 - ERROR - Error scraping FAST: Could not extract price data
+2025-03-11 14:16:14,632 - INFO - Fetching data for HST (attempt 1/3)
+2025-03-11 14:16:14,646 - INFO - Data saved to sp500_data/sp500_data_20250311_141614_intermediate.json
+2025-03-11 14:16:14,646 - INFO - Progress: 100/503 stocks processed (Success rate: 78.00%)
+2025-03-11 14:16:14,722 - INFO - Successfully scraped data for HSY
+2025-03-11 14:16:14,723 - INFO - Fetching data for HWM (attempt 1/3)
+2025-03-11 14:16:14,772 - INFO - Successfully scraped data for DOC
+2025-03-11 14:16:14,779 - INFO - Fetching data for HPQ (attempt 1/3)
+2025-03-11 14:16:14,831 - INFO - Fetching data for FSLR (attempt 3/3)
+2025-03-11 14:16:14,858 - INFO - Successfully scraped data for HES
+2025-03-11 14:16:14,860 - INFO - Fetching data for HUBB (attempt 1/3)
+2025-03-11 14:16:14,902 - INFO - Successfully scraped data for HPE
+2025-03-11 14:16:14,903 - INFO - Fetching data for HUM (attempt 1/3)
+2025-03-11 14:16:14,930 - ERROR - Error scraping HOLX: Could not extract price data
+2025-03-11 14:16:14,950 - ERROR - Error scraping HON: Could not extract price data
+2025-03-11 14:16:15,040 - ERROR - Error scraping HST: Could not extract price data
+2025-03-11 14:16:15,209 - INFO - Successfully scraped data for HRL
+2025-03-11 14:16:15,210 - INFO - Fetching data for HBAN (attempt 1/3)
+2025-03-11 14:16:15,253 - INFO - Successfully scraped data for HLT
+2025-03-11 14:16:15,255 - INFO - Fetching data for HII (attempt 1/3)
+2025-03-11 14:16:15,272 - INFO - Fetching data for FTNT (attempt 3/3)
+2025-03-11 14:16:15,286 - ERROR - Error scraping FITB: Could not extract price data
+2025-03-11 14:16:15,287 - INFO - Fetching data for IBM (attempt 1/3)
+2025-03-11 14:16:15,329 - INFO - Successfully scraped data for HD
+2025-03-11 14:16:15,331 - INFO - Fetching data for IEX (attempt 1/3)
+2025-03-11 14:16:15,332 - INFO - Fetching data for HAS (attempt 2/3)
+2025-03-11 14:16:15,414 - ERROR - Error scraping FSLR: Could not extract price data
+2025-03-11 14:16:15,415 - INFO - Fetching data for IDXX (attempt 1/3)
+2025-03-11 14:16:15,418 - ERROR - Error scraping GILD: Could not extract price data
+2025-03-11 14:16:15,462 - INFO - Successfully scraped data for HWM
+2025-03-11 14:16:15,463 - INFO - Fetching data for ITW (attempt 1/3)
+2025-03-11 14:16:15,509 - INFO - Successfully scraped data for HPQ
+2025-03-11 14:16:15,512 - INFO - Fetching data for INCY (attempt 1/3)
+2025-03-11 14:16:15,542 - INFO - Fetching data for HSIC (attempt 2/3)
+2025-03-11 14:16:15,675 - INFO - Fetching data for FOX (attempt 3/3)
+2025-03-11 14:16:15,679 - INFO - Successfully scraped data for HUM
+2025-03-11 14:16:15,681 - INFO - Fetching data for IR (attempt 1/3)
+2025-03-11 14:16:15,726 - INFO - Successfully scraped data for HUBB
+2025-03-11 14:16:15,728 - INFO - Fetching data for PODD (attempt 1/3)
+2025-03-11 14:16:15,747 - INFO - Fetching data for FOXA (attempt 3/3)
+2025-03-11 14:16:15,827 - ERROR - Error scraping HAS: Could not extract price data
+2025-03-11 14:16:15,853 - ERROR - Error scraping IDXX: Could not extract price data
+2025-03-11 14:16:15,876 - ERROR - Error scraping HBAN: Could not extract price data
+2025-03-11 14:16:15,899 - ERROR - Error scraping INCY: Could not extract price data
+2025-03-11 14:16:15,966 - INFO - Fetching data for HON (attempt 2/3)
+2025-03-11 14:16:15,966 - INFO - Fetching data for HOLX (attempt 2/3)
+2025-03-11 14:16:15,978 - INFO - Successfully scraped data for HII
+2025-03-11 14:16:15,980 - INFO - Fetching data for INTC (attempt 1/3)
+2025-03-11 14:16:16,031 - INFO - Successfully scraped data for IEX
+2025-03-11 14:16:16,052 - ERROR - Error scraping HSIC: Could not extract price data
+2025-03-11 14:16:16,052 - INFO - Fetching data for HST (attempt 2/3)
+2025-03-11 14:16:16,054 - INFO - Fetching data for ICE (attempt 1/3)
+2025-03-11 14:16:16,078 - ERROR - Error scraping FTNT: Could not extract price data
+2025-03-11 14:16:16,079 - INFO - Fetching data for IFF (attempt 1/3)
+2025-03-11 14:16:16,124 - INFO - Successfully scraped data for ITW
+2025-03-11 14:16:16,126 - INFO - Fetching data for IP (attempt 1/3)
+2025-03-11 14:16:16,152 - ERROR - Error scraping FOX: Could not extract price data
+2025-03-11 14:16:16,154 - INFO - Fetching data for IPG (attempt 1/3)
+2025-03-11 14:16:16,176 - ERROR - Error scraping FOXA: Could not extract price data
+2025-03-11 14:16:16,178 - INFO - Fetching data for INTU (attempt 1/3)
+2025-03-11 14:16:16,200 - ERROR - Error scraping PODD: Could not extract price data
+2025-03-11 14:16:16,304 - INFO - Successfully scraped data for IBM
+2025-03-11 14:16:16,306 - INFO - Fetching data for ISRG (attempt 1/3)
+2025-03-11 14:16:16,371 - INFO - Successfully scraped data for IR
+2025-03-11 14:16:16,373 - INFO - Fetching data for IVZ (attempt 1/3)
+2025-03-11 14:16:16,430 - ERROR - Error scraping HON: Could not extract price data
+2025-03-11 14:16:16,485 - INFO - Fetching data for GEHC (attempt 3/3)
+2025-03-11 14:16:16,497 - ERROR - Error scraping HOLX: Could not extract price data
+2025-03-11 14:16:16,524 - ERROR - Error scraping HST: Could not extract price data
+2025-03-11 14:16:16,544 - ERROR - Error scraping INTC: Could not extract price data
+2025-03-11 14:16:16,611 - INFO - Fetching data for GEN (attempt 3/3)
+2025-03-11 14:16:16,686 - INFO - Successfully scraped data for IFF
+2025-03-11 14:16:16,688 - INFO - Fetching data for INVH (attempt 1/3)
+2025-03-11 14:16:16,712 - ERROR - Error scraping ISRG: Could not extract price data
+2025-03-11 14:16:16,775 - INFO - Successfully scraped data for IPG
+2025-03-11 14:16:16,788 - ERROR - Error scraping INTU: Could not extract price data
+2025-03-11 14:16:16,790 - INFO - Fetching data for IQV (attempt 1/3)
+2025-03-11 14:16:16,837 - INFO - Successfully scraped data for ICE
+2025-03-11 14:16:16,838 - INFO - Fetching data for IRM (attempt 1/3)
+2025-03-11 14:16:16,856 - INFO - Fetching data for IDXX (attempt 2/3)
+2025-03-11 14:16:16,888 - INFO - Fetching data for HBAN (attempt 2/3)
+2025-03-11 14:16:16,908 - INFO - Fetching data for INCY (attempt 2/3)
+2025-03-11 14:16:16,909 - INFO - Successfully scraped data for IP
+2025-03-11 14:16:16,910 - INFO - Fetching data for JBHT (attempt 1/3)
+2025-03-11 14:16:16,934 - ERROR - Error scraping GEHC: Could not extract price data
+2025-03-11 14:16:16,935 - INFO - Fetching data for JBL (attempt 1/3)
+2025-03-11 14:16:17,159 - INFO - Successfully scraped data for IVZ
+2025-03-11 14:16:17,163 - INFO - Fetching data for JKHY (attempt 1/3)
+2025-03-11 14:16:17,184 - ERROR - Error scraping GEN: Could not extract price data
+2025-03-11 14:16:17,186 - INFO - Fetching data for J (attempt 1/3)
+2025-03-11 14:16:17,203 - INFO - Fetching data for PODD (attempt 2/3)
+2025-03-11 14:16:17,309 - INFO - Successfully scraped data for INVH
+2025-03-11 14:16:17,312 - INFO - Fetching data for JNJ (attempt 1/3)
+2025-03-11 14:16:17,342 - ERROR - Error scraping IDXX: Could not extract price data
+2025-03-11 14:16:17,381 - INFO - Successfully scraped data for IQV
+2025-03-11 14:16:17,382 - INFO - Fetching data for JCI (attempt 1/3)
+2025-03-11 14:16:17,405 - ERROR - Error scraping JBHT: Could not extract price data
+2025-03-11 14:16:17,428 - ERROR - Error scraping INCY: Could not extract price data
+2025-03-11 14:16:17,428 - INFO - Fetching data for GILD (attempt 3/3)
+2025-03-11 14:16:17,463 - ERROR - Error scraping HBAN: Could not extract price data
+2025-03-11 14:16:17,492 - INFO - Successfully scraped data for IRM
+2025-03-11 14:16:17,506 - INFO - Fetching data for JPM (attempt 1/3)
+2025-03-11 14:16:17,534 - INFO - Successfully scraped data for JBL
+2025-03-11 14:16:17,536 - INFO - Fetching data for JNPR (attempt 1/3)
+2025-03-11 14:16:17,549 - INFO - Fetching data for INTC (attempt 2/3)
+2025-03-11 14:16:17,653 - ERROR - Error scraping JKHY: Could not extract price data
+2025-03-11 14:16:17,676 - ERROR - Error scraping PODD: Could not extract price data
+2025-03-11 14:16:17,717 - INFO - Fetching data for ISRG (attempt 2/3)
+2025-03-11 14:16:17,793 - INFO - Fetching data for INTU (attempt 2/3)
+2025-03-11 14:16:17,833 - INFO - Fetching data for HAS (attempt 3/3)
+2025-03-11 14:16:17,865 - INFO - Successfully scraped data for J
+2025-03-11 14:16:17,866 - INFO - Fetching data for K (attempt 1/3)
+2025-03-11 14:16:17,900 - ERROR - Error scraping GILD: Could not extract price data
+2025-03-11 14:16:17,901 - INFO - Fetching data for KVUE (attempt 1/3)
+2025-03-11 14:16:17,949 - INFO - Successfully scraped data for JCI
+2025-03-11 14:16:17,950 - INFO - Fetching data for KDP (attempt 1/3)
+2025-03-11 14:16:17,991 - INFO - Successfully scraped data for JNJ
+2025-03-11 14:16:17,992 - INFO - Fetching data for KEY (attempt 1/3)
+2025-03-11 14:16:18,016 - ERROR - Error scraping INTC: Could not extract price data
+2025-03-11 14:16:18,054 - INFO - Fetching data for HSIC (attempt 3/3)
+2025-03-11 14:16:18,215 - INFO - Successfully scraped data for JNPR
+2025-03-11 14:16:18,217 - INFO - Fetching data for KEYS (attempt 1/3)
+2025-03-11 14:16:18,240 - ERROR - Error scraping INTU: Could not extract price data
+2025-03-11 14:16:18,260 - ERROR - Error scraping ISRG: Could not extract price data
+2025-03-11 14:16:18,299 - ERROR - Error scraping HAS: Could not extract price data
+2025-03-11 14:16:18,301 - INFO - Fetching data for KMB (attempt 1/3)
+2025-03-11 14:16:18,400 - INFO - Successfully scraped data for JPM
+2025-03-11 14:16:18,401 - INFO - Fetching data for KIM (attempt 1/3)
+2025-03-11 14:16:18,413 - INFO - Fetching data for JBHT (attempt 2/3)
+2025-03-11 14:16:18,428 - ERROR - Error scraping KDP: Could not extract price data
+2025-03-11 14:16:18,437 - INFO - Fetching data for HON (attempt 3/3)
+2025-03-11 14:16:18,453 - ERROR - Error scraping HSIC: Could not extract price data
+2025-03-11 14:16:18,454 - INFO - Fetching data for KMI (attempt 1/3)
+2025-03-11 14:16:18,503 - INFO - Fetching data for HOLX (attempt 3/3)
+2025-03-11 14:16:18,532 - INFO - Fetching data for HST (attempt 3/3)
+2025-03-11 14:16:18,556 - INFO - Successfully scraped data for KVUE
+2025-03-11 14:16:18,558 - INFO - Fetching data for KKR (attempt 1/3)
+2025-03-11 14:16:18,597 - INFO - Successfully scraped data for KEY
+2025-03-11 14:16:18,600 - INFO - Fetching data for KLAC (attempt 1/3)
+2025-03-11 14:16:18,672 - INFO - Successfully scraped data for K
+2025-03-11 14:16:18,672 - INFO - Fetching data for JKHY (attempt 2/3)
+2025-03-11 14:16:18,673 - INFO - Fetching data for KHC (attempt 1/3)
+2025-03-11 14:16:18,869 - ERROR - Error scraping JBHT: Could not extract price data
+2025-03-11 14:16:18,943 - ERROR - Error scraping HOLX: Could not extract price data
+2025-03-11 14:16:18,945 - INFO - Fetching data for KR (attempt 1/3)
+2025-03-11 14:16:19,030 - INFO - Successfully scraped data for KMI
+2025-03-11 14:16:19,031 - INFO - Fetching data for LHX (attempt 1/3)
+2025-03-11 14:16:19,093 - ERROR - Error scraping HST: Could not extract price data
+2025-03-11 14:16:19,095 - INFO - Fetching data for LH (attempt 1/3)
+2025-03-11 14:16:19,115 - ERROR - Error scraping KLAC: Could not extract price data
+2025-03-11 14:16:19,172 - ERROR - Error scraping HON: Could not extract price data
+2025-03-11 14:16:19,181 - INFO - Successfully scraped data for KEYS
+2025-03-11 14:16:19,195 - INFO - Fetching data for LRCX (attempt 1/3)
+2025-03-11 14:16:19,196 - INFO - Fetching data for LW (attempt 1/3)
+2025-03-11 14:16:19,243 - INFO - Successfully scraped data for KIM
+2025-03-11 14:16:19,245 - INFO - Fetching data for LVS (attempt 1/3)
+2025-03-11 14:16:19,246 - ERROR - Error scraping KHC: Could not extract price data
+2025-03-11 14:16:19,286 - INFO - Successfully scraped data for KMB
+2025-03-11 14:16:19,289 - INFO - Fetching data for LDOS (attempt 1/3)
+2025-03-11 14:16:19,327 - INFO - Successfully scraped data for KKR
+2025-03-11 14:16:19,329 - INFO - Fetching data for LEN (attempt 1/3)
+2025-03-11 14:16:19,350 - ERROR - Error scraping JKHY: Could not extract price data
+2025-03-11 14:16:19,350 - INFO - Fetching data for IDXX (attempt 3/3)
+2025-03-11 14:16:19,431 - INFO - Fetching data for KDP (attempt 2/3)
+2025-03-11 14:16:19,431 - INFO - Fetching data for INCY (attempt 3/3)
+2025-03-11 14:16:19,468 - INFO - Fetching data for HBAN (attempt 3/3)
+2025-03-11 14:16:19,677 - INFO - Fetching data for PODD (attempt 3/3)
+2025-03-11 14:16:19,708 - ERROR - Error scraping LRCX: Could not extract price data
+2025-03-11 14:16:19,794 - INFO - Successfully scraped data for KR
+2025-03-11 14:16:19,795 - INFO - Fetching data for LII (attempt 1/3)
+2025-03-11 14:16:19,824 - ERROR - Error scraping IDXX: Could not extract price data
+2025-03-11 14:16:19,827 - INFO - Fetching data for LLY (attempt 1/3)
+2025-03-11 14:16:19,871 - INFO - Successfully scraped data for LH
+2025-03-11 14:16:19,872 - INFO - Fetching data for LIN (attempt 1/3)
+2025-03-11 14:16:19,915 - INFO - Successfully scraped data for LVS
+2025-03-11 14:16:19,926 - INFO - Fetching data for LYV (attempt 1/3)
+2025-03-11 14:16:19,956 - INFO - Successfully scraped data for LW
+2025-03-11 14:16:19,958 - INFO - Fetching data for LKQ (attempt 1/3)
+2025-03-11 14:16:20,035 - INFO - Fetching data for INTC (attempt 3/3)
+2025-03-11 14:16:20,036 - INFO - Successfully scraped data for LDOS
+2025-03-11 14:16:20,046 - INFO - Successfully scraped data for LHX
+2025-03-11 14:16:20,049 - INFO - Fetching data for LMT (attempt 1/3)
+2025-03-11 14:16:20,052 - INFO - Fetching data for L (attempt 1/3)
+2025-03-11 14:16:20,154 - INFO - Successfully scraped data for LEN
+2025-03-11 14:16:20,154 - INFO - Fetching data for KLAC (attempt 2/3)
+2025-03-11 14:16:20,158 - ERROR - Error scraping HBAN: Could not extract price data
+2025-03-11 14:16:20,159 - INFO - Fetching data for LOW (attempt 1/3)
+2025-03-11 14:16:20,161 - INFO - Fetching data for LULU (attempt 1/3)
+2025-03-11 14:16:20,188 - ERROR - Error scraping INCY: Could not extract price data
+2025-03-11 14:16:20,189 - INFO - Fetching data for LYB (attempt 1/3)
+2025-03-11 14:16:20,217 - ERROR - Error scraping KDP: Could not extract price data
+2025-03-11 14:16:20,249 - INFO - Fetching data for INTU (attempt 3/3)
+2025-03-11 14:16:20,249 - INFO - Fetching data for KHC (attempt 2/3)
+2025-03-11 14:16:20,261 - INFO - Fetching data for ISRG (attempt 3/3)
+2025-03-11 14:16:20,400 - ERROR - Error scraping PODD: Could not extract price data
+2025-03-11 14:16:20,401 - INFO - Fetching data for MTB (attempt 1/3)
+2025-03-11 14:16:20,424 - ERROR - Error scraping LIN: Could not extract price data
+2025-03-11 14:16:20,462 - ERROR - Error scraping LKQ: Could not extract price data
+2025-03-11 14:16:20,514 - INFO - Successfully scraped data for LII
+2025-03-11 14:16:20,516 - INFO - Fetching data for MPC (attempt 1/3)
+2025-03-11 14:16:20,544 - ERROR - Error scraping INTC: Could not extract price data
+2025-03-11 14:16:20,546 - INFO - Fetching data for MKTX (attempt 1/3)
+2025-03-11 14:16:20,610 - INFO - Successfully scraped data for LLY
+2025-03-11 14:16:20,612 - INFO - Fetching data for MAR (attempt 1/3)
+2025-03-11 14:16:20,637 - ERROR - Error scraping LULU: Could not extract price data
+2025-03-11 14:16:20,683 - INFO - Successfully scraped data for LYV
+2025-03-11 14:16:20,685 - INFO - Fetching data for MMC (attempt 1/3)
+2025-03-11 14:16:20,712 - ERROR - Error scraping INTU: Could not extract price data
+2025-03-11 14:16:20,713 - INFO - Fetching data for MLM (attempt 1/3)
+2025-03-11 14:16:20,714 - INFO - Fetching data for LRCX (attempt 2/3)
+2025-03-11 14:16:20,811 - INFO - Successfully scraped data for L
+2025-03-11 14:16:20,819 - INFO - Fetching data for MAS (attempt 1/3)
+2025-03-11 14:16:20,837 - ERROR - Error scraping KHC: Could not extract price data
+2025-03-11 14:16:20,867 - ERROR - Error scraping ISRG: Could not extract price data
+2025-03-11 14:16:20,868 - INFO - Fetching data for MA (attempt 1/3)
+2025-03-11 14:16:20,873 - INFO - Fetching data for JBHT (attempt 3/3)
+2025-03-11 14:16:20,916 - INFO - Successfully scraped data for LOW
+2025-03-11 14:16:20,917 - INFO - Fetching data for MTCH (attempt 1/3)
+2025-03-11 14:16:20,940 - ERROR - Error scraping KLAC: Could not extract price data
+2025-03-11 14:16:20,985 - INFO - Successfully scraped data for LYB
+2025-03-11 14:16:20,986 - INFO - Fetching data for MKC (attempt 1/3)
+2025-03-11 14:16:21,049 - INFO - Successfully scraped data for LMT
+2025-03-11 14:16:21,050 - INFO - Fetching data for MCD (attempt 1/3)
+2025-03-11 14:16:21,072 - ERROR - Error scraping MKTX: Could not extract price data
+2025-03-11 14:16:21,117 - INFO - Successfully scraped data for MPC
+2025-03-11 14:16:21,119 - INFO - Fetching data for MCK (attempt 1/3)
+2025-03-11 14:16:21,201 - INFO - Successfully scraped data for MTB
+2025-03-11 14:16:21,202 - INFO - Fetching data for MDT (attempt 1/3)
+2025-03-11 14:16:21,240 - ERROR - Error scraping LRCX: Could not extract price data
+2025-03-11 14:16:21,285 - INFO - Successfully scraped data for MMC
+2025-03-11 14:16:21,286 - INFO - Fetching data for MRK (attempt 1/3)
+2025-03-11 14:16:21,310 - ERROR - Error scraping MAR: Could not extract price data
+2025-03-11 14:16:21,350 - ERROR - Error scraping JBHT: Could not extract price data
+2025-03-11 14:16:21,351 - INFO - Fetching data for META (attempt 1/3)
+2025-03-11 14:16:21,355 - INFO - Fetching data for JKHY (attempt 3/3)
+2025-03-11 14:16:21,445 - INFO - Fetching data for LIN (attempt 2/3)
+2025-03-11 14:16:21,466 - INFO - Successfully scraped data for MAS
+2025-03-11 14:16:21,466 - INFO - Fetching data for LKQ (attempt 2/3)
+2025-03-11 14:16:21,468 - INFO - Fetching data for MET (attempt 1/3)
+2025-03-11 14:16:21,513 - INFO - Successfully scraped data for MA
+2025-03-11 14:16:21,516 - INFO - Fetching data for MTD (attempt 1/3)
+2025-03-11 14:16:21,542 - ERROR - Error scraping MTCH: Could not extract price data
+2025-03-11 14:16:21,582 - INFO - Successfully scraped data for MLM
+2025-03-11 14:16:21,585 - INFO - Fetching data for MGM (attempt 1/3)
+2025-03-11 14:16:21,642 - INFO - Fetching data for LULU (attempt 2/3)
+2025-03-11 14:16:21,792 - INFO - Successfully scraped data for MCK
+2025-03-11 14:16:21,794 - INFO - Fetching data for MCHP (attempt 1/3)
+2025-03-11 14:16:21,820 - ERROR - Error scraping META: Could not extract price data
+2025-03-11 14:16:21,862 - INFO - Successfully scraped data for MKC
+2025-03-11 14:16:21,863 - INFO - Fetching data for MU (attempt 1/3)
+2025-03-11 14:16:21,931 - INFO - Successfully scraped data for MCD
+2025-03-11 14:16:21,933 - INFO - Fetching data for MSFT (attempt 1/3)
+2025-03-11 14:16:21,951 - INFO - Successfully scraped data for MRK
+2025-03-11 14:16:21,954 - INFO - Fetching data for MAA (attempt 1/3)
+2025-03-11 14:16:21,996 - ERROR - Error scraping LIN: Could not extract price data
+2025-03-11 14:16:22,019 - ERROR - Error scraping JKHY: Could not extract price data
+2025-03-11 14:16:22,020 - INFO - Fetching data for MRNA (attempt 1/3)
+2025-03-11 14:16:22,062 - INFO - Successfully scraped data for MET
+2025-03-11 14:16:22,064 - INFO - Fetching data for MHK (attempt 1/3)
+2025-03-11 14:16:22,080 - INFO - Fetching data for MKTX (attempt 2/3)
+2025-03-11 14:16:22,216 - INFO - Successfully scraped data for MDT
+2025-03-11 14:16:22,230 - INFO - Fetching data for MOH (attempt 1/3)
+2025-03-11 14:16:22,256 - INFO - Fetching data for KDP (attempt 3/3)
+2025-03-11 14:16:22,267 - INFO - Successfully scraped data for MTD
+2025-03-11 14:16:22,275 - INFO - Successfully scraped data for MGM
+2025-03-11 14:16:22,277 - INFO - Fetching data for TAP (attempt 1/3)
+2025-03-11 14:16:22,279 - INFO - Fetching data for MDLZ (attempt 1/3)
+2025-03-11 14:19:21,165 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:19:22,010 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:19:22,011 - INFO - Starting to scrape 503 S&P 500 stocks using 20 workers
+2025-03-11 14:19:22,011 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:19:22,011 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:19:22,012 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:19:22,012 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:19:22,013 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:19:22,014 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:19:22,015 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:19:22,015 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:19:22,016 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:19:22,016 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:19:22,016 - INFO - Fetching data for APD (attempt 1/3)
+2025-03-11 14:19:22,017 - INFO - Fetching data for ABNB (attempt 1/3)
+2025-03-11 14:19:22,017 - INFO - Fetching data for AKAM (attempt 1/3)
+2025-03-11 14:19:22,018 - INFO - Fetching data for ALB (attempt 1/3)
+2025-03-11 14:19:22,018 - INFO - Fetching data for ARE (attempt 1/3)
+2025-03-11 14:19:22,019 - INFO - Fetching data for ALGN (attempt 1/3)
+2025-03-11 14:19:22,019 - INFO - Fetching data for ALLE (attempt 1/3)
+2025-03-11 14:19:22,019 - INFO - Fetching data for LNT (attempt 1/3)
+2025-03-11 14:19:22,020 - INFO - Fetching data for ALL (attempt 1/3)
+2025-03-11 14:19:22,021 - INFO - Fetching data for GOOGL (attempt 1/3)
+2025-03-11 14:19:22,486 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,493 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,520 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,533 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,563 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,589 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,671 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,675 - ERROR - Error scraping ABNB: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,693 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,732 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,739 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,782 - ERROR - Error scraping LNT: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,812 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,832 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,869 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,890 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:19:22,930 - ERROR - Error scraping GOOGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,000 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,007 - ERROR - Error scraping ALGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,064 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,504 - INFO - Fetching data for MMM (attempt 2/3)
+2025-03-11 14:19:23,540 - INFO - Fetching data for ABBV (attempt 2/3)
+2025-03-11 14:19:23,540 - INFO - Fetching data for ALL (attempt 2/3)
+2025-03-11 14:19:23,542 - INFO - Fetching data for ALLE (attempt 2/3)
+2025-03-11 14:19:23,568 - INFO - Fetching data for APD (attempt 2/3)
+2025-03-11 14:19:23,594 - INFO - Fetching data for ARE (attempt 2/3)
+2025-03-11 14:19:23,677 - INFO - Fetching data for AMD (attempt 2/3)
+2025-03-11 14:19:23,695 - INFO - Fetching data for ABNB (attempt 2/3)
+2025-03-11 14:19:23,695 - INFO - Fetching data for AES (attempt 2/3)
+2025-03-11 14:19:23,742 - INFO - Fetching data for AOS (attempt 2/3)
+2025-03-11 14:19:23,742 - INFO - Fetching data for ABT (attempt 2/3)
+2025-03-11 14:19:23,787 - INFO - Fetching data for LNT (attempt 2/3)
+2025-03-11 14:19:23,816 - INFO - Fetching data for ACN (attempt 2/3)
+2025-03-11 14:19:23,856 - INFO - Fetching data for A (attempt 2/3)
+2025-03-11 14:19:23,874 - INFO - Fetching data for ALB (attempt 2/3)
+2025-03-11 14:19:23,895 - INFO - Fetching data for AFL (attempt 2/3)
+2025-03-11 14:19:23,933 - INFO - Fetching data for GOOGL (attempt 2/3)
+2025-03-11 14:19:23,943 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,967 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:19:23,991 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,006 - INFO - Fetching data for ADBE (attempt 2/3)
+2025-03-11 14:19:24,012 - INFO - Fetching data for ALGN (attempt 2/3)
+2025-03-11 14:19:24,016 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,073 - INFO - Fetching data for AKAM (attempt 2/3)
+2025-03-11 14:19:24,073 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,174 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,197 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,220 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,266 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,287 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,317 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,339 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,362 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,404 - ERROR - Error scraping ABNB: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,429 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,501 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,605 - ERROR - Error scraping LNT: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,647 - ERROR - Error scraping GOOGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,688 - ERROR - Error scraping ALGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:24,935 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:19:25,948 - INFO - Fetching data for ALL (attempt 3/3)
+2025-03-11 14:19:25,971 - INFO - Fetching data for MMM (attempt 3/3)
+2025-03-11 14:19:25,993 - INFO - Fetching data for APD (attempt 3/3)
+2025-03-11 14:19:26,024 - INFO - Fetching data for ALLE (attempt 3/3)
+2025-03-11 14:19:26,078 - INFO - Fetching data for ARE (attempt 3/3)
+2025-03-11 14:19:26,178 - INFO - Fetching data for ABBV (attempt 3/3)
+2025-03-11 14:19:26,198 - INFO - Fetching data for AES (attempt 3/3)
+2025-03-11 14:19:26,225 - INFO - Fetching data for AOS (attempt 3/3)
+2025-03-11 14:19:26,271 - INFO - Fetching data for AMD (attempt 3/3)
+2025-03-11 14:19:26,293 - INFO - Fetching data for ABT (attempt 3/3)
+2025-03-11 14:19:26,321 - INFO - Fetching data for A (attempt 3/3)
+2025-03-11 14:19:26,349 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,349 - INFO - Fetching data for ALB (attempt 3/3)
+2025-03-11 14:19:26,350 - INFO - Fetching data for GOOG (attempt 1/3)
+2025-03-11 14:19:26,364 - INFO - Fetching data for AFL (attempt 3/3)
+2025-03-11 14:19:26,423 - INFO - Fetching data for ABNB (attempt 3/3)
+2025-03-11 14:19:26,426 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,428 - INFO - Fetching data for MO (attempt 1/3)
+2025-03-11 14:19:26,430 - INFO - Fetching data for ACN (attempt 3/3)
+2025-03-11 14:19:26,451 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,452 - INFO - Fetching data for AMZN (attempt 1/3)
+2025-03-11 14:19:26,474 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,476 - INFO - Fetching data for AMCR (attempt 1/3)
+2025-03-11 14:19:26,503 - INFO - Fetching data for ADBE (attempt 3/3)
+2025-03-11 14:19:26,589 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,591 - INFO - Fetching data for AEE (attempt 1/3)
+2025-03-11 14:19:26,614 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,614 - INFO - Fetching data for LNT (attempt 3/3)
+2025-03-11 14:19:26,615 - INFO - Fetching data for AEP (attempt 1/3)
+2025-03-11 14:19:26,638 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,640 - INFO - Fetching data for AXP (attempt 1/3)
+2025-03-11 14:19:26,705 - INFO - Fetching data for GOOGL (attempt 3/3)
+2025-03-11 14:19:26,705 - INFO - Fetching data for ALGN (attempt 3/3)
+2025-03-11 14:19:26,719 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,723 - INFO - Fetching data for AIG (attempt 1/3)
+2025-03-11 14:19:26,773 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,775 - INFO - Fetching data for AMT (attempt 1/3)
+2025-03-11 14:19:26,858 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,866 - INFO - Fetching data for AWK (attempt 1/3)
+2025-03-11 14:19:26,870 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,871 - INFO - Fetching data for AMP (attempt 1/3)
+2025-03-11 14:19:26,910 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,911 - INFO - Fetching data for AME (attempt 1/3)
+2025-03-11 14:19:26,939 - ERROR - Error scraping MO: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,939 - INFO - Fetching data for AKAM (attempt 3/3)
+2025-03-11 14:19:26,963 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:19:26,964 - INFO - Fetching data for AMGN (attempt 1/3)
+2025-03-11 14:19:26,986 - ERROR - Error scraping AMCR: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,015 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,017 - INFO - Fetching data for APH (attempt 1/3)
+2025-03-11 14:19:27,064 - ERROR - Error scraping ABNB: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,065 - INFO - Fetching data for ADI (attempt 1/3)
+2025-03-11 14:19:27,106 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,108 - INFO - Fetching data for ANSS (attempt 1/3)
+2025-03-11 14:19:27,138 - ERROR - Error scraping AEE: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,221 - ERROR - Error scraping AIG: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,241 - ERROR - Error scraping AXP: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,282 - ERROR - Error scraping AMZN: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,357 - ERROR - Error scraping GOOG: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,364 - ERROR - Error scraping AEP: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,449 - ERROR - Error scraping ALGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,451 - INFO - Fetching data for AON (attempt 1/3)
+2025-03-11 14:19:27,511 - ERROR - Error scraping AMP: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,521 - ERROR - Error scraping LNT: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,522 - INFO - Fetching data for APA (attempt 1/3)
+2025-03-11 14:19:27,544 - ERROR - Error scraping AMT: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,571 - ERROR - Error scraping AME: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,621 - ERROR - Error scraping APH: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,666 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,668 - INFO - Fetching data for APO (attempt 1/3)
+2025-03-11 14:19:27,714 - ERROR - Error scraping GOOGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,726 - INFO - Fetching data for AAPL (attempt 1/3)
+2025-03-11 14:19:27,730 - ERROR - Error scraping AWK: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,770 - ERROR - Error scraping ANSS: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,811 - ERROR - Error scraping AMGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,851 - ERROR - Error scraping ADI: Could not extract required data (price or market cap)
+2025-03-11 14:19:27,943 - INFO - Fetching data for MO (attempt 2/3)
+2025-03-11 14:19:28,003 - INFO - Fetching data for AMCR (attempt 2/3)
+2025-03-11 14:19:28,010 - ERROR - Error scraping AON: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,113 - ERROR - Error scraping APA: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,146 - INFO - Fetching data for AEE (attempt 2/3)
+2025-03-11 14:19:28,162 - ERROR - Error scraping APO: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,226 - INFO - Fetching data for AIG (attempt 2/3)
+2025-03-11 14:19:28,245 - INFO - Fetching data for AXP (attempt 2/3)
+2025-03-11 14:19:28,282 - INFO - Fetching data for AMZN (attempt 2/3)
+2025-03-11 14:19:28,371 - ERROR - Error scraping MO: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,371 - INFO - Fetching data for AEP (attempt 2/3)
+2025-03-11 14:19:28,371 - INFO - Fetching data for GOOG (attempt 2/3)
+2025-03-11 14:19:28,400 - ERROR - Error scraping AAPL: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,423 - ERROR - Error scraping AMCR: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,516 - INFO - Fetching data for AMP (attempt 2/3)
+2025-03-11 14:19:28,547 - INFO - Fetching data for AMT (attempt 2/3)
+2025-03-11 14:19:28,573 - ERROR - Error scraping AEE: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,586 - INFO - Fetching data for AME (attempt 2/3)
+2025-03-11 14:19:28,597 - ERROR - Error scraping AIG: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,627 - INFO - Fetching data for APH (attempt 2/3)
+2025-03-11 14:19:28,735 - INFO - Fetching data for AWK (attempt 2/3)
+2025-03-11 14:19:28,775 - INFO - Fetching data for ANSS (attempt 2/3)
+2025-03-11 14:19:28,788 - ERROR - Error scraping AMZN: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,816 - INFO - Fetching data for AMGN (attempt 2/3)
+2025-03-11 14:19:28,858 - INFO - Fetching data for ADI (attempt 2/3)
+2025-03-11 14:19:28,898 - ERROR - Error scraping GOOG: Could not extract required data (price or market cap)
+2025-03-11 14:19:28,957 - ERROR - Error scraping AXP: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,015 - INFO - Fetching data for AON (attempt 2/3)
+2025-03-11 14:19:29,030 - ERROR - Error scraping APH: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,117 - ERROR - Error scraping AEP: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,117 - INFO - Fetching data for APA (attempt 2/3)
+2025-03-11 14:19:29,145 - ERROR - Error scraping AME: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,167 - INFO - Fetching data for APO (attempt 2/3)
+2025-03-11 14:19:29,169 - ERROR - Error scraping AWK: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,190 - ERROR - Error scraping AMP: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,399 - ERROR - Error scraping AMGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,408 - INFO - Fetching data for AAPL (attempt 2/3)
+2025-03-11 14:19:29,443 - ERROR - Error scraping ADI: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,517 - ERROR - Error scraping ANSS: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,540 - ERROR - Error scraping AON: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,560 - ERROR - Error scraping AMT: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,605 - ERROR - Error scraping APO: Could not extract required data (price or market cap)
+2025-03-11 14:19:29,737 - ERROR - Error scraping APA: Could not extract required data (price or market cap)
+2025-03-11 14:19:30,225 - ERROR - Error scraping AAPL: Could not extract required data (price or market cap)
+2025-03-11 14:19:30,375 - INFO - Fetching data for MO (attempt 3/3)
+2025-03-11 14:19:30,428 - INFO - Fetching data for AMCR (attempt 3/3)
+2025-03-11 14:19:30,579 - INFO - Fetching data for AEE (attempt 3/3)
+2025-03-11 14:19:30,602 - INFO - Fetching data for AIG (attempt 3/3)
+2025-03-11 14:19:30,792 - INFO - Fetching data for AMZN (attempt 3/3)
+2025-03-11 14:19:30,867 - ERROR - Error scraping MO: Could not extract required data (price or market cap)
+2025-03-11 14:19:30,868 - INFO - Fetching data for AMAT (attempt 1/3)
+2025-03-11 14:19:30,904 - INFO - Fetching data for GOOG (attempt 3/3)
+2025-03-11 14:19:30,910 - ERROR - Error scraping AMCR: Could not extract required data (price or market cap)
+2025-03-11 14:19:30,912 - INFO - Fetching data for APTV (attempt 1/3)
+2025-03-11 14:19:30,958 - INFO - Fetching data for AXP (attempt 3/3)
+2025-03-11 14:19:31,031 - INFO - Fetching data for APH (attempt 3/3)
+2025-03-11 14:19:31,122 - INFO - Fetching data for AEP (attempt 3/3)
+2025-03-11 14:19:31,146 - INFO - Fetching data for AME (attempt 3/3)
+2025-03-11 14:19:31,174 - INFO - Fetching data for AWK (attempt 3/3)
+2025-03-11 14:19:31,195 - INFO - Fetching data for AMP (attempt 3/3)
+2025-03-11 14:19:31,207 - ERROR - Error scraping AEE: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,210 - INFO - Fetching data for ACGL (attempt 1/3)
+2025-03-11 14:19:31,234 - ERROR - Error scraping AIG: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,235 - INFO - Fetching data for ADM (attempt 1/3)
+2025-03-11 14:19:31,315 - ERROR - Error scraping AMZN: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,317 - INFO - Fetching data for ANET (attempt 1/3)
+2025-03-11 14:19:31,358 - ERROR - Error scraping AMAT: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,379 - ERROR - Error scraping AXP: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,381 - INFO - Fetching data for AJG (attempt 1/3)
+2025-03-11 14:19:31,403 - INFO - Fetching data for AMGN (attempt 3/3)
+2025-03-11 14:19:31,448 - INFO - Fetching data for ADI (attempt 3/3)
+2025-03-11 14:19:31,503 - ERROR - Error scraping APTV: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,518 - INFO - Fetching data for ANSS (attempt 3/3)
+2025-03-11 14:19:31,548 - ERROR - Error scraping APH: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,548 - INFO - Fetching data for AON (attempt 3/3)
+2025-03-11 14:19:31,551 - INFO - Fetching data for AIZ (attempt 1/3)
+2025-03-11 14:19:31,576 - INFO - Fetching data for AMT (attempt 3/3)
+2025-03-11 14:19:31,647 - INFO - Fetching data for APO (attempt 3/3)
+2025-03-11 14:19:31,652 - ERROR - Error scraping GOOG: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,654 - INFO - Fetching data for T (attempt 1/3)
+2025-03-11 14:19:31,678 - ERROR - Error scraping AME: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,681 - INFO - Fetching data for ATO (attempt 1/3)
+2025-03-11 14:19:31,705 - ERROR - Error scraping AWK: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,706 - INFO - Fetching data for ADSK (attempt 1/3)
+2025-03-11 14:19:31,749 - INFO - Fetching data for APA (attempt 3/3)
+2025-03-11 14:19:31,753 - ERROR - Error scraping AEP: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,762 - INFO - Fetching data for ADP (attempt 1/3)
+2025-03-11 14:19:31,777 - ERROR - Error scraping AMP: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,779 - INFO - Fetching data for AZO (attempt 1/3)
+2025-03-11 14:19:31,801 - ERROR - Error scraping ADM: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,838 - ERROR - Error scraping AJG: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,950 - ERROR - Error scraping ACGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:31,973 - ERROR - Error scraping ANET: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,038 - ERROR - Error scraping AON: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,040 - INFO - Fetching data for AVB (attempt 1/3)
+2025-03-11 14:19:32,088 - ERROR - Error scraping ANSS: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,089 - INFO - Fetching data for AVY (attempt 1/3)
+2025-03-11 14:19:32,124 - ERROR - Error scraping APO: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,127 - INFO - Fetching data for AXON (attempt 1/3)
+2025-03-11 14:19:32,151 - ERROR - Error scraping AMT: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,154 - INFO - Fetching data for BKR (attempt 1/3)
+2025-03-11 14:19:32,238 - ERROR - Error scraping ATO: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,239 - INFO - Fetching data for AAPL (attempt 3/3)
+2025-03-11 14:19:32,282 - ERROR - Error scraping AMGN: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,284 - INFO - Fetching data for BALL (attempt 1/3)
+2025-03-11 14:19:32,329 - ERROR - Error scraping ADI: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,331 - INFO - Fetching data for BAC (attempt 1/3)
+2025-03-11 14:19:32,375 - ERROR - Error scraping APA: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,375 - INFO - Fetching data for AMAT (attempt 2/3)
+2025-03-11 14:19:32,377 - INFO - Fetching data for BAX (attempt 1/3)
+2025-03-11 14:19:32,401 - ERROR - Error scraping AIZ: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,441 - ERROR - Error scraping ADSK: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,463 - ERROR - Error scraping T: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,486 - ERROR - Error scraping AZO: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,506 - ERROR - Error scraping AVB: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,506 - INFO - Fetching data for APTV (attempt 2/3)
+2025-03-11 14:19:32,686 - ERROR - Error scraping ADP: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,709 - ERROR - Error scraping AVY: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,750 - ERROR - Error scraping BALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,781 - ERROR - Error scraping BAC: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,806 - INFO - Fetching data for ADM (attempt 2/3)
+2025-03-11 14:19:32,843 - INFO - Fetching data for AJG (attempt 2/3)
+2025-03-11 14:19:32,871 - ERROR - Error scraping BKR: Could not extract required data (price or market cap)
+2025-03-11 14:19:32,958 - INFO - Fetching data for ACGL (attempt 2/3)
+2025-03-11 14:19:32,978 - INFO - Fetching data for ANET (attempt 2/3)
+2025-03-11 14:19:32,988 - ERROR - Error scraping AXON: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,011 - ERROR - Error scraping BAX: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,121 - ERROR - Error scraping APTV: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,194 - ERROR - Error scraping ADM: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,256 - INFO - Fetching data for ATO (attempt 2/3)
+2025-03-11 14:19:33,289 - ERROR - Error scraping AAPL: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,290 - INFO - Fetching data for BDX (attempt 1/3)
+2025-03-11 14:19:33,318 - ERROR - Error scraping AJG: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,408 - INFO - Fetching data for AIZ (attempt 2/3)
+2025-03-11 14:19:33,419 - ERROR - Error scraping ANET: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,473 - INFO - Fetching data for T (attempt 2/3)
+2025-03-11 14:19:33,473 - INFO - Fetching data for ADSK (attempt 2/3)
+2025-03-11 14:19:33,498 - INFO - Fetching data for AZO (attempt 2/3)
+2025-03-11 14:19:33,500 - ERROR - Error scraping AMAT: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,510 - INFO - Fetching data for AVB (attempt 2/3)
+2025-03-11 14:19:33,557 - ERROR - Error scraping ACGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,690 - INFO - Fetching data for ADP (attempt 2/3)
+2025-03-11 14:19:33,721 - INFO - Fetching data for AVY (attempt 2/3)
+2025-03-11 14:19:33,724 - ERROR - Error scraping BDX: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,750 - INFO - Fetching data for BALL (attempt 2/3)
+2025-03-11 14:19:33,787 - INFO - Fetching data for BAC (attempt 2/3)
+2025-03-11 14:19:33,883 - INFO - Fetching data for BKR (attempt 2/3)
+2025-03-11 14:19:33,888 - ERROR - Error scraping ATO: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,912 - ERROR - Error scraping AZO: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,933 - ERROR - Error scraping AIZ: Could not extract required data (price or market cap)
+2025-03-11 14:19:33,992 - INFO - Fetching data for AXON (attempt 2/3)
+2025-03-11 14:19:34,051 - INFO - Fetching data for BAX (attempt 2/3)
+2025-03-11 14:19:34,069 - ERROR - Error scraping ADSK: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,141 - ERROR - Error scraping BALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,171 - ERROR - Error scraping T: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,185 - ERROR - Error scraping AVB: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,226 - ERROR - Error scraping ADP: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,299 - ERROR - Error scraping BAC: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,387 - ERROR - Error scraping AVY: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,495 - ERROR - Error scraping BAX: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,700 - ERROR - Error scraping BKR: Could not extract required data (price or market cap)
+2025-03-11 14:19:34,727 - INFO - Fetching data for BDX (attempt 2/3)
+2025-03-11 14:19:34,874 - ERROR - Error scraping AXON: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,114 - ERROR - Error scraping BDX: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,126 - INFO - Fetching data for APTV (attempt 3/3)
+2025-03-11 14:19:35,199 - INFO - Fetching data for ADM (attempt 3/3)
+2025-03-11 14:19:35,323 - INFO - Fetching data for AJG (attempt 3/3)
+2025-03-11 14:19:35,422 - INFO - Fetching data for ANET (attempt 3/3)
+2025-03-11 14:19:35,505 - INFO - Fetching data for AMAT (attempt 3/3)
+2025-03-11 14:19:35,560 - INFO - Fetching data for ACGL (attempt 3/3)
+2025-03-11 14:19:35,653 - ERROR - Error scraping APTV: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,654 - INFO - Fetching data for BRK.B (attempt 1/3)
+2025-03-11 14:19:35,774 - ERROR - Error scraping ADM: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,776 - INFO - Fetching data for BBY (attempt 1/3)
+2025-03-11 14:19:35,894 - INFO - Fetching data for ATO (attempt 3/3)
+2025-03-11 14:19:35,914 - ERROR - Error scraping AJG: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,916 - INFO - Fetching data for TECH (attempt 1/3)
+2025-03-11 14:19:35,918 - INFO - Fetching data for AZO (attempt 3/3)
+2025-03-11 14:19:35,940 - INFO - Fetching data for AIZ (attempt 3/3)
+2025-03-11 14:19:35,972 - ERROR - Error scraping AMAT: Could not extract required data (price or market cap)
+2025-03-11 14:19:35,973 - INFO - Fetching data for BIIB (attempt 1/3)
+2025-03-11 14:19:36,006 - ERROR - Error scraping ANET: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,008 - INFO - Fetching data for BLK (attempt 1/3)
+2025-03-11 14:19:36,077 - INFO - Fetching data for ADSK (attempt 3/3)
+2025-03-11 14:19:36,158 - INFO - Fetching data for BALL (attempt 3/3)
+2025-03-11 14:19:36,163 - ERROR - Error scraping ACGL: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,166 - INFO - Fetching data for BX (attempt 1/3)
+2025-03-11 14:19:36,180 - INFO - Fetching data for T (attempt 3/3)
+2025-03-11 14:19:36,188 - INFO - Fetching data for AVB (attempt 3/3)
+2025-03-11 14:19:36,189 - ERROR - Error scraping BRK.B: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,227 - INFO - Fetching data for ADP (attempt 3/3)
+2025-03-11 14:19:36,271 - ERROR - Error scraping BBY: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,304 - INFO - Fetching data for BAC (attempt 3/3)
+2025-03-11 14:19:36,392 - INFO - Fetching data for AVY (attempt 3/3)
+2025-03-11 14:19:36,402 - ERROR - Error scraping AIZ: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,403 - INFO - Fetching data for BK (attempt 1/3)
+2025-03-11 14:19:36,428 - ERROR - Error scraping BLK: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,508 - INFO - Fetching data for BAX (attempt 3/3)
+2025-03-11 14:19:36,519 - ERROR - Error scraping TECH: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,568 - ERROR - Error scraping BIIB: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,590 - ERROR - Error scraping ATO: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,591 - INFO - Fetching data for BA (attempt 1/3)
+2025-03-11 14:19:36,613 - ERROR - Error scraping BX: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,639 - ERROR - Error scraping AVB: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,641 - INFO - Fetching data for BKNG (attempt 1/3)
+2025-03-11 14:19:36,664 - ERROR - Error scraping AZO: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,665 - INFO - Fetching data for BWA (attempt 1/3)
+2025-03-11 14:19:36,708 - ERROR - Error scraping ADSK: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,709 - INFO - Fetching data for BKR (attempt 3/3)
+2025-03-11 14:19:36,710 - INFO - Fetching data for BSX (attempt 1/3)
+2025-03-11 14:19:36,781 - ERROR - Error scraping T: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,783 - INFO - Fetching data for BMY (attempt 1/3)
+2025-03-11 14:19:36,810 - ERROR - Error scraping BALL: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,811 - INFO - Fetching data for AVGO (attempt 1/3)
+2025-03-11 14:19:36,859 - ERROR - Error scraping BK: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,879 - INFO - Fetching data for AXON (attempt 3/3)
+2025-03-11 14:19:36,902 - ERROR - Error scraping ADP: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,903 - INFO - Fetching data for BR (attempt 1/3)
+2025-03-11 14:19:36,948 - ERROR - Error scraping BAC: Could not extract required data (price or market cap)
+2025-03-11 14:19:36,949 - INFO - Fetching data for BRO (attempt 1/3)
+2025-03-11 14:19:37,037 - ERROR - Error scraping AVY: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,038 - INFO - Fetching data for BF.B (attempt 1/3)
+2025-03-11 14:19:37,062 - ERROR - Error scraping BA: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,085 - ERROR - Error scraping BAX: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,086 - INFO - Fetching data for BLDR (attempt 1/3)
+2025-03-11 14:19:37,116 - INFO - Fetching data for BDX (attempt 3/3)
+2025-03-11 14:19:37,184 - ERROR - Error scraping BKNG: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,201 - INFO - Fetching data for BRK.B (attempt 2/3)
+2025-03-11 14:19:37,210 - ERROR - Error scraping BSX: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,254 - ERROR - Error scraping BMY: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,277 - INFO - Fetching data for BBY (attempt 2/3)
+2025-03-11 14:19:37,298 - ERROR - Error scraping BWA: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,321 - ERROR - Error scraping BR: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,405 - ERROR - Error scraping BKR: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,407 - INFO - Fetching data for BG (attempt 1/3)
+2025-03-11 14:19:37,448 - INFO - Fetching data for BLK (attempt 2/3)
+2025-03-11 14:19:37,475 - ERROR - Error scraping AVGO: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,490 - ERROR - Error scraping AXON: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,492 - INFO - Fetching data for BXP (attempt 1/3)
+2025-03-11 14:19:37,516 - ERROR - Error scraping BRO: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,526 - INFO - Fetching data for TECH (attempt 2/3)
+2025-03-11 14:19:37,538 - ERROR - Error scraping BF.B: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,540 - INFO - Data saved to sp500_data/sp500_data_20250311_141937_intermediate.json
+2025-03-11 14:19:37,540 - INFO - Progress: 50/503 stocks processed (Success rate: 0.00%)
+2025-03-11 14:19:37,565 - ERROR - Error scraping BLDR: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,572 - INFO - Fetching data for BIIB (attempt 2/3)
+2025-03-11 14:19:37,588 - ERROR - Error scraping BDX: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,590 - INFO - Fetching data for CHRW (attempt 1/3)
+2025-03-11 14:19:37,619 - INFO - Fetching data for BX (attempt 2/3)
+2025-03-11 14:19:37,853 - ERROR - Error scraping BRK.B: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,860 - INFO - Fetching data for BK (attempt 2/3)
+2025-03-11 14:19:37,893 - ERROR - Error scraping BLK: Could not extract required data (price or market cap)
+2025-03-11 14:19:37,996 - ERROR - Error scraping BBY: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,044 - ERROR - Error scraping BG: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,133 - INFO - Fetching data for BA (attempt 2/3)
+2025-03-11 14:19:38,136 - ERROR - Error scraping TECH: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,155 - ERROR - Error scraping BX: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,174 - ERROR - Error scraping BXP: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,195 - INFO - Fetching data for BKNG (attempt 2/3)
+2025-03-11 14:19:38,220 - INFO - Fetching data for BSX (attempt 2/3)
+2025-03-11 14:19:38,224 - ERROR - Error scraping BIIB: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,256 - ERROR - Error scraping CHRW: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,258 - INFO - Fetching data for BMY (attempt 2/3)
+2025-03-11 14:19:38,303 - INFO - Fetching data for BWA (attempt 2/3)
+2025-03-11 14:19:38,332 - INFO - Fetching data for BR (attempt 2/3)
+2025-03-11 14:19:38,334 - ERROR - Error scraping BK: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,494 - INFO - Fetching data for AVGO (attempt 2/3)
+2025-03-11 14:19:38,518 - INFO - Fetching data for BRO (attempt 2/3)
+2025-03-11 14:19:38,542 - INFO - Fetching data for BF.B (attempt 2/3)
+2025-03-11 14:19:38,569 - INFO - Fetching data for BLDR (attempt 2/3)
+2025-03-11 14:19:38,614 - ERROR - Error scraping BA: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,660 - ERROR - Error scraping BMY: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,734 - ERROR - Error scraping BWA: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,816 - ERROR - Error scraping BR: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,862 - ERROR - Error scraping BSX: Could not extract required data (price or market cap)
+2025-03-11 14:19:38,929 - ERROR - Error scraping BF.B: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,018 - ERROR - Error scraping BKNG: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,042 - ERROR - Error scraping BLDR: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,049 - INFO - Fetching data for BG (attempt 2/3)
+2025-03-11 14:19:39,148 - ERROR - Error scraping BRO: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,175 - INFO - Fetching data for BXP (attempt 2/3)
+2025-03-11 14:19:39,228 - ERROR - Error scraping AVGO: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,259 - INFO - Fetching data for CHRW (attempt 2/3)
+2025-03-11 14:19:39,602 - ERROR - Error scraping BXP: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,751 - ERROR - Error scraping BG: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,791 - ERROR - Error scraping CHRW: Could not extract required data (price or market cap)
+2025-03-11 14:19:39,858 - INFO - Fetching data for BRK.B (attempt 3/3)
+2025-03-11 14:19:39,898 - INFO - Fetching data for BLK (attempt 3/3)
+2025-03-11 14:19:40,001 - INFO - Fetching data for BBY (attempt 3/3)
+2025-03-11 14:19:40,141 - INFO - Fetching data for TECH (attempt 3/3)
+2025-03-11 14:19:40,156 - INFO - Fetching data for BX (attempt 3/3)
+2025-03-11 14:19:40,226 - INFO - Fetching data for BIIB (attempt 3/3)
+2025-03-11 14:19:40,266 - ERROR - Error scraping BRK.B: Could not extract required data (price or market cap)
+2025-03-11 14:19:40,268 - INFO - Fetching data for CDNS (attempt 1/3)
+2025-03-11 14:19:40,291 - ERROR - Error scraping BLK: Could not extract required data (price or market cap)
+2025-03-11 14:19:40,292 - INFO - Fetching data for CZR (attempt 1/3)
+2025-03-11 14:19:40,336 - INFO - Fetching data for BK (attempt 3/3)
+2025-03-11 14:19:40,455 - ERROR - Error scraping BBY: Could not extract required data (price or market cap)
+2025-03-11 14:19:40,456 - INFO - Fetching data for CPT (attempt 1/3)
+2025-03-11 14:19:40,617 - INFO - Fetching data for BA (attempt 3/3)
+2025-03-11 14:19:40,666 - INFO - Fetching data for BMY (attempt 3/3)
+2025-03-11 14:19:40,740 - INFO - Fetching data for BWA (attempt 3/3)
+2025-03-11 14:19:40,794 - ERROR - Error scraping BX: Could not extract required data (price or market cap)
+2025-03-11 14:19:40,796 - INFO - Fetching data for CPB (attempt 1/3)
+2025-03-11 14:19:40,822 - INFO - Fetching data for BR (attempt 3/3)
+2025-03-11 14:19:40,872 - INFO - Fetching data for BSX (attempt 3/3)
+2025-03-11 14:19:40,878 - ERROR - Error scraping TECH: Could not extract required data (price or market cap)
+2025-03-11 14:19:40,882 - INFO - Fetching data for COF (attempt 1/3)
+2025-03-11 14:19:40,972 - INFO - Fetching data for BF.B (attempt 3/3)
+2025-03-11 14:19:40,989 - ERROR - Error scraping CDNS: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,033 - ERROR - Error scraping CZR: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,033 - INFO - Fetching data for BKNG (attempt 3/3)
+2025-03-11 14:19:41,061 - ERROR - Error scraping BK: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,062 - INFO - Fetching data for BLDR (attempt 3/3)
+2025-03-11 14:19:41,101 - ERROR - Error scraping BIIB: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,104 - INFO - Fetching data for CAH (attempt 1/3)
+2025-03-11 14:19:41,127 - ERROR - Error scraping BA: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,128 - INFO - Fetching data for KMX (attempt 1/3)
+2025-03-11 14:19:41,130 - INFO - Fetching data for CCL (attempt 1/3)
+2025-03-11 14:19:41,153 - ERROR - Error scraping CPT: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,153 - INFO - Fetching data for BRO (attempt 3/3)
+2025-03-11 14:19:41,180 - ERROR - Error scraping BMY: Could not extract required data (price or market cap)
+2025-03-11 14:19:41,182 - INFO - Fetching data for CARR (attempt 1/3)
+2025-03-11 14:19:41,232 - INFO - Fetching data for AVGO (attempt 3/3)
+2025-03-11 14:20:05,144 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:20:05,821 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:20:05,822 - INFO - Starting to scrape 503 S&P 500 stocks using 20 workers
+2025-03-11 14:20:05,822 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:20:05,822 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:20:05,823 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:20:05,823 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:20:05,824 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:20:05,824 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:20:05,825 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:20:05,826 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:20:05,827 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:20:05,827 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:20:05,827 - INFO - Fetching data for APD (attempt 1/3)
+2025-03-11 14:20:05,828 - INFO - Fetching data for ABNB (attempt 1/3)
+2025-03-11 14:20:05,828 - INFO - Fetching data for AKAM (attempt 1/3)
+2025-03-11 14:20:05,829 - INFO - Fetching data for ALB (attempt 1/3)
+2025-03-11 14:20:05,829 - INFO - Fetching data for ARE (attempt 1/3)
+2025-03-11 14:20:05,829 - INFO - Fetching data for ALGN (attempt 1/3)
+2025-03-11 14:20:05,830 - INFO - Fetching data for ALLE (attempt 1/3)
+2025-03-11 14:20:05,830 - INFO - Fetching data for LNT (attempt 1/3)
+2025-03-11 14:20:05,831 - INFO - Fetching data for ALL (attempt 1/3)
+2025-03-11 14:20:05,831 - INFO - Fetching data for GOOGL (attempt 1/3)
+2025-03-11 14:20:06,251 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,298 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,332 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,356 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,381 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,427 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,488 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,516 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,525 - ERROR - Error scraping ABNB: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,526 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,549 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,572 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,594 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,637 - ERROR - Error scraping GOOGL: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,704 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,718 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,795 - ERROR - Error scraping LNT: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,804 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,826 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:20:06,868 - ERROR - Error scraping ALGN: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,257 - INFO - Fetching data for APD (attempt 2/3)
+2025-03-11 14:20:07,303 - INFO - Fetching data for AFL (attempt 2/3)
+2025-03-11 14:20:07,338 - INFO - Fetching data for ALB (attempt 2/3)
+2025-03-11 14:20:07,359 - INFO - Fetching data for ALL (attempt 2/3)
+2025-03-11 14:20:07,386 - INFO - Fetching data for ACN (attempt 2/3)
+2025-03-11 14:20:07,437 - INFO - Fetching data for AES (attempt 2/3)
+2025-03-11 14:20:07,517 - INFO - Fetching data for ALLE (attempt 2/3)
+2025-03-11 14:20:07,526 - INFO - Fetching data for ABBV (attempt 2/3)
+2025-03-11 14:20:07,531 - INFO - Fetching data for ABNB (attempt 2/3)
+2025-03-11 14:20:07,532 - INFO - Fetching data for AMD (attempt 2/3)
+2025-03-11 14:20:07,554 - INFO - Fetching data for AOS (attempt 2/3)
+2025-03-11 14:20:07,577 - INFO - Fetching data for ABT (attempt 2/3)
+2025-03-11 14:20:07,599 - INFO - Fetching data for ARE (attempt 2/3)
+2025-03-11 14:20:07,642 - INFO - Fetching data for GOOGL (attempt 2/3)
+2025-03-11 14:20:07,691 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,727 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,727 - INFO - Fetching data for AKAM (attempt 2/3)
+2025-03-11 14:20:07,728 - INFO - Fetching data for A (attempt 2/3)
+2025-03-11 14:20:07,751 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,817 - INFO - Fetching data for LNT (attempt 2/3)
+2025-03-11 14:20:07,817 - INFO - Fetching data for ADBE (attempt 2/3)
+2025-03-11 14:20:07,830 - INFO - Fetching data for MMM (attempt 2/3)
+2025-03-11 14:20:07,830 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,897 - INFO - Fetching data for ALGN (attempt 2/3)
+2025-03-11 14:20:07,907 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,934 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,965 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:07,990 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,133 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,161 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,181 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,227 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,260 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,338 - ERROR - Error scraping ABNB: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,376 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,465 - ERROR - Error scraping GOOGL: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,503 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,529 - ERROR - Error scraping LNT: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,570 - ERROR - Error scraping ALGN: Could not extract required data (price or market cap)
+2025-03-11 14:20:08,610 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:20:09,693 - INFO - Fetching data for APD (attempt 3/3)
+2025-03-11 14:20:09,737 - INFO - Fetching data for ALB (attempt 3/3)
+2025-03-11 14:20:09,756 - INFO - Fetching data for ALL (attempt 3/3)
+2025-03-11 14:20:09,836 - INFO - Fetching data for AFL (attempt 3/3)
+2025-03-11 14:20:09,910 - INFO - Fetching data for AES (attempt 3/3)
+2025-03-11 14:20:09,939 - INFO - Fetching data for ALLE (attempt 3/3)
+2025-03-11 14:20:09,970 - INFO - Fetching data for ACN (attempt 3/3)
+2025-03-11 14:20:09,995 - INFO - Fetching data for ABT (attempt 3/3)
+2025-03-11 14:20:10,148 - INFO - Fetching data for ABBV (attempt 3/3)
+2025-03-11 14:20:10,150 - ERROR - Error scraping ALB: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,164 - INFO - Fetching data for AOS (attempt 3/3)
+2025-03-11 14:20:10,174 - ERROR - Error scraping APD: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,174 - INFO - Fetching data for GOOG (attempt 1/3)
+2025-03-11 14:20:10,177 - INFO - Fetching data for MO (attempt 1/3)
+2025-03-11 14:20:10,187 - INFO - Fetching data for A (attempt 3/3)
+2025-03-11 14:20:10,233 - INFO - Fetching data for AKAM (attempt 3/3)
+2025-03-11 14:20:10,284 - INFO - Fetching data for ARE (attempt 3/3)
+2025-03-11 14:20:10,322 - ERROR - Error scraping ALL: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,323 - INFO - Fetching data for AMZN (attempt 1/3)
+2025-03-11 14:20:10,340 - INFO - Fetching data for ABNB (attempt 3/3)
+2025-03-11 14:20:10,402 - INFO - Fetching data for AMD (attempt 3/3)
+2025-03-11 14:20:10,431 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,438 - INFO - Fetching data for AMCR (attempt 1/3)
+2025-03-11 14:20:10,455 - ERROR - Error scraping ALLE: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,457 - INFO - Fetching data for AEE (attempt 1/3)
+2025-03-11 14:20:10,476 - INFO - Fetching data for GOOGL (attempt 3/3)
+2025-03-11 14:20:10,486 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,488 - INFO - Fetching data for AEP (attempt 1/3)
+2025-03-11 14:20:10,517 - INFO - Fetching data for MMM (attempt 3/3)
+2025-03-11 14:20:10,529 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,530 - INFO - Fetching data for LNT (attempt 3/3)
+2025-03-11 14:20:10,533 - INFO - Fetching data for AXP (attempt 1/3)
+2025-03-11 14:20:10,615 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,615 - INFO - Fetching data for ALGN (attempt 3/3)
+2025-03-11 14:20:10,615 - INFO - Fetching data for ADBE (attempt 3/3)
+2025-03-11 14:20:10,618 - INFO - Fetching data for AIG (attempt 1/3)
+2025-03-11 14:20:10,645 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,647 - INFO - Fetching data for AMT (attempt 1/3)
+2025-03-11 14:20:10,678 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,679 - INFO - Fetching data for AWK (attempt 1/3)
+2025-03-11 14:20:10,707 - ERROR - Error scraping ARE: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,709 - INFO - Fetching data for AMP (attempt 1/3)
+2025-03-11 14:20:10,754 - ERROR - Error scraping GOOG: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,798 - ERROR - Error scraping AKAM: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,799 - INFO - Fetching data for AME (attempt 1/3)
+2025-03-11 14:20:10,826 - ERROR - Error scraping MO: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,852 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:10,854 - INFO - Fetching data for AMGN (attempt 1/3)
+2025-03-11 14:20:39,008 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:20:39,754 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:20:39,755 - INFO - Starting to scrape 503 S&P 500 stocks using 5 workers
+2025-03-11 14:20:39,755 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:20:39,755 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:20:39,756 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:20:39,756 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:20:39,757 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:20:40,156 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:40,182 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:40,386 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:40,424 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:40,425 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:20:41,158 - INFO - Fetching data for AOS (attempt 2/3)
+2025-03-11 14:20:41,187 - INFO - Fetching data for ACN (attempt 2/3)
+2025-03-11 14:20:41,387 - INFO - Fetching data for ABBV (attempt 2/3)
+2025-03-11 14:20:41,426 - INFO - Fetching data for ABT (attempt 2/3)
+2025-03-11 14:20:41,426 - INFO - Fetching data for MMM (attempt 2/3)
+2025-03-11 14:20:41,576 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:41,804 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:41,831 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:42,051 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:42,076 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:20:43,581 - INFO - Fetching data for AOS (attempt 3/3)
+2025-03-11 14:20:43,808 - INFO - Fetching data for ACN (attempt 3/3)
+2025-03-11 14:20:43,836 - INFO - Fetching data for ABBV (attempt 3/3)
+2025-03-11 14:20:44,056 - INFO - Fetching data for ABT (attempt 3/3)
+2025-03-11 14:20:44,081 - INFO - Fetching data for MMM (attempt 3/3)
+2025-03-11 14:20:44,243 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,245 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:20:44,271 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,272 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:20:44,463 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,465 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:20:44,487 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,489 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:20:44,657 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,658 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:20:44,885 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:20:44,947 - ERROR - Error scraping AMD: Could not extract required data (price or market cap)
+2025-03-11 14:20:45,059 - ERROR - Error scraping AFL: Could not extract required data (price or market cap)
+2025-03-11 14:20:45,232 - ERROR - Error scraping AES: Could not extract required data (price or market cap)
+2025-03-11 14:20:45,255 - ERROR - Error scraping A: Could not extract required data (price or market cap)
+2025-03-11 14:31:17,157 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:31:17,967 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:31:17,968 - INFO - Starting to scrape 503 S&P 500 stocks using 2 workers
+2025-03-11 14:31:22,973 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:31:22,973 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:31:23,607 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:23,741 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:24,612 - INFO - Fetching data for AOS (attempt 2/3)
+2025-03-11 14:31:24,746 - INFO - Fetching data for MMM (attempt 2/3)
+2025-03-11 14:31:25,224 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:25,459 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:27,230 - INFO - Fetching data for AOS (attempt 3/3)
+2025-03-11 14:31:27,465 - INFO - Fetching data for MMM (attempt 3/3)
+2025-03-11 14:31:27,795 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:28,240 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:32,800 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:31:33,247 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:31:33,254 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:33,875 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:34,255 - INFO - Fetching data for AOS (attempt 2/3)
+2025-03-11 14:31:34,701 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:34,880 - INFO - Fetching data for MMM (attempt 2/3)
+2025-03-11 14:31:35,583 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:36,706 - INFO - Fetching data for AOS (attempt 3/3)
+2025-03-11 14:31:37,247 - ERROR - Error scraping AOS: Could not extract required data (price or market cap)
+2025-03-11 14:31:37,588 - INFO - Fetching data for MMM (attempt 3/3)
+2025-03-11 14:31:38,049 - ERROR - Error scraping MMM: Could not extract required data (price or market cap)
+2025-03-11 14:31:42,252 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:31:43,057 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:43,057 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:31:43,647 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:31:44,062 - INFO - Fetching data for ABT (attempt 2/3)
+2025-03-11 14:31:44,659 - INFO - Fetching data for ABBV (attempt 2/3)
+2025-03-11 14:31:44,669 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:45,334 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:31:46,674 - INFO - Fetching data for ABT (attempt 3/3)
+2025-03-11 14:31:47,225 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:47,339 - INFO - Fetching data for ABBV (attempt 3/3)
+2025-03-11 14:31:48,053 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:31:52,230 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:31:52,690 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:53,059 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:31:53,701 - INFO - Fetching data for ABT (attempt 2/3)
+2025-03-11 14:31:53,782 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:31:54,371 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:54,787 - INFO - Fetching data for ABBV (attempt 2/3)
+2025-03-11 14:31:55,231 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:31:56,377 - INFO - Fetching data for ABT (attempt 3/3)
+2025-03-11 14:31:57,001 - ERROR - Error scraping ABT: Could not extract required data (price or market cap)
+2025-03-11 14:31:57,236 - INFO - Fetching data for ABBV (attempt 3/3)
+2025-03-11 14:31:57,674 - ERROR - Error scraping ABBV: Could not extract required data (price or market cap)
+2025-03-11 14:32:02,008 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:32:02,631 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:32:02,680 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:32:03,358 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:32:03,633 - INFO - Fetching data for ACN (attempt 2/3)
+2025-03-11 14:32:04,369 - INFO - Fetching data for ADBE (attempt 2/3)
+2025-03-11 14:32:04,394 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:32:05,009 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:32:06,399 - INFO - Fetching data for ACN (attempt 3/3)
+2025-03-11 14:32:06,919 - ERROR - Error scraping ACN: Could not extract required data (price or market cap)
+2025-03-11 14:32:07,015 - INFO - Fetching data for ADBE (attempt 3/3)
+2025-03-11 14:32:07,462 - ERROR - Error scraping ADBE: Could not extract required data (price or market cap)
+2025-03-11 14:36:22,156 - INFO - Fetching S&P 500 symbols from Wikipedia...
+2025-03-11 14:36:22,926 - INFO - Successfully fetched 503 symbols
+2025-03-11 14:36:22,927 - INFO - Starting to scrape 503 S&P 500 stocks using 1 worker
+2025-03-11 14:36:33,728 - INFO - Fetching data for MMM (attempt 1/3)
+2025-03-11 14:36:35,202 - INFO - Successfully scraped data for MMM
+2025-03-11 14:36:46,506 - INFO - Fetching data for AOS (attempt 1/3)
+2025-03-11 14:36:47,628 - INFO - Successfully scraped data for AOS
+2025-03-11 14:36:56,238 - INFO - Fetching data for ABT (attempt 1/3)
+2025-03-11 14:36:57,650 - INFO - Successfully scraped data for ABT
+2025-03-11 14:37:09,549 - INFO - Fetching data for ABBV (attempt 1/3)
+2025-03-11 14:37:10,840 - INFO - Successfully scraped data for ABBV
+2025-03-11 14:37:19,147 - INFO - Fetching data for ACN (attempt 1/3)
+2025-03-11 14:37:20,442 - INFO - Successfully scraped data for ACN
+2025-03-11 14:37:20,444 - INFO - Data saved to sp500_data/sp500_data_20250311_143720_intermediate.json
+2025-03-11 14:37:20,444 - INFO - Progress: 5/503 stocks processed (Success rate: 100.00%)
+2025-03-11 14:37:30,828 - INFO - Fetching data for ADBE (attempt 1/3)
+2025-03-11 14:37:32,342 - INFO - Successfully scraped data for ADBE
+2025-03-11 14:37:42,829 - INFO - Fetching data for AMD (attempt 1/3)
+2025-03-11 14:37:44,114 - INFO - Successfully scraped data for AMD
+2025-03-11 14:37:53,490 - INFO - Fetching data for AES (attempt 1/3)
+2025-03-11 14:37:54,912 - INFO - Successfully scraped data for AES
+2025-03-11 14:38:05,187 - INFO - Fetching data for AFL (attempt 1/3)
+2025-03-11 14:38:06,613 - INFO - Successfully scraped data for AFL
+2025-03-11 14:38:16,444 - INFO - Fetching data for A (attempt 1/3)
+2025-03-11 14:38:17,841 - INFO - Successfully scraped data for A
+2025-03-11 14:38:17,843 - INFO - Data saved to sp500_data/sp500_data_20250311_143817_intermediate.json
+2025-03-11 14:38:17,843 - INFO - Progress: 10/503 stocks processed (Success rate: 100.00%)
+2025-03-11 14:38:29,369 - INFO - Fetching data for APD (attempt 1/3)
+2025-03-11 14:38:30,833 - INFO - Successfully scraped data for APD
+2025-03-11 14:38:40,916 - INFO - Fetching data for ABNB (attempt 1/3)
+2025-03-11 14:38:42,140 - INFO - Successfully scraped data for ABNB
+2025-03-11 14:38:51,497 - INFO - Fetching data for AKAM (attempt 1/3)
+2025-03-11 14:38:52,785 - INFO - Successfully scraped data for AKAM
+2025-03-11 14:39:03,103 - INFO - Fetching data for ALB (attempt 1/3)
+2025-03-11 14:39:04,255 - INFO - Successfully scraped data for ALB
+2025-03-11 14:39:15,295 - INFO - Fetching data for ARE (attempt 1/3)
+2025-03-11 14:39:16,537 - INFO - Successfully scraped data for ARE
+2025-03-11 14:39:16,539 - INFO - Data saved to sp500_data/sp500_data_20250311_143916_intermediate.json
+2025-03-11 14:39:16,539 - INFO - Progress: 15/503 stocks processed (Success rate: 100.00%)
+2025-03-11 14:39:27,597 - INFO - Fetching data for ALGN (attempt 1/3)
+2025-03-11 14:39:28,798 - INFO - Successfully scraped data for ALGN
+2025-03-11 14:39:37,652 - INFO - Fetching data for ALLE (attempt 1/3)
+2025-03-11 14:39:38,812 - INFO - Successfully scraped data for ALLE
+2025-03-11 14:39:47,223 - INFO - Fetching data for LNT (attempt 1/3)
+2025-03-11 14:39:48,690 - INFO - Successfully scraped data for LNT
+2025-03-11 14:39:58,263 - INFO - Fetching data for ALL (attempt 1/3)
+2025-03-11 14:39:59,766 - INFO - Successfully scraped data for ALL
+2025-03-11 14:40:10,117 - INFO - Fetching data for GOOGL (attempt 1/3)
+2025-03-11 14:40:11,190 - INFO - Successfully scraped data for GOOGL
+2025-03-11 14:40:11,193 - INFO - Data saved to sp500_data/sp500_data_20250311_144011_intermediate.json
+2025-03-11 14:40:11,193 - INFO - Progress: 20/503 stocks processed (Success rate: 100.00%)

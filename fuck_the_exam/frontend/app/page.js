@@ -1,17 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { generateQuiz, getStudySession } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 
 export default function Dashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [topic, setTopic] = useState('');
+  const [numQuestions, setNumQuestions] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+
+  // Handle auto-fill from query params (from Training Suggestions)
+  useEffect(() => {
+    const topicParam = searchParams.get('topic');
+    const autoParam = searchParams.get('auto');
+    if (topicParam) {
+      setTopic(topicParam);
+      if (autoParam === 'true') {
+        // Could auto-trigger generation here if desired
+      }
+    }
+  }, [searchParams]);
 
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -24,7 +38,7 @@ export default function Dashboard() {
     setFeedback({ type: '', message: '' });
 
     try {
-      const response = await generateQuiz(topic, 5);
+      const response = await generateQuiz(topic, numQuestions);
       localStorage.setItem('currentQuestions', JSON.stringify(response));
       localStorage.setItem('currentTopic', topic);
       router.push('/quiz/session');
@@ -58,6 +72,7 @@ export default function Dashboard() {
   };
 
   const quickTopics = ["N1 Grammar: ～ざるを得ない", "N1 Reading: Philosophy", "N1 Vocabulary: Synonyms"];
+  const questionCounts = [5, 10, 15, 20, 25];
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -67,7 +82,9 @@ export default function Dashboard() {
           <p className="text-muted-foreground">Keep pushing. Consistency is key.</p>
         </div>
         <div className="flex gap-4">
-          {/* Placeholder for user profile */}
+          <Link href="/stats">
+            <Button variant="outline">📊 Stats</Button>
+          </Link>
           <div className="h-10 w-10 rounded-full bg-secondary"></div>
         </div>
       </header>
@@ -126,6 +143,26 @@ export default function Dashboard() {
                   ))}
                 </div>
 
+                {/* Question Count Selector */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">Number of Questions</label>
+                  <div className="flex flex-wrap gap-2">
+                    {questionCounts.map(count => (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setNumQuestions(count)}
+                        className={`px-4 py-2 rounded-md border text-sm font-medium transition ${numQuestions === count
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-background border-input hover:bg-accent'
+                          }`}
+                      >
+                        {count}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="pt-2">
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? (
@@ -136,7 +173,7 @@ export default function Dashboard() {
                         </svg>
                         Generating N1 Context...
                       </span>
-                    ) : 'Generate Quiz'}
+                    ) : `Generate ${numQuestions} Questions`}
                   </Button>
                 </div>
 
@@ -160,15 +197,16 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </Link>
-            {/* Future Feature */}
-            <Card className="opacity-50 h-full">
-              <CardHeader>
-                <CardTitle className="text-lg">🗣️ Shadowing (Coming Soon)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">Practice pronunciation and intonation.</p>
-              </CardContent>
-            </Card>
+            <Link href="/stats" className="block">
+              <Card className="hover:bg-accent/50 transition cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="text-lg">📊 View Statistics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">Track your progress and identify weak areas.</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
 
@@ -179,10 +217,10 @@ export default function Dashboard() {
               <CardTitle className="text-base">Daily Progress</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-1">80%</div>
-              <p className="text-xs text-muted-foreground">Average accuracy today</p>
+              <div className="text-3xl font-bold mb-1">--</div>
+              <p className="text-xs text-muted-foreground">Start practicing to see your stats!</p>
               <div className="mt-4 h-2 bg-secondary rounded-full overflow-hidden">
-                <div className="h-full bg-primary w-[80%]"></div>
+                <div className="h-full bg-primary w-[0%]"></div>
               </div>
             </CardContent>
           </Card>
