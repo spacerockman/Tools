@@ -28,16 +28,16 @@ export default function WrongQuestions() {
   if (loading) return <div className="text-center p-8">正在加载复习数据...</div>;
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">错题集复习</h1>
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">错题集复习</h1>
+          <div className="flex gap-2 flex-shrink-0">
             <Link href="/stats">
-              <Button variant="outline">📊 统计结果</Button>
+              <Button variant="outline" className="whitespace-nowrap">📊 统计结果</Button>
             </Link>
             <Link href="/">
-              <Button variant="outline">← 返回</Button>
+              <Button variant="outline" className="whitespace-nowrap">← 返回</Button>
             </Link>
           </div>
         </div>

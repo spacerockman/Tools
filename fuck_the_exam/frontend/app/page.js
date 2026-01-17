@@ -81,20 +81,20 @@ export default function Dashboard() {
   const accuracy = todayTotal > 0 ? Math.round((todayStats.correct / todayTotal) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <header className="mb-12 flex items-center justify-between">
+    <div className="min-h-screen bg-background p-4 md:p-8">
+      <header className="mb-8 md:mb-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">日语 N1 学习中心</h1>
-          <p className="text-muted-foreground">坚持不懈，久久为功。</p>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">日语 N1 学习中心</h1>
+          <p className="text-sm text-muted-foreground">坚持不懈，久久为功。</p>
         </div>
-        <div className="flex gap-4">
-          <Link href="/knowledge">
-            <Button variant="outline">📚 知识库</Button>
+        <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2 sm:pb-0">
+          <Link href="/knowledge" className="flex-shrink-0">
+            <Button variant="outline" className="whitespace-nowrap">📚 知识库</Button>
           </Link>
-          <Link href="/stats">
-            <Button variant="outline">📊 学习统计</Button>
+          <Link href="/stats" className="flex-shrink-0">
+            <Button variant="outline" className="whitespace-nowrap">📊 学习统计</Button>
           </Link>
-          <div className="h-10 w-10 rounded-full bg-secondary"></div>
+          <div className="h-10 w-10 rounded-full bg-secondary flex-shrink-0 hidden sm:block"></div>
         </div>
       </header>
 

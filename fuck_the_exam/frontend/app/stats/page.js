@@ -64,20 +64,20 @@ export default function StatsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-background p-8">
+        <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-6xl mx-auto space-y-8">
 
-                <header className="flex justify-between items-end border-b pb-6">
+                <header className="flex flex-col sm:flex-row justify-between sm:items-end border-b pb-6 gap-4">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wider">AI Diagnostic Center</div>
-                            {analyzing && <span className="text-xs text-muted-foreground animate-pulse">正在深度分析中...</span>}
+                            <div className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-bold rounded-full uppercase tracking-wider">AI Diagnostic Center</div>
+                            {analyzing && <span className="text-[10px] sm:text-xs text-muted-foreground animate-pulse">正在深度分析中...</span>}
                         </div>
-                        <h1 className="text-4xl font-extrabold tracking-tight">日语 N1 诊断报告</h1>
-                        <p className="text-muted-foreground mt-1">基于 AI 的全方位语言能力评估与预测中心。</p>
+                        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">日语 N1 诊断报告</h1>
+                        <p className="text-sm text-muted-foreground mt-1">基于 AI 的全方位语言能力评估与预测中心。</p>
                     </div>
-                    <Link href="/">
-                        <Button variant="outline" className="rounded-full">返回仪表盘</Button>
+                    <Link href="/" className="sm:self-center flex-shrink-0">
+                        <Button variant="outline" className="rounded-full whitespace-nowrap w-full sm:w-auto">返回仪表盘</Button>
                     </Link>
                 </header>
 

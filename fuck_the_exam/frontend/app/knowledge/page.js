@@ -118,13 +118,13 @@ export default function KnowledgePage() {
     }
 
     return (
-        <div className="min-h-screen bg-background p-8">
+        <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-6xl mx-auto space-y-8">
 
-                <header className="flex justify-between items-center">
+                <header className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <h1 className="text-3xl font-bold tracking-tight">📚 知识点库</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">📚 知识点库</h1>
                             {isGenerating && (
                                 <div className="flex items-center gap-1.5 px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full animate-pulse border border-primary/20">
                                     <Loader2 className="w-2.5 h-2.5 animate-spin" />
@@ -132,10 +132,10 @@ export default function KnowledgePage() {
                                 </div>
                             )}
                         </div>
-                        <p className="text-muted-foreground">查看所有已收录的考点和知识点</p>
+                        <p className="text-sm text-muted-foreground">查看所有已收录的考点和知识点</p>
                     </div>
-                    <Link href="/">
-                        <Button variant="outline">← 返回首页</Button>
+                    <Link href="/" className="sm:self-center flex-shrink-0">
+                        <Button variant="outline" className="whitespace-nowrap w-full sm:w-auto">← 返回首页</Button>
                     </Link>
                 </header>
 
@@ -192,29 +192,31 @@ export default function KnowledgePage() {
                                 {knowledgePoints.map((point, idx) => (
                                     <div
                                         key={idx}
-                                        className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition"
+                                        className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted transition gap-3"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                                        <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center text-sm font-bold text-primary">
                                                 {idx + 1}
                                             </div>
-                                            <div>
-                                                <div className="font-medium">{point.name}</div>
+                                            <div className="overflow-hidden">
+                                                <div className="font-medium truncate text-sm sm:text-base" title={point.name}>
+                                                    {point.name}
+                                                </div>
                                                 <div className="text-xs text-muted-foreground">{point.questionCount} 道题目</div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="hidden sm:block w-24 bg-secondary rounded-full h-2">
+                                        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                                            <div className="hidden lg:block w-24 bg-secondary rounded-full h-2">
                                                 <div
                                                     className="bg-primary h-2 rounded-full transition-all duration-500"
                                                     style={{ width: `${Math.min((point.questionCount / questions.length) * 100 * 5, 100)}%` }}
                                                 ></div>
                                             </div>
-                                            <div className="flex gap-1">
+                                            <div className="flex gap-2 flex-shrink-0">
                                                 <Button
                                                     size="sm"
                                                     variant={point.questionCount === 0 ? "ghost" : "outline"}
-                                                    className={`h-8 gap-1 transition-colors ${point.questionCount === 0 ? 'text-muted-foreground/30' : 'hover:bg-primary/5 hover:text-primary'}`}
+                                                    className={`h-8 gap-1 transition-colors whitespace-nowrap ${point.questionCount === 0 ? 'text-muted-foreground/30' : 'hover:bg-primary/5 hover:text-primary'}`}
                                                     onClick={() => handlePractice(point.name)}
                                                     disabled={practiceLoading !== null || isGenerating || point.questionCount === 0}
                                                 >
@@ -228,7 +230,7 @@ export default function KnowledgePage() {
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
-                                                    className="h-8 gap-1 border-primary/20 text-primary hover:bg-primary/5"
+                                                    className="h-8 gap-1 border-primary/20 text-primary hover:bg-primary/5 whitespace-nowrap flex-shrink-0"
                                                     disabled={isGenerating}
                                                     onClick={() => setGenTarget(point.name)}
                                                 >
@@ -238,7 +240,7 @@ export default function KnowledgePage() {
                                                 <Button
                                                     size="sm"
                                                     variant="ghost"
-                                                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                                                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive flex-shrink-0"
                                                     onClick={() => setDeleteConfirm(point.name)}
                                                 >
                                                     <Trash2 className="w-4 h-4" />
