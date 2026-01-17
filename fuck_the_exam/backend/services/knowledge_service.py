@@ -10,7 +10,7 @@ class KnowledgeService:
     def get_all_knowledge_points(self) -> List[Dict]:
         """
         Parses all markdown files in the knowledge directory and extracts knowledge points.
-        Assumes tables with format: | Knowledge Point | ... |
+        Supports tables and returns all columns as a dictionary.
         """
         points = []
         if not os.path.exists(self.knowledge_dir):
@@ -19,37 +19,48 @@ class KnowledgeService:
         for filename in os.listdir(self.knowledge_dir):
             if filename.endswith(".md"):
                 file_path = os.path.join(self.knowledge_dir, filename)
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    # Simple regex to find table rows. 
-                    # Adjust based on actual table format in `grammar.md`
-                    # Example row: | 〜とみられる | ...
-                    matches = re.findall(r'\|\s*([^|]+)\s*\|', content)
-                    # This regex is too broad, it captures every cell.
-                    # Better to read line by line.
-                    
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    lines = f.readlines()
-                    in_table = False
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        lines = f.readlines()
+                        
                     headers = []
-                    
-                    for line in lines:
-                        if line.strip().startswith("|"):
-                            parts = [p.strip() for p in line.split("|") if p.strip()]
-                            if "语法" in parts or "Knowledge Point" in parts: # Header detection
-                                in_table = True
+                    for i, line in enumerate(lines):
+                        line = line.strip()
+                        if not line.startswith("|"):
+                            continue
+                        
+                        # Split by | and remove empty strings from both sides
+                        parts = [p.strip() for p in line.split("|") if p.strip()]
+                        
+                        # Header detection: if it's the first table line or contains N1/语法
+                        if not headers:
+                            if any(h in ["语法", "Knowledge Point", "项目"] for h in parts):
+                                headers = parts
                                 continue
-                            if in_table and "---" in line: # Separator
-                                continue
-                            if in_table and parts:
-                                # Assuming first column is the point
-                                point = parts[0]
-                                description = parts[1] if len(parts) > 1 else ""
-                                points.append({
-                                    "point": point,
-                                    "description": description,
-                                    "source_file": filename
-                                })
+                        
+                        # Skip separator line
+                        if line.replace(" ", "").replace("|", "").replace("-", "") == "":
+                            continue
+                        if "---" in line and i > 0:
+                            continue
+
+                        if headers and parts:
+                            entry = {
+                                "point": parts[0],
+                                "source_file": filename
+                            }
+                            # Map additional columns to header names
+                            for idx, val in enumerate(parts):
+                                h_name = headers[idx] if idx < len(headers) else f"col_{idx}"
+                                entry[h_name] = val
+                            
+                            # Fallback for description
+                            if "description" not in entry:
+                                entry["description"] = parts[1] if len(parts) > 1 else ""
+                                
+                            points.append(entry)
+                except Exception as e:
+                    print(f"Error parsing {filename}: {e}")
 
         return points
 

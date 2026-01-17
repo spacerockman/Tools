@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import Link from 'next/link';
-import { Trash2, AlertTriangle, Sparkles, Loader2, Play } from 'lucide-react';
+import { Trash2, AlertTriangle, Sparkles, Loader2, Play, Info, X } from 'lucide-react';
 import { useGeneration } from '../../contexts/GenerationContext';
-import { getAllQuestions, getSuggestions, deleteKnowledge } from '../../lib/api';
+import { getAllQuestions, getSuggestions, deleteKnowledge, getKnowledgeDetail } from '../../lib/api';
 
 export default function KnowledgePage() {
 
@@ -20,6 +20,8 @@ export default function KnowledgePage() {
     const [deleteConfirm, setDeleteConfirm] = useState(null);
     const [genTarget, setGenTarget] = useState(null);
     const [genCount, setGenCount] = useState(10);
+    const [selectedDetail, setSelectedDetail] = useState(null);
+    const [detailLoading, setDetailLoading] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -106,6 +108,23 @@ export default function KnowledgePage() {
             router.push(`/?topic=${encodeURIComponent(topic)}`);
         } finally {
             setPracticeLoading(null);
+        }
+    };
+
+    const handleShowDetail = async (name) => {
+        setDetailLoading(name);
+        try {
+            const detail = await getKnowledgeDetail(name);
+            setSelectedDetail(detail);
+        } catch (e) {
+            console.error('Failed to load detail', e);
+            // Fallback for user created or uncategorized
+            setSelectedDetail({
+                point: name,
+                description: '暂无详细解析内容，可能是手动添加或未分类的知识点。'
+            });
+        } finally {
+            setDetailLoading(null);
         }
     };
 
@@ -213,6 +232,20 @@ export default function KnowledgePage() {
                                                 ></div>
                                             </div>
                                             <div className="flex gap-2 flex-shrink-0">
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    className="h-8 gap-1 text-primary hover:bg-primary/10 whitespace-nowrap"
+                                                    onClick={() => handleShowDetail(point.name)}
+                                                    disabled={detailLoading !== null || isGenerating}
+                                                >
+                                                    {detailLoading === point.name ? (
+                                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <Info className="w-3.5 h-3.5" />
+                                                    )}
+                                                    语法详细
+                                                </Button>
                                                 <Button
                                                     size="sm"
                                                     variant={point.questionCount === 0 ? "ghost" : "outline"}
@@ -365,6 +398,69 @@ export default function KnowledgePage() {
                 </div>
 
             </div>
+
+            {/* Knowledge Detail Modal */}
+            {selectedDetail && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col animate-in zoom-in-95 duration-200">
+                        <CardHeader className="border-b bg-muted/30 pb-4">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                        <Info className="w-5 h-5" />
+                                    </div>
+                                    <CardTitle className="text-xl">{selectedDetail.point}</CardTitle>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="rounded-full h-8 w-8"
+                                    onClick={() => setSelectedDetail(null)}
+                                >
+                                    <X className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="overflow-y-auto p-6 space-y-6">
+                            {Object.entries(selectedDetail).map(([key, value]) => {
+                                // Skip internal keys
+                                if (['point', 'source_file', 'description'].includes(key)) return null;
+                                if (key.startsWith('col_')) return null;
+
+                                return (
+                                    <div key={key} className="space-y-1.5">
+                                        <h4 className="text-sm font-bold text-primary flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                            {key}
+                                        </h4>
+                                        <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 p-3 rounded-lg border border-muted">
+                                            {value}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {selectedDetail.description && !Object.keys(selectedDetail).some(k => !['point', 'source_file', 'description'].includes(k)) && (
+                                <div className="space-y-1.5">
+                                    <h4 className="text-sm font-bold text-primary flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                        考点说明
+                                    </h4>
+                                    <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 p-3 rounded-lg border border-muted">
+                                        {selectedDetail.description}
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
+                        <div className="p-4 border-t bg-muted/10 flex justify-end">
+                            <Button onClick={() => setSelectedDetail(null)}>
+                                知道了
+                            </Button>
+                        </div>
+                    </Card>
+                </div>
+            )}
+
         </div>
     );
 }

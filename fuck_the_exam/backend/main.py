@@ -387,6 +387,18 @@ def get_suggestions():
         print(f"Error getting suggestions: {e}")
         return []
 
+@app.get("/api/knowledge/{name}")
+def get_knowledge_detail(name: str):
+    try:
+        points = knowledge_service.get_all_knowledge_points()
+        for p in points:
+            if p['point'] == name:
+                return p
+        raise HTTPException(status_code=404, detail="Knowledge point not found")
+    except Exception as e:
+        if isinstance(e, HTTPException): raise e
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/questions", response_model=List[Question])
 def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
     query = db.query(models.Question)
