@@ -110,6 +110,18 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
                         exp = q['explanation']
                         flat_exp = "\n".join([f"{k}: {v}" for k, v in exp.items()])
                         q['explanation'] = flat_exp
+                    
+                    # Ensure basic fields exist
+                    if not q.get('explanation'):
+                        q['explanation'] = "[AI生成辅助] 考点分析加载中，请结合前后文理解。"
+                    if not q.get('memorization_tip'):
+                        q['memorization_tip'] = "记忆点正在整理中。"
+                    
+                    # Deduplication: If tip is just a repetition of explanation, clear it or shorten it
+                    exp_text = q['explanation'].strip()
+                    tip_text = q['memorization_tip'].strip()
+                    if tip_text in exp_text and len(tip_text) > 10:
+                        q['memorization_tip'] = "见上方详细解析中的逻辑要点。"
                 break
         except Exception as e:
             print(f"  [Generator] Batch Attempt {attempt+1} failed: {e}")

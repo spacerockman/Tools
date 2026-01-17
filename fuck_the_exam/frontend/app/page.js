@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getStudySession, getStats } from '../lib/api';
+import { getStudySession, getStats, getGapQuiz } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { useGeneration } from '../contexts/GenerationContext';
@@ -71,6 +71,27 @@ export default function Dashboard() {
     }
   };
 
+  const handleGapQuiz = async () => {
+    setIsStudyLoading(true);
+    setFeedback({ type: '', message: '' });
+    try {
+      const response = await getGapQuiz(2);
+      if (response.length === 0) {
+        setFeedback({ type: 'info', message: '暂无题目可供排查，请先生成一些题目！' });
+        setIsStudyLoading(false);
+        return;
+      }
+      localStorage.setItem('currentQuestions', JSON.stringify(response));
+      localStorage.setItem('currentTopic', 'Knowledge Gap Test');
+      router.push('/quiz/session');
+    } catch (error) {
+      console.error(error);
+      setFeedback({ type: 'error', message: '获取排查计划失败。' });
+    } finally {
+      setIsStudyLoading(false);
+    }
+  };
+
   const quickTopics = ["N1 语法: ～ざるを得ない", "N1 阅读: 哲学", "N1 词汇: 同义词"];
   const questionCounts = [5, 10, 15, 20, 25];
 
@@ -115,6 +136,14 @@ export default function Dashboard() {
                 <Button onClick={handleStudy} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isStudyLoading || isGenerating}>
                   {isStudyLoading ? '正在加载...' : '开始我的每日复习'}
                 </Button>
+
+                <div className="mt-4 pt-4 border-t border-blue-200 dark:border-slate-700">
+                  <h4 className="text-sm font-semibold mb-2">🔍 知识漏洞排查</h4>
+                  <p className="text-xs text-muted-foreground mb-3">从每个知识点随机抽题，全方位检测薄弱环节。</p>
+                  <Button onClick={handleGapQuiz} variant="secondary" className="w-full" disabled={isStudyLoading || isGenerating}>
+                    💡 开始随机排查测试
+                  </Button>
+                </div>
               </div>
 
               <div className="relative mb-6">

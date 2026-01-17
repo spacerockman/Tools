@@ -153,8 +153,19 @@ const Question = ({ question, onNext }) => {
               </h4>
               <div className="space-y-2 text-sm text-foreground/80">
                 <p className="font-semibold text-foreground">解析:</p>
-                <p className="leading-relaxed">{result?.explanation}</p>
+                <p className="leading-relaxed whitespace-pre-wrap">{result?.explanation}</p>
               </div>
+
+              {result?.memorization_tip && result?.memorization_tip !== result?.explanation && (
+                <div className="mt-4 pt-4 border-t border-dashed border-primary/20 bg-yellow-50/50 dark:bg-yellow-900/10 p-3 rounded-md">
+                  <p className="font-bold text-yellow-700 dark:text-yellow-400 text-xs uppercase flex items-center gap-1 mb-1">
+                    💡 记忆技巧
+                  </p>
+                  <p className="text-sm text-yellow-800 dark:text-yellow-300 italic">
+                    {result.memorization_tip}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
           <Button onClick={handleNext} className="w-full" variant="outline">

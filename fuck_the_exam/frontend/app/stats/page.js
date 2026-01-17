@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
 import { Loader2 } from 'lucide-react';
-import TrainingSuggestions from '../../components/TrainingSuggestions';
+import { getStats, getAnalysis } from '../../lib/api';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
+import TrainingSuggestions from '../../components/TrainingSuggestions';
 
 export default function StatsPage() {
     const [stats, setStats] = useState(null);
@@ -19,8 +20,7 @@ export default function StatsPage() {
         async function fetchData() {
             try {
                 // Fetch Stats
-                const statsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats`);
-                const statsData = await statsRes.json();
+                const statsData = await getStats();
                 setStats(statsData);
 
                 const wrongPoints = statsData.top_wrong_points || [];
@@ -45,8 +45,7 @@ export default function StatsPage() {
     const fetchAnalysis = async () => {
         setAnalyzing(true);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stats/analysis`);
-            const data = await res.json();
+            const data = await getAnalysis();
             setAnalysis(data);
         } catch (e) {
             console.error("AI Analysis failed:", e);

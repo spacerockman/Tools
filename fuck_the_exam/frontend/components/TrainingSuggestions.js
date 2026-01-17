@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "./ui/button";
 import { Dumbbell, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";

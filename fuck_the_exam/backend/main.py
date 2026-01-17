@@ -198,6 +198,8 @@ def ingest_json_questions():
                              exists.memorization_tip = q_data.get('memorization_tip')
                          if q_data.get('knowledge_point'):
                              exists.knowledge_point = q_data.get('knowledge_point')
+                         if q_data.get('explanation') and (not exists.explanation or exists.explanation == "暂无解析"):
+                             exists.explanation = q_data.get('explanation')
             except Exception as e:
                 print(f"Error loading {json_file}: {e}")
         
@@ -462,6 +464,44 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
     
     return review_structure + new_structure
 
+@app.get("/api/quiz/gap")
+def get_gap_quiz(num_per_point: int = 2, db: Session = Depends(database.get_db)):
+    """
+    Randomly selects a small number of questions from EACH knowledge point
+    to help identify knowledge gaps.
+    """
+    all_points = db.query(models.Question.knowledge_point).distinct().all()
+    all_points = [p[0] for p in all_points if p[0]]
+    
+    selected_questions = []
+    import random
+    
+    for point in all_points:
+        # Get questions for this point
+        point_qs = db.query(models.Question).filter(models.Question.knowledge_point == point).all()
+        if point_qs:
+            # Pick random samples
+            sample_size = min(len(point_qs), num_per_point)
+            samples = random.sample(point_qs, sample_size)
+            selected_questions.extend(samples)
+            
+    # Final shuffle
+    random.shuffle(selected_questions)
+    
+    results = []
+    for q in selected_questions:
+        options = json.loads(q.options) if isinstance(q.options, str) else q.options
+        results.append({
+            "id": q.id,
+            "content": q.content,
+            "options": options,
+            "correct_answer": q.correct_answer,
+            "explanation": q.explanation,
+            "memorization_tip": q.memorization_tip,
+            "knowledge_point": q.knowledge_point
+        })
+    return results
+
 @app.post("/api/questions/{question_id}/submit")
 def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = Depends(database.get_db)):
     db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
@@ -501,7 +541,10 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
         if wrong_q.review_count is None: wrong_q.review_count = 0
         wrong_q.review_count += 1
         
-        markdown_service.log_wrong_question(db_question)
+        try:
+            markdown_service.log_wrong_question(db_question)
+        except Exception as e:
+            print(f"Failed to log wrong question to markdown: {e}")
 
     else:
         if wrong_q:
@@ -547,6 +590,9 @@ def get_wrong_questions_api(db: Session = Depends(database.get_db)):
     results = []
     for w in wqs:
         q = w.question
+        if not q:
+            continue
+            
         q_dict = q.__dict__.copy()
         if isinstance(q.options, str):
             q_dict['options'] = json.loads(q.options)

@@ -68,7 +68,12 @@ class MarkdownService:
                 f.write("# Wrong Questions Black Book\n\n")
 
         # Basic deduplication check could be added here, but for now we append
-        options = json.loads(question.options)
+        options = question.options
+        if isinstance(options, str):
+            try:
+                options = json.loads(options)
+            except:
+                options = {}
         
         content = f"## [{datetime.date.today()}] {question.knowledge_point}\n"
         content += f"**Q**: {question.content}\n"
