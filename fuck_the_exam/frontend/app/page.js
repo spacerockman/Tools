@@ -54,7 +54,8 @@ export default function Dashboard() {
     setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
-      const response = await getStudySession(15, 15);
+      // Limit to 10 new and 10 review (Total 20)
+      const response = await getStudySession(10, 10);
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无待复习题目或新题，请先生成一些题目！' });
         setIsStudyLoading(false);
@@ -75,12 +76,19 @@ export default function Dashboard() {
     setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
-      const response = await getGapQuiz(2);
+      let response = await getGapQuiz(2);
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无题目可供排查，请先生成一些题目！' });
         setIsStudyLoading(false);
         return;
       }
+
+      // Limit to 20 questions
+      if (response.length > 20) {
+        // Shuffle and take 20
+        response = response.sort(() => 0.5 - Math.random()).slice(0, 20);
+      }
+
       localStorage.setItem('currentQuestions', JSON.stringify(response));
       localStorage.setItem('currentTopic', 'Knowledge Gap Test');
       router.push('/quiz/session');

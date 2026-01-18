@@ -7,18 +7,18 @@ import { Button } from './ui/button';
 import { Trash2, Star, BookOpen, Loader2 } from 'lucide-react';
 import KnowledgeDetailModal from './KnowledgeDetailModal';
 
-const Question = ({ question, onNext }) => {
+const Question = ({ question, onNext, initialResult = null }) => {
   if (!question) return null;
 
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [result, setResult] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(initialResult?.selected_answer || null);
+  const [isSubmitted, setIsSubmitted] = useState(!!initialResult);
+  const [result, setResult] = useState(initialResult?.result_details || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFavorite, setIsFavorite] = useState(question?.is_favorite || false);
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
-  const [isRevealed, setIsRevealed] = useState(!question.is_review);
+  const [isRevealed, setIsRevealed] = useState(!!initialResult || !question.is_review);
   const [srsQuality, setSrsQuality] = useState(null);
 
   const handleOptionChange = (value) => {
@@ -36,6 +36,15 @@ const Question = ({ question, onNext }) => {
       setResult(res);
       setIsSubmitted(true);
       if (quality) setSrsQuality(quality);
+
+      // Notify parent immediately so state is saved even if they move away via navigation grid
+      onNext({
+        question_id: question.id,
+        selected_answer: selectedOption,
+        is_correct: res.is_correct,
+        result_details: res,
+        autoAdvance: false // Signal that we shouldn't necessarily move to next question yet
+      });
     } catch (error) {
       console.error("Failed to submit answer:", error);
     } finally {
@@ -103,7 +112,8 @@ const Question = ({ question, onNext }) => {
     onNext({
       question_id: question.id,
       selected_answer: selectedOption,
-      is_correct: result?.is_correct
+      is_correct: result?.is_correct,
+      result_details: result
     });
   };
 
