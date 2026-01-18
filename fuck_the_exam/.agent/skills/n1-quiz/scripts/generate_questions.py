@@ -6,7 +6,7 @@ def trigger_generation(topic, num_questions=5):
     """
     Triggers the backend API to generate questions for a specific topic.
     """
-    url = "http://localhost:8000/api/quiz/generate"
+    url = "http://localhost:28888/api/quiz/generate"
     payload = {
         "topic": topic,
         "num_questions": num_questions

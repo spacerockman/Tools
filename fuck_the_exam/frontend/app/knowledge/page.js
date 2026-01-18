@@ -5,14 +5,15 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import Link from 'next/link';
-import { Trash2, AlertTriangle, Sparkles, Loader2, Play, Info, X } from 'lucide-react';
+import { Trash2, AlertTriangle, Sparkles, Loader2, Play, Info, X, Zap } from 'lucide-react';
 import { useGeneration } from '../../contexts/GenerationContext';
 import { getAllQuestions, getSuggestions, deleteKnowledge, getKnowledgeDetail } from '../../lib/api';
+import KnowledgeDetailModal from '../../components/KnowledgeDetailModal';
 
 export default function KnowledgePage() {
 
     const router = useRouter();
-    const { isGenerating, startGeneration, generationStatus } = useGeneration();
+    const { isGenerating, setIsGenerating, startGeneration, generationStatus } = useGeneration();
     const [questions, setQuestions] = useState([]);
     const [knowledgePoints, setKnowledgePoints] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -22,6 +23,7 @@ export default function KnowledgePage() {
     const [genCount, setGenCount] = useState(10);
     const [selectedDetail, setSelectedDetail] = useState(null);
     const [detailLoading, setDetailLoading] = useState(null);
+    const [batchStatus, setBatchStatus] = useState(null); // { current, total, topic }
 
     useEffect(() => {
         async function fetchData() {
@@ -91,21 +93,52 @@ export default function KnowledgePage() {
         }
     };
 
-    const handlePractice = async (topic) => {
-        setPracticeLoading(topic);
+    const handleBatchGenerate = async () => {
+        const emptyPoints = knowledgePoints.filter(p => p.questionCount === 0);
+        if (emptyPoints.length === 0) return;
+
+        if (!window.confirm(`确认要为 ${emptyPoints.length} 个知识点一键生成题目吗？\n这将由于 AI 处理量大而耗费较多时间，请保持浏览器窗口开启。`)) return;
+
+        setIsGenerating(true);
         try {
-            const topicQuestions = await getAllQuestions(topic);
+            for (let i = 0; i < emptyPoints.length; i++) {
+                const point = emptyPoints[i];
+                setBatchStatus({ current: i + 1, total: emptyPoints.length, topic: point.name });
+                try {
+                    await startGeneration(point.name, 10, true);
+                } catch (e) {
+                    console.error(`Batch failed for ${point.name}`, e);
+                }
+            }
+            setBatchStatus(null);
+            alert('批量补全完成！页面将刷新同步数据。');
+            window.location.reload();
+        } finally {
+            setIsGenerating(false);
+            setBatchStatus(null);
+        }
+    };
+
+    const handleQuickGenerate = (topicName) => {
+        if (isGenerating) return;
+        startGeneration(topicName, 10);
+    };
+
+    const handlePractice = async (topicName) => {
+        setPracticeLoading(topicName);
+        try {
+            const topicQuestions = await getAllQuestions(topicName);
             if (topicQuestions.length > 0) {
                 localStorage.setItem('currentQuestions', JSON.stringify(topicQuestions));
-                localStorage.setItem('currentTopic', topic);
+                localStorage.setItem('currentTopic', topicName);
                 router.push('/quiz/session');
             } else {
                 // If no questions, redirect to generator with topic pre-filled
-                router.push(`/?topic=${encodeURIComponent(topic)}`);
+                router.push(`/?topic=${encodeURIComponent(topicName)}`);
             }
         } catch (e) {
             console.error('Failed to start practice', e);
-            router.push(`/?topic=${encodeURIComponent(topic)}`);
+            router.push(`/?topic=${encodeURIComponent(topicName)}`);
         } finally {
             setPracticeLoading(null);
         }
@@ -152,10 +185,33 @@ export default function KnowledgePage() {
                             )}
                         </div>
                         <p className="text-sm text-muted-foreground">查看所有已收录的考点和知识点</p>
+                        {batchStatus && (
+                            <div className="mt-2 flex items-center gap-3 bg-primary/5 border border-primary/20 p-2 rounded-lg max-w-md animate-pulse">
+                                <div className="text-primary font-bold text-xs">
+                                    批量任务: {batchStatus.current} / {batchStatus.total}
+                                </div>
+                                <div className="text-muted-foreground text-[10px] truncate">
+                                    正在生成: {batchStatus.topic}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <Link href="/" className="sm:self-center flex-shrink-0">
-                        <Button variant="outline" className="whitespace-nowrap w-full sm:w-auto">← 返回首页</Button>
-                    </Link>
+                    <div className="flex flex-wrap gap-2">
+                        {knowledgePoints.some(p => p.questionCount === 0) && (
+                            <Button
+                                onClick={handleBatchGenerate}
+                                variant="outline"
+                                className="border-primary/50 text-primary hover:bg-primary/5 gap-2"
+                                disabled={isGenerating || batchStatus !== null}
+                            >
+                                <Zap className="w-4 h-4 fill-primary" />
+                                补全所有 0 题考点 (每项10题)
+                            </Button>
+                        )}
+                        <Link href="/" className="sm:self-center flex-shrink-0">
+                            <Button variant="outline" className="whitespace-nowrap w-full sm:w-auto">← 返回首页</Button>
+                        </Link>
+                    </div>
                 </header>
 
                 {/* Summary Cards */}
@@ -205,6 +261,18 @@ export default function KnowledgePage() {
                                 <Link href="/">
                                     <Button>去生成题目</Button>
                                 </Link>
+                                <Button
+                                    variant="outline"
+                                    className="ml-2 border-primary/20 text-primary hover:bg-primary/5"
+                                    onClick={() => {
+                                        const empty = knowledgePoints.find(p => p.questionCount === 0);
+                                        if (empty) handleQuickGenerate(empty.name);
+                                    }}
+                                    disabled={isGenerating || !knowledgePoints.some(p => p.questionCount === 0)}
+                                >
+                                    <Zap className="w-3.5 h-3.5 mr-1" />
+                                    补全一例
+                                </Button>
                             </div>
                         ) : (
                             <div className="space-y-3">
@@ -262,13 +330,13 @@ export default function KnowledgePage() {
                                                 </Button>
                                                 <Button
                                                     size="sm"
-                                                    variant="outline"
-                                                    className="h-8 gap-1 border-primary/20 text-primary hover:bg-primary/5 whitespace-nowrap flex-shrink-0"
+                                                    variant={point.questionCount === 0 ? "secondary" : "outline"}
+                                                    className={`h-8 gap-1 whitespace-nowrap flex-shrink-0 ${point.questionCount === 0 ? 'bg-primary/10 text-primary hover:bg-primary/20 border-primary/20' : 'border-primary/20 text-primary hover:bg-primary/5'}`}
                                                     disabled={isGenerating}
-                                                    onClick={() => setGenTarget(point.name)}
+                                                    onClick={() => point.questionCount === 0 ? handleQuickGenerate(point.name) : setGenTarget(point.name)}
                                                 >
-                                                    <Sparkles className="w-3.5 h-3.5" />
-                                                    生成
+                                                    <Sparkles className={`w-3.5 h-3.5 ${point.questionCount === 0 ? 'animate-pulse' : ''}`} />
+                                                    {point.questionCount === 0 ? '一键补全' : '生成'}
                                                 </Button>
                                                 <Button
                                                     size="sm"
@@ -400,67 +468,10 @@ export default function KnowledgePage() {
             </div>
 
             {/* Knowledge Detail Modal */}
-            {selectedDetail && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col animate-in zoom-in-95 duration-200">
-                        <CardHeader className="border-b bg-muted/30 pb-4">
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                                        <Info className="w-5 h-5" />
-                                    </div>
-                                    <CardTitle className="text-xl">{selectedDetail.point}</CardTitle>
-                                </div>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="rounded-full h-8 w-8"
-                                    onClick={() => setSelectedDetail(null)}
-                                >
-                                    <X className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="overflow-y-auto p-6 space-y-6">
-                            {Object.entries(selectedDetail).map(([key, value]) => {
-                                // Skip internal keys
-                                if (['point', 'source_file', 'description'].includes(key)) return null;
-                                if (key.startsWith('col_')) return null;
-
-                                return (
-                                    <div key={key} className="space-y-1.5">
-                                        <h4 className="text-sm font-bold text-primary flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                            {key}
-                                        </h4>
-                                        <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 p-3 rounded-lg border border-muted">
-                                            {value}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-
-                            {selectedDetail.description && !Object.keys(selectedDetail).some(k => !['point', 'source_file', 'description'].includes(k)) && (
-                                <div className="space-y-1.5">
-                                    <h4 className="text-sm font-bold text-primary flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                        考点说明
-                                    </h4>
-                                    <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 p-3 rounded-lg border border-muted">
-                                        {selectedDetail.description}
-                                    </div>
-                                </div>
-                            )}
-                        </CardContent>
-                        <div className="p-4 border-t bg-muted/10 flex justify-end">
-                            <Button onClick={() => setSelectedDetail(null)}>
-                                知道了
-                            </Button>
-                        </div>
-                    </Card>
-                </div>
-            )}
-
+            <KnowledgeDetailModal
+                detail={selectedDetail}
+                onClose={() => setSelectedDetail(null)}
+            />
         </div>
     );
 }

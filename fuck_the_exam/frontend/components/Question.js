@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { submitAnswer, deleteQuestion, toggleFavorite } from '../lib/api';
+import { submitAnswer, deleteQuestion, toggleFavorite, getKnowledgeDetail } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { Trash2, Star } from 'lucide-react';
+import { Trash2, Star, BookOpen, Loader2 } from 'lucide-react';
+import KnowledgeDetailModal from './KnowledgeDetailModal';
 
 const Question = ({ question, onNext }) => {
   if (!question) return null;
@@ -14,6 +15,9 @@ const Question = ({ question, onNext }) => {
   const [result, setResult] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFavorite, setIsFavorite] = useState(question?.is_favorite || false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailData, setDetailData] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   const handleOptionChange = (value) => {
     if (!isSubmitted) {
@@ -54,6 +58,24 @@ const Question = ({ question, onNext }) => {
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
+    }
+  };
+
+  const handleShowDetail = async () => {
+    if (detailData) {
+      setShowDetail(true);
+      return;
+    }
+
+    setDetailLoading(true);
+    try {
+      const data = await getKnowledgeDetail(question.knowledge_point);
+      setDetailData(data);
+      setShowDetail(true);
+    } catch (error) {
+      console.error("Failed to fetch knowledge detail:", error);
+    } finally {
+      setDetailLoading(false);
     }
   };
 
@@ -168,10 +190,30 @@ const Question = ({ question, onNext }) => {
               )}
             </CardContent>
           </Card>
-          <Button onClick={handleNext} className="w-full" variant="outline">
-            下一题 →
-          </Button>
+          <div className="flex gap-3">
+            <Button onClick={handleNext} className="flex-1" variant="outline">
+              下一题 →
+            </Button>
+            {question.knowledge_point && (
+              <Button
+                onClick={handleShowDetail}
+                variant="secondary"
+                disabled={detailLoading}
+                className="gap-2"
+              >
+                {detailLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <BookOpen className="w-4 h-4" />}
+                知识点详细
+              </Button>
+            )}
+          </div>
         </div>
+      )}
+
+      {showDetail && (
+        <KnowledgeDetailModal
+          detail={detailData}
+          onClose={() => setShowDetail(false)}
+        />
       )}
     </div>
   );

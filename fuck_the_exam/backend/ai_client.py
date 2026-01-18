@@ -89,8 +89,10 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
     questions = []
     for attempt in range(max_retries):
         try:
-            response = requests.post(API_URL, headers=headers, json=data, timeout=120)
+            print(f"    [Agent: Generator] Requesting {batch_size} questions...")
+            response = requests.post(API_URL, headers=headers, json=data, timeout=60)
             response.raise_for_status()
+            print(f"    [Agent: Generator] Received response.")
             content = response.json()['choices'][0]['message']['content'].strip()
             
             # Robust JSON extraction
@@ -186,8 +188,10 @@ def _review_questions(questions: List[Dict], topic: str, grounding: str, headers
     }
     
     try:
-        response = requests.post(API_URL, headers=headers, json=data, timeout=120)
+        print(f"    [Agent: Reviewer] Checking {len(questions)} questions...")
+        response = requests.post(API_URL, headers=headers, json=data, timeout=60)
         response.raise_for_status()
+        print(f"    [Agent: Reviewer] Decision received.")
         content = response.json()['choices'][0]['message']['content'].strip()
         
         json_start = content.find('[')
@@ -231,8 +235,10 @@ def _optimize_questions(questions: List[Dict], review_results: List[Dict], topic
     }
     
     try:
-        response = requests.post(API_URL, headers=headers, json=data, timeout=150)
+        print(f"    [Agent: Optimizer] Fixing issues...")
+        response = requests.post(API_URL, headers=headers, json=data, timeout=90)
         response.raise_for_status()
+        print(f"    [Agent: Optimizer] Fixed content received.")
         content = response.json()['choices'][0]['message']['content'].strip()
         
         json_start = content.find('[')

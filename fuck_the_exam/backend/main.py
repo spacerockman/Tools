@@ -262,6 +262,7 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
     """
     Generates N1 questions via AI, deduplicates, saves to file, and saves to DB.
     """
+    print(f"--- API CALL: generate_quiz for topic '{req.topic}' ---")
     # 1. Generate questions from AI
     generated_questions = ai_client.generate_questions_from_topic(req.topic, req.num_questions)
     
