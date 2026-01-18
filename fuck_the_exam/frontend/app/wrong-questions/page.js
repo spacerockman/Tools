@@ -33,6 +33,19 @@ export default function WrongQuestions() {
         <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-8 gap-4">
           <h1 className="text-2xl sm:text-3xl font-bold">错题集复习</h1>
           <div className="flex gap-2 flex-shrink-0">
+            {data.length > 0 && (
+              <Button
+                onClick={() => {
+                  const qs = data.map(item => ({ ...item.question, is_review: true }));
+                  localStorage.setItem('currentQuestions', JSON.stringify(qs));
+                  localStorage.setItem('currentTopic', '错题专项练习');
+                  window.location.href = '/quiz/session';
+                }}
+                className="bg-indigo-600 hover:bg-indigo-700"
+              >
+                🔥 进入卡片刷题模式
+              </Button>
+            )}
             <Link href="/stats">
               <Button variant="outline" className="whitespace-nowrap">📊 统计结果</Button>
             </Link>

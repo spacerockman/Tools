@@ -14,6 +14,13 @@ A comprehensive tool for preparing for the Japanese N1 exam. This project consis
 - `frontend/`: Next.js web application.
 - `knowledge_base/`: Markdown files for quiz content.
 
+## 🤖 AI / Agentic Support
+
+This project is optimized for AI-assisted development ("Vibe Coding").
+- **Agent Skills**: Custom capabilities are defined in `.agent/skills/`.
+- **Workflows**: Standard procedures (e.g., question generation) are in `.agent/workflows/`.
+- **Instructions**: See `.cursorrules` for agent-specific logic.
+
 ## 🚀 Quick Start (Recommended: Docker)
 
 The easiest way to run the application is using Docker.

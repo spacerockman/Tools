@@ -75,6 +75,7 @@ class Question(QuestionBase):
 class AnswerSubmit(BaseModel):
     question_id: int
     selected_answer: str
+    quality: Optional[int] = None # SM-2 Quality (0-5) or simplified (1-4)
 
 class WrongQuestion(BaseModel):
     id: int
@@ -439,7 +440,9 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
             "explanation": q.explanation,
             "memorization_tip": q.memorization_tip,
             "knowledge_point": q.knowledge_point,
-            "is_review": True
+            "is_review": True,
+            "srs_interval": w.interval,
+            "srs_next_review": w.next_review_at.isoformat() if w.next_review_at else None
         }
         review_structure.append(q_dict)
 
@@ -524,7 +527,13 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
     # 2. Update Wrong Question (SRS)
     wrong_q = db.query(models.WrongQuestion).filter(models.WrongQuestion.question_id == question_id).first()
 
-    if not is_correct:
+    # Determine Quality (0-5)
+    # If not provided, map is_correct to binary quality
+    quality = answer.quality
+    if quality is None:
+        quality = 4 if is_correct else 1 # 4: Good, 1: Forgot
+
+    if quality < 3: # "Forgot" or "Hard-Failure"
         if not wrong_q:
             wrong_q = models.WrongQuestion(
                 question_id=question_id,
@@ -536,6 +545,9 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
             db.add(wrong_q)
         else:
             wrong_q.interval = 1
+            # Adjust Ease Factor (EF) - Standard SM-2 formula part
+            # EF = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
+            # Here we simplify slightly for 1-4 scale or 0-5
             wrong_q.ease_factor = max(130, wrong_q.ease_factor - 20)
             wrong_q.next_review_at = datetime.now() + timedelta(days=1)
         
@@ -547,12 +559,25 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
         except Exception as e:
             print(f"Failed to log wrong question to markdown: {e}")
 
-    else:
+    else: # Success (Quality 3, 4, 5)
         if wrong_q:
             if wrong_q.interval is None: wrong_q.interval = 1
             if wrong_q.ease_factor is None: wrong_q.ease_factor = 250
+            
+            # Standard SM-2 EF adjustment
+            # q=3 (Good-ish), q=4 (Good), q=5 (Easy)
+            # EF' = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
+            # If q=4, EF change ~= 0. If q=5, EF increases. If q=3, EF decreases.
+            q = quality
+            ef_change = (0.1 - (5-q) * (0.08 + (5-q) * 0.02)) * 100
+            wrong_q.ease_factor = max(130, int(wrong_q.ease_factor + ef_change))
+
             new_interval = int(wrong_q.interval * (wrong_q.ease_factor / 100.0))
             if new_interval <= wrong_q.interval: new_interval = wrong_q.interval + 1
+            
+            # Bonus for "Easy" (q=5)
+            if q == 5: new_interval = int(new_interval * 1.3)
+            
             wrong_q.interval = new_interval
             wrong_q.next_review_at = datetime.now() + timedelta(days=new_interval)
 

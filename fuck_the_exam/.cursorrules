@@ -1,0 +1,24 @@
+# AI Agent Instructions for Japanese N1 Quiz App
+
+This project is "Agent-Ready". When starting a new session, please follow these guidelines:
+
+1. **Prioritize the `.agent` Directory**: 
+   - Check `.agent/skills/` for custom tools and capabilities.
+   - Check `.agent/workflows/` for standard operating procedures (SOPs).
+   - Use `.agent/task.md` to track your progress.
+
+2. **Skill Usage**:
+   - Before performing grammar research, list points, or analyzing progress, check if a specialized script exists in `.agent/skills/*/scripts/`.
+   - Prefer using these scripts over generic file searches when applicable.
+
+3. **Workflow Adherence**:
+   - If a task matches a workflow in `.agent/workflows/` (e.g., generating questions), follow the steps outlined there exactly.
+
+4. **Environment Context**:
+   - Backend Port: 28888
+   - Frontend Port: 3000 (Local) / 23333 (Docker)
+   - Knowledge Base Path: `backend/知识点`
+   - Question Storage: `backend/json_questions/`
+
+5. **Communication**:
+   - Always update `task.md` and use `implementation_plan.md` for major changes.
