@@ -55,12 +55,38 @@ class KnowledgeService:
                                 entry[h_name] = val
                             
                             # Fallback for description
-                            if "description" not in entry:
                                 entry["description"] = parts[1] if len(parts) > 1 else ""
                                 
                             points.append(entry)
                 except Exception as e:
                     print(f"Error parsing {filename}: {e}")
+
+        # Scan generated JSON questions
+        json_dir = os.path.join(os.path.dirname(self.base_path), "backend", "json_questions")
+        if os.path.exists(json_dir):
+            existing_points = {p['point'] for p in points}
+            for filename in os.listdir(json_dir):
+                if filename.endswith(".json"):
+                    # Use filename as point name (removing .json)
+                    point_name = filename[:-5]
+                    
+                    # If this point is not already in the list (from markdown), add it
+                    if point_name not in existing_points:
+                        # Try to get description or count from the json file if possible, 
+                        # but purely reading filename is faster. 
+                        # Let's read file to be robust or just add simple entry. 
+                        # Reading file allows us to get a real count or verify content.
+                        try:
+                            # entry
+                            points.append({
+                                "point": point_name,
+                                "source_file": filename,
+                                "description": "AI Generated Topic", 
+                                "col_2": "Generated", # Level/Type
+                                "col_3": "N/A" # Count/Tag
+                            })
+                        except Exception as e:
+                             print(f"Error processing json point {filename}: {e}")
 
         return points
 

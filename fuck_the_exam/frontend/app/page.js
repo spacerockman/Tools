@@ -19,6 +19,15 @@ export default function Dashboard() {
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [stats, setStats] = useState(null);
 
+  const [hasResumeData, setHasResumeData] = useState(false);
+
+  // Check for resume data on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && localStorage.getItem('currentQuestions')) {
+      setHasResumeData(true);
+    }
+  }, []);
+
   // Handle auto-fill from query params (from Training Suggestions)
   useEffect(() => {
     const topicParam = searchParams.get('topic');
@@ -144,6 +153,37 @@ export default function Dashboard() {
                 <Button onClick={handleStudy} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={isStudyLoading || isGenerating}>
                   {isStudyLoading ? '正在加载...' : '开始我的每日复习'}
                 </Button>
+
+                {/* Resume Session Button */}
+                {/* Resume Session Button */}
+                {hasResumeData && (
+                  <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg animate-in fade-in zoom-in duration-300">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-bold text-yellow-800 dark:text-yellow-500">
+                        ⚠️ 检测到未完成的练习
+                      </span>
+                      <button
+                        onClick={() => {
+                          if (confirm('确定要放弃当前进度吗？')) {
+                            localStorage.removeItem('currentQuestions');
+                            localStorage.removeItem('currentTopic');
+                            localStorage.removeItem('currentResults');
+                            window.location.reload();
+                          }
+                        }}
+                        className="text-xs text-muted-foreground hover:text-destructive underline"
+                      >
+                        放弃
+                      </button>
+                    </div>
+                    <Button
+                      onClick={() => router.push('/quiz/session')}
+                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-white"
+                    >
+                      ▶️ 继续上次的练习
+                    </Button>
+                  </div>
+                )}
 
                 <div className="mt-4 pt-4 border-t border-blue-200 dark:border-slate-700">
                   <h4 className="text-sm font-semibold mb-2">🔍 知识漏洞排查</h4>

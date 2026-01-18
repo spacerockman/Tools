@@ -24,7 +24,14 @@ export default function QuizSession() {
             const parsedQuestions = JSON.parse(savedQuestions);
             setQuestions(parsedQuestions);
             setTopic(savedTopic);
-            setResults(new Array(parsedQuestions.length).fill(null));
+
+            const savedResults = localStorage.getItem('currentResults');
+            if (savedResults) {
+                setResults(JSON.parse(savedResults));
+            } else {
+                setResults(new Array(parsedQuestions.length).fill(null));
+            }
+
             setLoading(false);
         } else {
             // Redirect back if no questions
@@ -41,6 +48,11 @@ export default function QuizSession() {
             newResults[currentIndex] = result;
             setResults(newResults);
         }
+
+        // Sync to localStorage for Resume feature
+        // storage format: { questions: [], topic: "", results: [] } 
+        // We already have 'currentQuestions' and 'currentTopic'. Let's add 'currentResults'.
+        localStorage.setItem('currentResults', JSON.stringify(newResults));
 
         const shouldAdvance = result.autoAdvance !== false;
 
@@ -66,6 +78,7 @@ export default function QuizSession() {
             // Clear storage
             localStorage.removeItem('currentQuestions');
             localStorage.removeItem('currentTopic');
+            localStorage.removeItem('currentResults');
             // Go to dashboard or results page (Dashboard for now)
             router.push('/');
         } catch (error) {
@@ -77,18 +90,41 @@ export default function QuizSession() {
 
     const handleQuit = async () => {
         const activeResults = results.filter(r => r !== null);
-        if (activeResults.length > 0) {
-            if (window.confirm(`已完成 ${activeResults.length} 道题。是否保存进度并退出？`)) {
-                await handleFinish(activeResults);
-            } else if (window.confirm('确定要直接退出吗？（本次练习进度将不会被记录）')) {
-                localStorage.removeItem('currentQuestions');
-                localStorage.removeItem('currentTopic');
-                router.push('/');
-            }
-        } else {
-            localStorage.removeItem('currentQuestions');
-            localStorage.removeItem('currentTopic');
+        // Custom confirm dialog logic could be better, but using window.confirm for simplicity
+        if (window.confirm('要暂停并退出吗？\n\n点击 [确定] 保存进度并退出（可以在首页恢复）。\n点击 [取消] 继续做题。')) {
+            // Just redirect, storage is already there
             router.push('/');
+        }
+    };
+
+    const handleQuestionUpdate = (index, changes) => {
+        const newQuestions = [...questions];
+        newQuestions[index] = { ...newQuestions[index], ...changes };
+        setQuestions(newQuestions);
+        localStorage.setItem('currentQuestions', JSON.stringify(newQuestions));
+    };
+
+    const handleQuestionDelete = (index) => {
+        const newQuestions = questions.filter((_, i) => i !== index);
+        const newResults = results.filter((_, i) => i !== index);
+
+        setQuestions(newQuestions);
+        setResults(newResults);
+
+        localStorage.setItem('currentQuestions', JSON.stringify(newQuestions));
+        localStorage.setItem('currentResults', JSON.stringify(newResults));
+
+        // Adjust currentIndex if necessary
+        if (index < currentIndex) {
+            setCurrentIndex(currentIndex - 1);
+        } else if (index === currentIndex) {
+            if (newQuestions.length === 0) {
+                router.push('/');
+            } else if (index >= newQuestions.length) {
+                // Deleted the last item, move back one
+                setCurrentIndex(Math.max(0, currentIndex - 1));
+            }
+            // If deleted current and there are more after it, index stays same (effectively moves to next)
         }
     };
 
@@ -146,10 +182,12 @@ export default function QuizSession() {
             </div>
 
             <Question
-                key={currentIndex}
+                key={`${currentIndex}-${questions[currentIndex].id}`} // Ensure re-mount on index change or question change
                 question={questions[currentIndex]}
                 initialResult={results[currentIndex]}
                 onNext={handleNext}
+                onUpdate={(changes) => handleQuestionUpdate(currentIndex, changes)}
+                onDelete={() => handleQuestionDelete(currentIndex)}
             />
 
             <div className="mt-8 text-center">

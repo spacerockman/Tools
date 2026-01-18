@@ -28,10 +28,10 @@ export default function KnowledgePage() {
     useEffect(() => {
         async function fetchData() {
             try {
-                // 1. Fetch suggestions (the master list from MD files)
+                // 1. Fetch suggestions (the master list from MD files + JSON scans)
                 const suggestions = await getSuggestions();
 
-                // 2. Fetch all questions (to get counts)
+                // 2. Fetch all questions (to get counts) - fixed limit ensures we get all
                 const allQs = await getAllQuestions();
                 setQuestions(allQs);
 
@@ -43,7 +43,7 @@ export default function KnowledgePage() {
                 });
 
                 // 4. Build the final list
-                // Start with suggestions from MD
+                // Start with suggestions
                 const masterList = suggestions.map(s => ({
                     name: s.point,
                     description: s.description,
@@ -51,10 +51,10 @@ export default function KnowledgePage() {
                     source: s.source_file
                 }));
 
-                // Add any points that exist in DB but NOT in MD
-                const mdPointNames = new Set(suggestions.map(s => s.point));
+                // Add any points that exist in DB but NOT in Suggestions
+                const suggestionNames = new Set(suggestions.map(s => s.point));
                 countsMap.forEach((count, name) => {
-                    if (!mdPointNames.has(name)) {
+                    if (!suggestionNames.has(name)) {
                         masterList.push({
                             name: name,
                             description: '数据库中存在的记录',

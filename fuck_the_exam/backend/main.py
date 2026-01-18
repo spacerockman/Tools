@@ -187,8 +187,8 @@ def ingest_json_questions():
                             correct_answer=q_data['correct_answer'],
                             explanation=q_data.get('explanation'),
                             memorization_tip=q_data.get('memorization_tip'),
-                        knowledge_point=q_data.get('knowledge_point') or os.path.basename(json_file).replace('.json', ''),
-                        exam_type=q_data.get('exam_type', 'N1'),
+                            knowledge_point=q_data.get('knowledge_point') or os.path.basename(json_file).replace('.json', ''),
+                            exam_type=q_data.get('exam_type', 'N1'),
                             hash=q_data['hash']
                         )
                         db.add(db_q)
@@ -402,6 +402,24 @@ def get_knowledge_detail(name: str):
     except Exception as e:
         if isinstance(e, HTTPException): raise e
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/knowledge/counts")
+def get_knowledge_counts(db: Session = Depends(database.get_db)):
+    """
+    Returns a list of {point: str, count: int} for all knowledge points in DB.
+    Optimized aggregation query.
+    """
+    try:
+        # Group by knowledge_point and count
+        results = db.query(
+            models.Question.knowledge_point, 
+            func.count(models.Question.id)
+        ).group_by(models.Question.knowledge_point).all()
+        
+        return [{"point": r[0] or "未分类", "count": r[1]} for r in results]
+    except Exception as e:
+        print(f"Error getting counts: {e}")
+        return []
 
 @app.get("/api/questions", response_model=List[Question])
 def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):

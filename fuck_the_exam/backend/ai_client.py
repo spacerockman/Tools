@@ -77,6 +77,7 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
          1) [本题考点]: Breakdown of "{topic}" usage and logic based on grounding.
          2) [语境分析]: Analyze the sentence context and why it requires a specific structure.
          3) [选项解析]: Detailed reason why the correct answer is right and why EACH distractor is wrong (citing specific N1 nuance differences).
+            IMPORTANT: EACH option (A, B, C, D) in this section MUST start on a NEW LINE for readability.
     6. MEMORIZATION TIP: Provide a mnemonic or comparison rule in Chinese as a string.
     """
 

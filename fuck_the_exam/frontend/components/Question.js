@@ -7,7 +7,7 @@ import { Button } from './ui/button';
 import { Trash2, Star, BookOpen, Loader2 } from 'lucide-react';
 import KnowledgeDetailModal from './KnowledgeDetailModal';
 
-const Question = ({ question, onNext, initialResult = null }) => {
+const Question = ({ question, onNext, onUpdate, onDelete, initialResult = null }) => {
   if (!question) return null;
 
   const [selectedOption, setSelectedOption] = useState(initialResult?.selected_answer || null);
@@ -68,11 +68,13 @@ const Question = ({ question, onNext, initialResult = null }) => {
     }
   };
 
+  const [isFavAnimating, setIsFavAnimating] = useState(false);
+
   const handleDelete = async () => {
     if (window.confirm('确定要删除这道题目吗？此操作不可撤销。')) {
       try {
         await deleteQuestion(question.id);
-        onNext({ skipped: true, deleted: true });
+        if (onDelete) onDelete(); // Call parent handler to remove from UI/Storage
       } catch (error) {
         console.error("Failed to delete question:", error);
         alert('删除失败，请稍后重试。');
@@ -81,9 +83,15 @@ const Question = ({ question, onNext, initialResult = null }) => {
   };
 
   const handleToggleFavorite = async () => {
+    // Trigger animation
+    setIsFavAnimating(true);
+    setTimeout(() => setIsFavAnimating(false), 300);
+
     try {
       await toggleFavorite(question.id);
-      setIsFavorite(!isFavorite);
+      const newFavState = !isFavorite;
+      setIsFavorite(newFavState);
+      if (onUpdate) onUpdate({ is_favorite: newFavState });
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
     }
@@ -105,6 +113,20 @@ const Question = ({ question, onNext, initialResult = null }) => {
     } finally {
       setDetailLoading(false);
     }
+  };
+
+  // Helper to format explanation for better readability
+  const formatExplanation = (text) => {
+    if (!text) return "";
+    // Insert newline before [本题考点], [语境分析], [选项解析]
+    let formatted = text.replace(/(\[(本题考点|语境分析|选项解析)\])/g, '\n$1').trim();
+
+    // In [选项解析] section, or generally, format A/B/C/D to new lines
+    // Match A/B/C/D followed by a dot, bracket, or colon, often preceded by punctuation or space
+    // Robust match: (punctuation/space/start) -> (A|B|C|D) -> (dot|colon|bracket|space)
+    formatted = formatted.replace(/([。！？；]|\s|^)([ABCD])(?=[\.、：\s「])/g, '$1\n$2');
+
+    return formatted;
   };
 
   // Callback to parent when user is ready for next question
@@ -137,7 +159,7 @@ const Question = ({ question, onNext, initialResult = null }) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className={`h-8 w-8 ${isFavorite ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground'} hover:text-yellow-600`}
+                className={`h-8 w-8 transition-all duration-300 ${isFavorite ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground'} hover:text-yellow-600 ${isFavAnimating ? 'scale-150 rotate-12' : 'scale-100'}`}
                 onClick={handleToggleFavorite}
                 title={isFavorite ? "取消标记" : "标记此题"}
               >
@@ -236,7 +258,7 @@ const Question = ({ question, onNext, initialResult = null }) => {
                   <p className="font-bold text-xs text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-2">
                     📘 解析
                   </p>
-                  <p className="text-base leading-relaxed whitespace-pre-wrap">{result?.explanation}</p>
+                  <p className="text-base leading-relaxed whitespace-pre-wrap">{formatExplanation(result?.explanation)}</p>
                 </div>
 
                 {result?.memorization_tip && result?.memorization_tip !== result?.explanation && (
