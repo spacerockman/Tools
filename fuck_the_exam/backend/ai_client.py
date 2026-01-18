@@ -57,6 +57,7 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
     - "correct_answer": string (A, B, C, or D)
     - "explanation": string, detailed breakdown in professional Chinese
     - "memorization_tip": string, mnemonic or comparison rule in Chinese
+    - "knowledge_point": string, MUST be "{topic}"
 
     STRICT JLPT N1 FORMATTING & LINGUISTIC RULES:
     1. EXAM FORMAT (穴埋め): 
@@ -119,6 +120,8 @@ def _single_generate_batch(topic_raw: str, batch_size: int, headers: Dict, max_r
                         q['explanation'] = "[AI生成辅助] 考点分析加载中，请结合前后文理解。"
                     if not q.get('memorization_tip'):
                         q['memorization_tip'] = "记忆点正在整理中。"
+                    if not q.get('knowledge_point'):
+                        q['knowledge_point'] = topic
                     
                     # Deduplication: If tip is just a repetition of explanation, clear it or shorten it
                     exp_text = q['explanation'].strip()

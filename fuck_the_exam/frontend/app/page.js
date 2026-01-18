@@ -106,7 +106,7 @@ export default function Dashboard() {
     setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
-      let response = await getGapQuiz(2);
+      let response = await getGapQuiz(10);
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无题目可供排查，请先生成一些题目！' });
         setIsStudyLoading(false);
@@ -184,11 +184,21 @@ export default function Dashboard() {
                         ⚠️ 检测到未完成的练习
                       </span>
                       <button
-                        onClick={() => {
+                        onClick={async () => {
                           if (confirm('确定要放弃当前进度吗？')) {
                             localStorage.removeItem('currentQuestions');
                             localStorage.removeItem('currentTopic');
                             localStorage.removeItem('currentResults');
+                            localStorage.removeItem('currentIndex');
+                            localStorage.removeItem('sessionUpdatedAt');
+                            try {
+                              await fetch(`${getApiBase()}/api/quiz/session?session_key=default`, {
+                                method: 'DELETE'
+                              });
+                            } catch (error) {
+                              console.error('Failed to clear session:', error);
+                            }
+                            setHasResumeData(false);
                             window.location.reload();
                           }
                         }}

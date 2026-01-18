@@ -156,10 +156,14 @@ def ingest_json_questions():
             try:
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
+                original_is_dict = isinstance(data, dict)
+                file_modified = False
                     
                 if isinstance(data, dict): 
                      data = [data]
                 
+                default_point = os.path.basename(json_file).replace('.json', '')
+
                 for q_data in data:
                     # Normalize options if they are flat option_a, option_b etc.
                     if 'options' not in q_data and 'option_a' in q_data:
@@ -175,6 +179,11 @@ def ingest_json_questions():
                         q_data['content'] = q_data['question']
                     if 'answer' in q_data and 'correct_answer' not in q_data:
                         q_data['correct_answer'] = q_data['answer']
+
+                    # Backfill knowledge_point from filename if missing
+                    if not q_data.get('knowledge_point'):
+                        q_data['knowledge_point'] = default_point
+                        file_modified = True
 
                     # Validate required fields
                     if 'content' not in q_data or 'options' not in q_data or 'correct_answer' not in q_data:
@@ -208,6 +217,9 @@ def ingest_json_questions():
                              exists.knowledge_point = q_data.get('knowledge_point')
                          if q_data.get('explanation') and (not exists.explanation or exists.explanation == "暂无解析"):
                              exists.explanation = q_data.get('explanation')
+                if file_modified:
+                    with open(json_file, 'w', encoding='utf-8') as f:
+                        json.dump(data[0] if original_is_dict else data, f, indent=2, ensure_ascii=False)
             except Exception as e:
                 print(f"Error loading {json_file}: {e}")
         
@@ -542,8 +554,8 @@ def get_gap_quiz(num_per_point: int = 2, db: Session = Depends(database.get_db))
     Randomly selects a small number of questions from EACH knowledge point
     to help identify knowledge gaps.
     """
-    all_points = db.query(models.Question.knowledge_point).distinct().all()
-    all_points = [p[0] for p in all_points if p[0]]
+    all_points = db.query(func.coalesce(models.Question.knowledge_point, "未分类")).distinct().all()
+    all_points = [p[0] if p[0] else "未分类" for p in all_points]
     
     selected_questions = []
     import random
@@ -552,8 +564,12 @@ def get_gap_quiz(num_per_point: int = 2, db: Session = Depends(database.get_db))
 
     for point in all_points:
         # Get questions for this point (exclude mastered unless favorite)
+        point_filter = (models.Question.knowledge_point == point)
+        if point == "未分类":
+            point_filter = (models.Question.knowledge_point == None) | (models.Question.knowledge_point == "")
+
         point_qs = db.query(models.Question).filter(
-            models.Question.knowledge_point == point,
+            point_filter,
             (~models.Question.id.in_(mastered_subquery)) | (models.Question.is_favorite == True)
         ).all()
         if point_qs:
