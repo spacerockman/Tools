@@ -8,6 +8,12 @@ import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { useGeneration } from '../contexts/GenerationContext';
 
+const getApiBase = () => {
+  if (typeof window === 'undefined') return '';
+  const { protocol, hostname } = window.location;
+  return `${protocol}//${hostname}:28888`;
+};
+
 export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -23,9 +29,24 @@ export default function Dashboard() {
 
   // Check for resume data on mount
   useEffect(() => {
-    if (typeof window !== 'undefined' && localStorage.getItem('currentQuestions')) {
-      setHasResumeData(true);
-    }
+    const checkResume = async () => {
+      if (typeof window !== 'undefined' && localStorage.getItem('currentQuestions')) {
+        setHasResumeData(true);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${getApiBase()}/api/quiz/session?session_key=default`);
+        const data = await response.json();
+        if (data?.exists) {
+          setHasResumeData(true);
+        }
+      } catch (error) {
+        console.error('Failed to check session:', error);
+      }
+    };
+
+    checkResume();
   }, []);
 
   // Handle auto-fill from query params (from Training Suggestions)

@@ -96,6 +96,13 @@ class StatsResponse(BaseModel):
     daily_stats: List[Dict[str, Any]]
     top_wrong_points: List[Dict[str, Any]]
 
+class QuizSessionPayload(BaseModel):
+    session_key: Optional[str] = "default"
+    topic: Optional[str] = None
+    questions: List[Dict[str, Any]]
+    results: List[Any]
+    current_index: int = 0
+
 # --- API Endpoints ---
 
 @app.on_event("startup")
@@ -435,6 +442,49 @@ def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Sessio
         results.append(Question(**q_dict))
     return results
 
+@app.get("/api/quiz/session")
+def get_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db)):
+    session = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+    if not session:
+        return {"exists": False}
+
+    return {
+        "exists": True,
+        "session_key": session.session_key,
+        "topic": session.topic,
+        "questions": json.loads(session.questions_json),
+        "results": json.loads(session.results_json),
+        "current_index": session.current_index,
+        "updated_at": session.updated_at.isoformat() if session.updated_at else None
+    }
+
+@app.post("/api/quiz/session")
+def save_quiz_session(payload: QuizSessionPayload, db: Session = Depends(database.get_db)):
+    session_key = payload.session_key or "default"
+    existing = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+
+    if not existing:
+        existing = models.QuizSession(session_key=session_key)
+        db.add(existing)
+
+    existing.topic = payload.topic
+    existing.questions_json = json.dumps(payload.questions, ensure_ascii=False)
+    existing.results_json = json.dumps(payload.results, ensure_ascii=False)
+    existing.current_index = payload.current_index
+    db.commit()
+
+    return {"message": "Session saved", "session_key": session_key}
+
+@app.delete("/api/quiz/session")
+def delete_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db)):
+    session = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+    if not session:
+        return {"message": "Session not found"}
+
+    db.delete(session)
+    db.commit()
+    return {"message": "Session deleted"}
+
 @app.get("/api/quiz/study")
 def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = Depends(database.get_db)):
     ingest_json_questions()
@@ -498,9 +548,14 @@ def get_gap_quiz(num_per_point: int = 2, db: Session = Depends(database.get_db))
     selected_questions = []
     import random
     
+    mastered_subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
+
     for point in all_points:
-        # Get questions for this point
-        point_qs = db.query(models.Question).filter(models.Question.knowledge_point == point).all()
+        # Get questions for this point (exclude mastered unless favorite)
+        point_qs = db.query(models.Question).filter(
+            models.Question.knowledge_point == point,
+            (~models.Question.id.in_(mastered_subquery)) | (models.Question.is_favorite == True)
+        ).all()
         if point_qs:
             # Pick random samples
             sample_size = min(len(point_qs), num_per_point)

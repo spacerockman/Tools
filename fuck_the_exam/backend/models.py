@@ -54,3 +54,14 @@ class StudyRecord(Base):
     questions_answered = Column(Integer, default=0)
     correct_answers = Column(Integer, default=0)
     wrong_answers = Column(Integer, default=0)
+
+class QuizSession(Base):
+    __tablename__ = "quiz_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_key = Column(String(64), unique=True, index=True)
+    topic = Column(Text, nullable=True)
+    questions_json = Column(Text, nullable=False)
+    results_json = Column(Text, nullable=False)
+    current_index = Column(Integer, default=0)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
