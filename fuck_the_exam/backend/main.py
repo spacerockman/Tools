@@ -15,12 +15,15 @@ from .services.markdown_service import MarkdownService
 from .services.knowledge_service import KnowledgeService
 from .services.backup_service import BackupService
 from .services.analysis_service import AnalysisService
+from .autogen_service import AutoGenService
 from pydantic import BaseModel, Json
 
 # Ensure DB tables are created
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Japanese N1 Quiz App")
+
+autogen_service_instance = None
 
 # Initialize Services
 markdown_service = MarkdownService(base_path=os.path.join(os.getcwd(), "knowledge_base"))
@@ -107,6 +110,7 @@ class QuizSessionPayload(BaseModel):
 
 @app.on_event("startup")
 def on_startup():
+    global autogen_service_instance
     database.create_db_and_tables()
     # Migration: Add is_favorite column if it doesn't exist
     try:
@@ -133,6 +137,16 @@ def on_startup():
         print(f"Recovery failed: {e}")
     finally:
         db_rec.close()
+
+    # Start the autogen service
+    autogen_service_instance = AutoGenService(database.SessionLocal)
+    autogen_service_instance.start()
+
+@app.on_event("shutdown")
+def on_shutdown():
+    global autogen_service_instance
+    if autogen_service_instance:
+        autogen_service_instance.stop()
 
 def ingest_json_questions():
     """
