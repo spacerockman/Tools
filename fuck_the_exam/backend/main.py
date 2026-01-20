@@ -650,20 +650,36 @@ def get_quiz_session(session_key: str = "default", db: Session = Depends(databas
 @app.post("/api/quiz/session")
 def save_quiz_session(payload: QuizSessionPayload, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     session_key = payload.session_key or "default"
-    existing = db.query(models.QuizSession).filter(
-        models.QuizSession.session_key == session_key,
-        models.QuizSession.user_id == user_id
-    ).first()
+    
+    try:
+        # 1. Try to fetch existing
+        existing = db.query(models.QuizSession).filter(
+            models.QuizSession.session_key == session_key,
+            models.QuizSession.user_id == user_id
+        ).first()
 
-    if not existing:
-        existing = models.QuizSession(session_key=session_key, user_id=user_id)
-        db.add(existing)
+        if not existing:
+            # 2. Try to insert new
+            existing = models.QuizSession(session_key=session_key, user_id=user_id)
+            db.add(existing)
+            db.flush() # Try to flush to catch IntegrityError early
+    except:
+        db.rollback()
+        # 3. If insert failed (race condition), fetch again
+        existing = db.query(models.QuizSession).filter(
+            models.QuizSession.session_key == session_key,
+            models.QuizSession.user_id == user_id
+        ).first()
 
-    existing.topic = payload.topic
-    existing.questions_json = json.dumps(payload.questions, ensure_ascii=False)
-    existing.results_json = json.dumps(payload.results, ensure_ascii=False)
-    existing.current_index = payload.current_index
-    db.commit()
+    if existing:
+        existing.topic = payload.topic
+        existing.questions_json = json.dumps(payload.questions, ensure_ascii=False)
+        existing.results_json = json.dumps(payload.results, ensure_ascii=False)
+        existing.current_index = payload.current_index
+        db.commit()
+    else:
+        # Fallback safety (should rarely happen with above logic)
+        raise HTTPException(status_code=500, detail="Failed to sync session due to internal race condition.")
 
     return {"message": "Session saved", "session_key": session_key}
 
@@ -723,6 +739,7 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, exam_type: str
     new_qs = db.query(models.Question)\
         .filter(models.Question.exam_type == exam_type)\
         .filter((~models.Question.id.in_(answered_subquery)) | (models.Question.id.in_(favorite_ids)))\
+        .order_by(func.random())\
         .limit(limit_new)\
         .all()
 
@@ -743,7 +760,7 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, exam_type: str
     return review_structure + new_structure
 
 @app.get("/api/quiz/gap")
-def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, exam_type: str = "N1", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+def get_gap_quiz(target_total: int = 20, num_per_point: int = 1, exam_type: str = "N1", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     """
     Selects a mix of:
     1. NEVER attempted questions.
@@ -773,17 +790,15 @@ def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, exam_type: str 
     import random
     random.shuffle(points) # Randomize point order
     
+    # 3. Interleave points for maximum diversity
     selected_questions = []
+    point_pools = {} # point -> list of questions
     
     for point in points:
-        if len(selected_questions) >= target_total:
-            break
-            
         point_filter = (models.Question.knowledge_point == point)
         if point == "未分类":
             point_filter = (models.Question.knowledge_point == None) | (models.Question.knowledge_point == "")
 
-        # Pool: (Never Attempted) OR (Favorite) OR (Wrong)
         point_qs = db.query(models.Question).filter(
             point_filter,
             (
@@ -791,18 +806,26 @@ def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, exam_type: str 
                 models.Question.id.in_(favorite_ids) |
                 models.Question.id.in_(wrong_ids)
             )
-        ).all()
+        ).order_by(func.random()).limit(num_per_point).all()
         
         if point_qs:
-            sample_size = min(len(point_qs), num_per_point)
-            # Ensure we don't exceed target_total in this step
-            remaining = target_total - len(selected_questions)
-            sample_size = min(sample_size, remaining)
-            
-            samples = random.sample(point_qs, sample_size)
-            selected_questions.extend(samples)
+            point_pools[point] = point_qs
+
+    # Pick round-robin until target_total
+    import itertools
+    all_qs_iter = []
+    # Flatten point pools into round-robin order
+    max_qs = num_per_point
+    for i in range(max_qs):
+        for point in points:
+            if point in point_pools and i < len(point_pools[point]):
+                selected_questions.append(point_pools[point][i])
+                if len(selected_questions) >= target_total:
+                    break
+        if len(selected_questions) >= target_total:
+            break
     
-    # Final shuffle for the session
+    # Final shuffle is optional since we interleaved, but let's keep it for intra-point randomness
     random.shuffle(selected_questions)
     
     results = []

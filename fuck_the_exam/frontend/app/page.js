@@ -23,6 +23,7 @@ export default function Dashboard() {
 
   const [topic, setTopic] = useState('');
   const [numQuestions, setNumQuestions] = useState(10);
+  const [gapQuizCount, setGapQuizCount] = useState(20);
   const [isStudyLoading, setIsStudyLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [stats, setStats] = useState(null);
@@ -33,6 +34,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkResume = async () => {
       if (typeof window !== 'undefined' && localStorage.getItem('currentQuestions')) {
+        console.log("Resume: Found local session data.");
         setHasResumeData(true);
         return;
       }
@@ -40,6 +42,7 @@ export default function Dashboard() {
       try {
         const data = await getQuizSession('default');
         if (data?.exists) {
+          console.log("Resume: Found server session data.");
           setHasResumeData(true);
         }
       } catch (error) {
@@ -94,6 +97,7 @@ export default function Dashboard() {
       }
       localStorage.setItem('currentQuestions', JSON.stringify(response));
       localStorage.setItem('currentTopic', 'Daily Study Session');
+      localStorage.setItem('sessionUpdatedAt', new Date().toISOString());
       router.push('/quiz/session');
     } catch (error) {
       console.error(error);
@@ -107,21 +111,22 @@ export default function Dashboard() {
     setIsStudyLoading(true);
     setFeedback({ type: '', message: '' });
     try {
-      let response = await getGapQuiz(10);
+      // Request 1 question per knowledge point, aim for gapQuizCount total
+      let response = await getGapQuiz(1, gapQuizCount);
       if (response.length === 0) {
         setFeedback({ type: 'info', message: '暂无题目可供排查，请先生成一些题目！' });
         setIsStudyLoading(false);
         return;
       }
 
-      // Limit to 20 questions
-      if (response.length > 20) {
-        // Shuffle and take 20
-        response = response.sort(() => 0.5 - Math.random()).slice(0, 20);
+      // Limit to gapQuizCount questions (safety guard)
+      if (response.length > gapQuizCount) {
+        response = response.slice(0, gapQuizCount);
       }
 
       localStorage.setItem('currentQuestions', JSON.stringify(response));
       localStorage.setItem('currentTopic', 'Knowledge Gap Test');
+      localStorage.setItem('sessionUpdatedAt', new Date().toISOString());
       router.push('/quiz/session');
     } catch (error) {
       console.error(error);
@@ -224,8 +229,23 @@ export default function Dashboard() {
                 <div className="mt-4 pt-4 border-t border-blue-200 dark:border-slate-700">
                   <h4 className="text-sm font-semibold mb-2">🔍 知识漏洞排查</h4>
                   <p className="text-xs text-muted-foreground mb-3">从每个知识点随机抽题，全方位检测薄弱环节。</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[5, 10, 15, 20].map(count => (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setGapQuizCount(count)}
+                        className={`px-3 py-1 rounded text-xs font-medium border transition ${gapQuizCount === count
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white dark:bg-slate-800 border-blue-200 dark:border-slate-600 hover:bg-blue-50 dark:hover:bg-slate-700'
+                          }`}
+                      >
+                        {count}题
+                      </button>
+                    ))}
+                  </div>
                   <Button onClick={handleGapQuiz} variant="secondary" className="w-full" disabled={isStudyLoading || isGenerating}>
-                    💡 开始随机排查测试
+                    💡 开始随机排查测试 ({gapQuizCount}题)
                   </Button>
                 </div>
               </div>

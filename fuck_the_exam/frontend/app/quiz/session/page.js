@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Question from '../../../components/Question';
 import { Button } from '../../../components/ui/button';
 import { Card, CardContent } from '../../../components/ui/card';
-import { finishQuiz } from '../../../lib/api';
+import { finishQuizSession } from '../../../lib/api';
 
 const getApiBase = () => {
     if (typeof window === 'undefined') return '';
@@ -49,15 +49,30 @@ export default function QuizSession() {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
     const [topic, setTopic] = useState('');
+    const isFinishingRef = useRef(false);
+    const saveAbortController = useRef(null);
 
     const saveSession = async (payload) => {
+        if (isFinishingRef.current) return;
+
+        // Abort previous pending save if any
+        if (saveAbortController.current) {
+            saveAbortController.current.abort();
+        }
+        saveAbortController.current = new AbortController();
+
         try {
             await fetch(`${getApiBase()}/api/quiz/session`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                signal: saveAbortController.current.signal
             });
         } catch (error) {
+            if (error.name === 'AbortError') {
+                // Ignore abort errors
+                return;
+            }
             console.error('Failed to sync session:', error);
         }
     };
@@ -168,7 +183,7 @@ export default function QuizSession() {
     }, [router]);
 
     useEffect(() => {
-        if (loading || questions.length === 0) return;
+        if (loading || questions.length === 0 || isFinishingRef.current) return;
         const updatedAt = new Date().toISOString();
         localStorage.setItem('sessionUpdatedAt', updatedAt);
         const payload = {
@@ -215,20 +230,34 @@ export default function QuizSession() {
     };
 
     const handleFinish = async (finalResults) => {
+        isFinishingRef.current = true;
+        // Kill any pending save immediately
+        if (saveAbortController.current) {
+            saveAbortController.current.abort();
+        }
+
         try {
-            // Log session to backend
-            await finishQuiz(topic, finalResults);
-            // Clear storage
-            localStorage.removeItem('currentQuestions');
-            localStorage.removeItem('currentTopic');
-            localStorage.removeItem('currentResults');
-            localStorage.removeItem('currentIndex');
+            // 1. Clear server session first to minimize race window
             await clearSession();
-            // Go to dashboard or results page (Dashboard for now)
-            router.push('/');
+
+            // 2. Log session history
+            await finishQuizSession(topic, finalResults);
+
         } catch (error) {
             console.error("Error logging session:", error);
-            // Even if logging fails, go back
+        } finally {
+            // 3. Guaranteed Cleanup
+            try {
+                localStorage.removeItem('currentQuestions');
+                localStorage.removeItem('currentTopic');
+                localStorage.removeItem('currentResults');
+                localStorage.removeItem('currentIndex');
+                localStorage.removeItem('sessionUpdatedAt');
+            } catch (e) {
+                console.error("Error clearing local storage:", e);
+            }
+
+            // 4. Return to dashboard
             router.push('/');
         }
     };
