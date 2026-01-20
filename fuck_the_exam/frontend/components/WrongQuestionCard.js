@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Card, CardContent } from "./ui/card";
 import { Lightbulb, BookOpen, CheckCircle, Trash2, Star } from "lucide-react";

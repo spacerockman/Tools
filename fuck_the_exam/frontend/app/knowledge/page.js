@@ -9,11 +9,13 @@ import { Trash2, AlertTriangle, Sparkles, Loader2, Play, Info, X, Zap } from 'lu
 import { useGeneration } from '../../contexts/GenerationContext';
 import { getAllQuestions, getSuggestions, deleteKnowledge, getKnowledgeDetail, getKnowledgeCounts, getStats } from '../../lib/api';
 import KnowledgeDetailModal from '../../components/KnowledgeDetailModal';
+import { useUser } from '../../contexts/UserContext';
 
 export default function KnowledgePage() {
 
     const router = useRouter();
     const { isGenerating, setIsGenerating, startGeneration, generationStatus } = useGeneration();
+    const { user, examType } = useUser();
     const [totalQuestions, setTotalQuestions] = useState(0);
     const [knowledgePoints, setKnowledgePoints] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -182,7 +184,9 @@ export default function KnowledgePage() {
                 <header className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">📚 知识点库</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+                                {examType === 'Databricks' ? '📚 Databricks 知识库' : '📚 N1 知识点库'}
+                            </h1>
                             {isGenerating && (
                                 <div className="flex items-center gap-1.5 px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full animate-pulse border border-primary/20">
                                     <Loader2 className="w-2.5 h-2.5 animate-spin" />
@@ -318,7 +322,7 @@ export default function KnowledgePage() {
                                                     ) : (
                                                         <Info className="w-3.5 h-3.5" />
                                                     )}
-                                                    语法详细
+                                                    {examType === 'Databricks' ? '知识点详情' : '语法详细'}
                                                 </Button>
                                                 <Button
                                                     size="sm"

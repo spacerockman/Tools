@@ -2,13 +2,14 @@ import json
 import os
 import re
 import hashlib
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, and_
 from typing import List, Optional, Dict, Any
 from datetime import date, datetime, timedelta
 
+import secrets
 from . import models, database, ai_client
 from .database import engine, SessionLocal
 from .services.markdown_service import MarkdownService
@@ -53,7 +54,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- User Management Dependency ---
+def get_current_user_id(x_user_id: Optional[int] = Header(None)):
+    if x_user_id is None:
+        return 1 # Fallback to default user
+    return x_user_id
+
 # --- Pydantic Models ---
+
+class UserBase(BaseModel):
+    username: str
+
+class UserCreate(UserBase):
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class User(UserBase):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True
 
 class QuestionBase(BaseModel):
     content: str
@@ -91,6 +114,7 @@ class WrongQuestion(BaseModel):
 class GenerateRequest(BaseModel):
     topic: str
     num_questions: int = 5
+    exam_type: str = "N1"
 
 class StatsResponse(BaseModel):
     total_answered: int
@@ -105,6 +129,15 @@ class QuizSessionPayload(BaseModel):
     questions: List[Dict[str, Any]]
     results: List[Any]
     current_index: int = 0
+# --- Auth Utils ---
+def hash_password(password: str, salt: str = None):
+    if salt is None:
+        salt = secrets.token_hex(16)
+    phash = hashlib.sha256((password + salt).encode()).hexdigest()
+    return phash, salt
+
+def verify_password(password: str, salt: str, phash: str):
+    return hash_password(password, salt)[0] == phash
 
 # --- API Endpoints ---
 
@@ -122,6 +155,18 @@ def on_startup():
         print("Migration: Added is_favorite column to questions table.")
     except Exception as e:
         # Probable cause: column already exists
+        pass
+
+    # Migration: Add password columns to users
+    try:
+        from sqlalchemy import text
+        db = database.SessionLocal()
+        db.execute(text('ALTER TABLE users ADD COLUMN password_hash VARCHAR(128)'))
+        db.execute(text('ALTER TABLE users ADD COLUMN salt VARCHAR(32)'))
+        db.commit()
+        db.close()
+        print("Migration: Added password columns to users table.")
+    except Exception as e:
         pass
     
     ingest_json_questions()
@@ -161,12 +206,19 @@ def ingest_json_questions():
     import glob
     import hashlib
     
-    files = glob.glob(os.path.join(json_dir, "*.json"))
+    # Scan both n1/ and databricks/ subfolders
+    base_json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
+    files = []
+    for mode in ["n1", "databricks"]:
+        mode_dir = os.path.join(base_json_dir, mode)
+        if os.path.exists(mode_dir):
+            files.extend([(f, mode.upper()) for f in glob.glob(os.path.join(mode_dir, "*.json"))])
+    
     db = database.SessionLocal()
     
     try:
         count = 0
-        for json_file in files:
+        for json_file, mode_type in files:
             try:
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
@@ -218,7 +270,7 @@ def ingest_json_questions():
                             explanation=q_data.get('explanation'),
                             memorization_tip=q_data.get('memorization_tip'),
                             knowledge_point=q_data.get('knowledge_point') or os.path.basename(json_file).replace('.json', ''),
-                            exam_type=q_data.get('exam_type', 'N1'),
+                            exam_type=mode_type,
                             hash=q_data['hash']
                         )
                         db.add(db_q)
@@ -254,7 +306,8 @@ def save_generated_questions_to_file(topic: str, questions: List[Dict]):
     Appends if file exists.
     """
     filename = get_safe_filename(topic)
-    json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
+    mode_subfolder = (exam_type or "N1").lower()
+    json_dir = os.path.join(os.path.dirname(__file__), "json_questions", mode_subfolder)
     if not os.path.exists(json_dir):
         os.makedirs(json_dir)
         
@@ -295,8 +348,45 @@ def save_generated_questions_to_file(topic: str, questions: List[Dict]):
             json.dump(final_data, f, indent=2, ensure_ascii=False)
         print(f"Saved {len(new_questions)} new questions to {filepath}")
 
+@app.get("/api/users", response_model=List[User])
+def get_users(db: Session = Depends(database.get_db)):
+    return db.query(models.User).all()
+
+@app.post("/api/users", response_model=User)
+def create_user(user_data: UserCreate, db: Session = Depends(database.get_db)):
+    # Check if user already exists
+    existing = db.query(models.User).filter(models.User.username == user_data.username).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    
+    phash, salt = hash_password(user_data.password)
+    new_user = models.User(
+        username=user_data.username,
+        password_hash=phash,
+        salt=salt
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+@app.post("/api/login", response_model=User)
+def login_user(payload: UserLogin, db: Session = Depends(database.get_db)):
+    db_user = db.query(models.User).filter(models.User.username == payload.username).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Handle legacy users with no password
+    if not db_user.password_hash:
+        return db_user
+
+    if not verify_password(payload.password, db_user.salt, db_user.password_hash):
+        raise HTTPException(status_code=401, detail="Invalid password")
+    
+    return db_user
+
 @app.post("/api/quiz/generate")
-def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
+def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     """
     Generates N1 questions via AI, deduplicates, saves to file, and saves to DB.
     """
@@ -331,7 +421,7 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
                 explanation=q_data.get('explanation'),
                 memorization_tip=q_data.get('memorization_tip'),
                 knowledge_point=q_data.get('knowledge_point') or req.topic,
-                exam_type="N1",
+                exam_type=req.exam_type,
                 hash=q_data['hash']
             )
             db.add(db_q)
@@ -341,14 +431,24 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
     db.commit()
 
     # 4. Filter mastered questions (unless favorite)
-    subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
+    # Mastered = exists a correct attempt BY THIS USER
     
     final_questions = []
     for q in saved_questions:
-        # Check if mastered
-        is_mastered = db.query(subquery.filter(models.AnswerAttempt.question_id == q.id).exists()).scalar()
-        if not is_mastered or q.is_favorite:
-            final_questions.append(q)
+        # Check if mastered BY THIS USER
+        is_mastered = db.query(models.AnswerAttempt).filter(
+            models.AnswerAttempt.question_id == q.id,
+            models.AnswerAttempt.user_id == user_id,
+            models.AnswerAttempt.is_correct == 1
+        ).first() is not None
+        
+        is_favorite = db.query(models.UserFavorite).filter(
+            models.UserFavorite.user_id == user_id,
+            models.UserFavorite.question_id == q.id
+        ).first() is not None
+        
+        if not is_mastered or is_favorite:
+            final_questions.append((q, is_favorite))
     
     return [
         {
@@ -359,25 +459,33 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db)):
             "explanation": q.explanation,
             "memorization_tip": q.memorization_tip,
             "knowledge_point": q.knowledge_point,
-            "is_favorite": q.is_favorite
-        } for q in final_questions
+            "is_favorite": fav
+        } for q, fav in final_questions
     ]
 
 @app.get("/api/stats", response_model=StatsResponse)
-def get_stats(db: Session = Depends(database.get_db)):
-    # Total Answered
-    total = db.query(models.AnswerAttempt).count()
-    correct = db.query(models.AnswerAttempt).filter(models.AnswerAttempt.is_correct == 1).count()
+def get_stats(exam_type: str = "N1", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    # Total Answered by this user in this mode
+    total = db.query(models.AnswerAttempt).join(models.Question)\
+        .filter(models.AnswerAttempt.user_id == user_id, models.Question.exam_type == exam_type).count()
+    
+    correct = db.query(models.AnswerAttempt).join(models.Question)\
+        .filter(
+            models.AnswerAttempt.user_id == user_id,
+            models.AnswerAttempt.is_correct == 1,
+            models.Question.exam_type == exam_type
+        ).count()
     wrong = total - correct
 
-    # Daily Stats (Last 7 days)
+    # Daily Stats (Last 7 days) for this user in this mode
     daily_stats = []
-    # Simplified SQL for SQLite (Date grouping might vary by DB)
     rows = db.query(
         func.date(models.AnswerAttempt.attempted_at).label('date'),
         func.sum(models.AnswerAttempt.is_correct).label('correct'),
         func.count(models.AnswerAttempt.id).label('total')
-    ).group_by(func.date(models.AnswerAttempt.attempted_at))\
+    ).join(models.Question)\
+     .filter(models.AnswerAttempt.user_id == user_id, models.Question.exam_type == exam_type)\
+     .group_by(func.date(models.AnswerAttempt.attempted_at))\
      .order_by(func.date(models.AnswerAttempt.attempted_at).desc())\
      .limit(7).all()
 
@@ -389,14 +497,16 @@ def get_stats(db: Session = Depends(database.get_db)):
         })
     daily_stats.reverse()
 
-    # Top Wrong Knowledge Points
-    # This assumes knowledge_point is populated well. If mixed, might be messy.
-    # Join WrongQuestion -> Question -> group by knowledge_point
+    # Top Wrong Knowledge Points in this mode
     wrong_points = db.query(
         models.Question.knowledge_point,
         func.count(models.AnswerAttempt.id).label('count')
     ).join(models.AnswerAttempt, models.Question.id == models.AnswerAttempt.question_id) \
-     .filter(models.AnswerAttempt.is_correct == 0) \
+     .filter(
+         models.AnswerAttempt.is_correct == 0, 
+         models.AnswerAttempt.user_id == user_id,
+         models.Question.exam_type == exam_type
+     ) \
      .group_by(models.Question.knowledge_point) \
      .order_by(func.count(models.AnswerAttempt.id).desc()) \
      .limit(5).all()
@@ -420,26 +530,44 @@ def get_ai_analysis(db: Session = Depends(database.get_db)):
     return analysis_service.generate_diagnostic_report(db)
 
 @app.get("/api/suggestions")
-def get_suggestions():
+def get_suggestions(exam_type: str = "N1", db: Session = Depends(database.get_db)):
     # Parse markdown files and return list
     try:
-        return knowledge_service.get_all_knowledge_points()
+        # Get raw suggestions from service (mode-aware for MD files)
+        all_points = knowledge_service.get_all_knowledge_points(exam_type=exam_type)
+        
+        # Further refine: Only show points that have questions in the DB for this exam_type
+        # OR if it's N1 and from the MD file (to allow generating questions for them)
+        db_points = db.query(models.Question.knowledge_point)\
+            .filter(models.Question.exam_type == exam_type)\
+            .distinct().all()
+        db_point_names = {p[0] for p in db_points if p[0]}
+        
+        filtered = []
+        for p in all_points:
+            # If it has questions in DB, definitely keep it
+            if p['point'] in db_point_names:
+                filtered.append(p)
+            # If it's N1 and from MD, keep it (allows user to see topics to generate)
+            elif exam_type == "N1" and p.get('source_file', '').endswith('.md'):
+                filtered.append(p)
+        
+        return filtered
     except Exception as e:
         print(f"Error getting suggestions: {e}")
         return []
 
 @app.get("/api/knowledge/counts")
-def get_knowledge_counts(db: Session = Depends(database.get_db)):
+def get_knowledge_counts(exam_type: str = "N1", db: Session = Depends(database.get_db)):
     """
-    Returns a list of {point: str, count: int} for all knowledge points in DB.
-    Optimized aggregation query.
+    Returns a list of {point: str, count: int} filtered by exam_type.
     """
     try:
-        # Group by knowledge_point and count
         results = db.query(
             models.Question.knowledge_point, 
             func.count(models.Question.id)
-        ).group_by(models.Question.knowledge_point).all()
+        ).filter(models.Question.exam_type == exam_type)\
+         .group_by(models.Question.knowledge_point).all()
         
         return [{"point": r[0] or "未分类", "count": r[1]} for r in results]
     except Exception as e:
@@ -459,8 +587,8 @@ def get_knowledge_detail(name: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/questions", response_model=List[Question])
-def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
-    query = db.query(models.Question)
+def get_questions(topic: str = None, exam_type: str = "N1", skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    query = db.query(models.Question).filter(models.Question.exam_type == exam_type)
     if topic:
         query = query.filter(models.Question.knowledge_point == topic)
     
@@ -471,16 +599,41 @@ def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Sessio
         
     questions = query.all()
     results = []
+    
+    # Get favorite IDs for this user
+    favorite_ids = set(r[0] for r in db.query(models.UserFavorite.question_id).filter(models.UserFavorite.user_id == user_id).all())
+    
     for q in questions:
         q_dict = q.__dict__.copy()
         if isinstance(q.options, str):
             q_dict['options'] = json.loads(q.options)
+        q_dict['is_favorite'] = q.id in favorite_ids
         results.append(Question(**q_dict))
     return results
 
+@app.post("/api/favorites/toggle/{question_id}")
+def toggle_favorite(question_id: int, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    existing = db.query(models.UserFavorite).filter(
+        models.UserFavorite.user_id == user_id,
+        models.UserFavorite.question_id == question_id
+    ).first()
+    
+    if existing:
+        db.delete(existing)
+        db.commit()
+        return {"is_favorite": False}
+    else:
+        new_fav = models.UserFavorite(user_id=user_id, question_id=question_id)
+        db.add(new_fav)
+        db.commit()
+        return {"is_favorite": True}
+
 @app.get("/api/quiz/session")
-def get_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db)):
-    session = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+def get_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    session = db.query(models.QuizSession).filter(
+        models.QuizSession.session_key == session_key,
+        models.QuizSession.user_id == user_id
+    ).first()
     if not session:
         return {"exists": False}
 
@@ -495,12 +648,15 @@ def get_quiz_session(session_key: str = "default", db: Session = Depends(databas
     }
 
 @app.post("/api/quiz/session")
-def save_quiz_session(payload: QuizSessionPayload, db: Session = Depends(database.get_db)):
+def save_quiz_session(payload: QuizSessionPayload, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     session_key = payload.session_key or "default"
-    existing = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+    existing = db.query(models.QuizSession).filter(
+        models.QuizSession.session_key == session_key,
+        models.QuizSession.user_id == user_id
+    ).first()
 
     if not existing:
-        existing = models.QuizSession(session_key=session_key)
+        existing = models.QuizSession(session_key=session_key, user_id=user_id)
         db.add(existing)
 
     existing.topic = payload.topic
@@ -512,8 +668,11 @@ def save_quiz_session(payload: QuizSessionPayload, db: Session = Depends(databas
     return {"message": "Session saved", "session_key": session_key}
 
 @app.delete("/api/quiz/session")
-def delete_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db)):
-    session = db.query(models.QuizSession).filter(models.QuizSession.session_key == session_key).first()
+def delete_quiz_session(session_key: str = "default", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    session = db.query(models.QuizSession).filter(
+        models.QuizSession.session_key == session_key,
+        models.QuizSession.user_id == user_id
+    ).first()
     if not session:
         return {"message": "Session not found"}
 
@@ -522,12 +681,14 @@ def delete_quiz_session(session_key: str = "default", db: Session = Depends(data
     return {"message": "Session deleted"}
 
 @app.get("/api/quiz/study")
-def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = Depends(database.get_db)):
+def get_study_session(limit_new: int = 5, limit_review: int = 10, exam_type: str = "N1", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     ingest_json_questions()
     
     now = datetime.now()
-    due_reviews = db.query(models.WrongQuestion)\
-        .filter(models.WrongQuestion.next_review_at <= now)\
+    due_reviews = db.query(models.WrongQuestion).join(models.Question)\
+        .filter(models.WrongQuestion.user_id == user_id, 
+                models.Question.exam_type == exam_type,
+                models.WrongQuestion.next_review_at <= now)\
         .order_by(models.WrongQuestion.next_review_at)\
         .limit(limit_review)\
         .all()
@@ -550,9 +711,18 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
         }
         review_structure.append(q_dict)
 
-    subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
+    # Answered questions by this user
+    answered_subquery = db.query(models.AnswerAttempt.question_id).filter(
+        models.AnswerAttempt.user_id == user_id,
+        models.AnswerAttempt.is_correct == 1
+    )
+    
+    # Favorite IDs for this user
+    favorite_ids = db.query(models.UserFavorite.question_id).filter(models.UserFavorite.user_id == user_id)
+
     new_qs = db.query(models.Question)\
-        .filter((~models.Question.id.in_(subquery)) | (models.Question.is_favorite == True))\
+        .filter(models.Question.exam_type == exam_type)\
+        .filter((~models.Question.id.in_(answered_subquery)) | (models.Question.id.in_(favorite_ids)))\
         .limit(limit_new)\
         .all()
 
@@ -568,12 +738,12 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
             "memorization_tip": q.memorization_tip,
             "knowledge_point": q.knowledge_point
         }
-    new_structure.append(q_dict)
+        new_structure.append(q_dict)
     
     return review_structure + new_structure
 
 @app.get("/api/quiz/gap")
-def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, db: Session = Depends(database.get_db)):
+def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, exam_type: str = "N1", db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     """
     Selects a mix of:
     1. NEVER attempted questions.
@@ -586,12 +756,19 @@ def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, db: Session = D
     db.query(models.AnswerAttempt).filter(models.AnswerAttempt.question_id == None).delete(synchronize_session=False)
     db.commit()
 
-    # 1. Subqueries for filtering
-    attempted_ids = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.question_id != None)
-    wrong_ids = db.query(models.WrongQuestion.question_id)
+    # 1. Subqueries and filters
+    point_filter_base = (models.Question.exam_type == exam_type)
+    attempted_ids = db.query(models.AnswerAttempt.question_id).filter(
+        models.AnswerAttempt.user_id == user_id,
+        models.AnswerAttempt.question_id != None
+    )
+    wrong_ids = db.query(models.WrongQuestion.question_id).filter(models.WrongQuestion.user_id == user_id)
+    favorite_ids = db.query(models.UserFavorite.question_id).filter(models.UserFavorite.user_id == user_id)
     
-    # 2. Get all distinct knowledge points
-    points_rows = db.query(func.coalesce(models.Question.knowledge_point, "未分类")).distinct().all()
+    # 2. Get all distinct knowledge points for this exam_type
+    points_rows = db.query(func.coalesce(models.Question.knowledge_point, "未分类"))\
+        .filter(models.Question.exam_type == exam_type)\
+        .distinct().all()
     points = [p[0] if p[0] else "未分类" for p in points_rows]
     import random
     random.shuffle(points) # Randomize point order
@@ -611,7 +788,7 @@ def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, db: Session = D
             point_filter,
             (
                 ~models.Question.id.in_(attempted_ids) | 
-                (models.Question.is_favorite == True) |
+                models.Question.id.in_(favorite_ids) |
                 models.Question.id.in_(wrong_ids)
             )
         ).all()
@@ -641,7 +818,7 @@ def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, db: Session = D
     return results
 
 @app.post("/api/questions/{question_id}/submit")
-def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = Depends(database.get_db)):
+def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
     db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
     if not db_question:
         raise HTTPException(status_code=404, detail="Question not found")
@@ -653,13 +830,18 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
     # 1. Record Attempt
     attempt = models.AnswerAttempt(
         question_id=question_id,
+        user_id=user_id,
         selected_answer=answer.selected_answer,
         is_correct=1 if is_correct else 0
     )
     db.add(attempt)
+    db.flush()
 
     # 2. Update Wrong Question (SRS)
-    wrong_q = db.query(models.WrongQuestion).filter(models.WrongQuestion.question_id == question_id).first()
+    wrong_q = db.query(models.WrongQuestion).filter(
+        models.WrongQuestion.question_id == question_id,
+        models.WrongQuestion.user_id == user_id
+    ).first()
 
     # Determine Quality (0-5)
     # If not provided, map is_correct to binary quality
@@ -671,6 +853,7 @@ def submit_answer_and_log(question_id: int, answer: AnswerSubmit, db: Session = 
         if not wrong_q:
             wrong_q = models.WrongQuestion(
                 question_id=question_id,
+                user_id=user_id,
                 review_count=0,
                 interval=1,
                 ease_factor=250,
@@ -745,8 +928,8 @@ def finish_quiz_session(topic: str, session_data: List[Dict], db: Session = Depe
     return {"message": "Session logged successfully"}
 
 @app.get("/api/wrong-questions")
-def get_wrong_questions_api(db: Session = Depends(database.get_db)):
-    wqs = db.query(models.WrongQuestion).all()
+def get_wrong_questions_api(db: Session = Depends(database.get_db), user_id: int = Depends(get_current_user_id)):
+    wqs = db.query(models.WrongQuestion).filter(models.WrongQuestion.user_id == user_id).all()
     results = []
     for w in wqs:
         q = w.question
@@ -784,15 +967,21 @@ def delete_knowledge_point(name: str, db: Session = Depends(database.get_db)):
     db.commit()
     
     # 2. Delete the source JSON file if it exists
+    # We check in both n1 and databricks folders or use current mode if we knew it.
+    # Knowledge points are associated with exam_type in questions table.
+    # For safety, search in both subdirs.
     json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
     filename = get_safe_filename(name)
-    json_path = os.path.join(json_dir, filename)
     
-    if os.path.exists(json_path):
-        try:
-            os.remove(json_path)
-        except Exception as e:
-            print(f"Failed to delete JSON file {json_path}: {e}")
+    deleted_any = False
+    for mode in ["n1", "databricks"]:
+        json_path = os.path.join(json_dir, mode, filename)
+        if os.path.exists(json_path):
+            try:
+                os.remove(json_path)
+                deleted_any = True
+            except Exception as e:
+                print(f"Failed to delete JSON file {json_path}: {e}")
             
     # 3. Trigger backup to reflect changes in JSON mirrors
     try:
@@ -855,7 +1044,7 @@ def toggle_favorite(question_id: int, db: Session = Depends(database.get_db)):
 def sync_question_state_to_json(q_hash: str, updates: Dict):
     import glob
     json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
-    files = glob.glob(os.path.join(json_dir, "*.json"))
+    files = glob.glob(os.path.join(json_dir, "**", "*.json"), recursive=True)
     for json_file in files:
         updated = False
         try:
@@ -891,7 +1080,7 @@ def remove_question_from_json(q_hash: str):
     if not os.path.exists(json_dir):
         return
 
-    files = glob.glob(os.path.join(json_dir, "*.json"))
+    files = glob.glob(os.path.join(json_dir, "**", "*.json"), recursive=True)
     for json_file in files:
         updated = False
         try:

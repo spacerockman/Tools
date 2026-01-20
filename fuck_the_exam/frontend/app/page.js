@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getStudySession, getStats, getGapQuiz } from '../lib/api';
+import { getStudySession, getStats, getGapQuiz, getQuizSession, deleteQuizSession } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { useGeneration } from '../contexts/GenerationContext';
+import { useUser } from '../contexts/UserContext';
 
 const getApiBase = () => {
   if (typeof window === 'undefined') return '';
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isGenerating, startGeneration } = useGeneration();
+  const { user, examType } = useUser();
 
   const [topic, setTopic] = useState('');
   const [numQuestions, setNumQuestions] = useState(10);
@@ -36,8 +38,7 @@ export default function Dashboard() {
       }
 
       try {
-        const response = await fetch(`${getApiBase()}/api/quiz/session?session_key=default`);
-        const data = await response.json();
+        const data = await getQuizSession('default');
         if (data?.exists) {
           setHasResumeData(true);
         }
@@ -130,7 +131,9 @@ export default function Dashboard() {
     }
   };
 
-  const quickTopics = ["N1 语法: ～ざるを得ない", "N1 阅读: 哲学", "N1 词汇: 同义词"];
+  const quickTopics = examType === 'Databricks'
+    ? ["Databricks: Spark Architecture", "Databricks: Lakehouse", "Databricks: Unity Catalog"]
+    : ["N1 语法: ～ざるを得ない", "N1 阅读: 哲学", "N1 词汇: 同义词"];
   const questionCounts = [5, 10, 15, 20, 25];
 
   // Calculate today's stats from daily_stats
@@ -143,8 +146,12 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background p-4 md:p-8">
       <header className="mb-8 md:mb-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">日语 N1 学习中心</h1>
-          <p className="text-sm text-muted-foreground">坚持不懈，久久为功。</p>
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-2">
+            {examType === 'Databricks' ? 'Databricks 认证助手' : '日语 N1 学习中心'}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {examType === 'Databricks' ? 'Accelerate your Data & AI journey.' : '坚持不懈，久久为功。'}
+          </p>
         </div>
         <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2 sm:pb-0">
           <Link href="/knowledge" className="flex-shrink-0">
@@ -192,9 +199,7 @@ export default function Dashboard() {
                             localStorage.removeItem('currentIndex');
                             localStorage.removeItem('sessionUpdatedAt');
                             try {
-                              await fetch(`${getApiBase()}/api/quiz/session?session_key=default`, {
-                                method: 'DELETE'
-                              });
+                              await deleteQuizSession('default');
                             } catch (error) {
                               console.error('Failed to clear session:', error);
                             }
@@ -241,7 +246,7 @@ export default function Dashboard() {
                     type="text"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    placeholder="例如：语法：～なしに"
+                    placeholder={examType === 'Databricks' ? '例如：Data Lakehouse' : '例如：语法：～なしに'}
                     className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={isGenerating}
                   />

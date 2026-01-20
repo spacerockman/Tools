@@ -5,64 +5,67 @@ from typing import List, Dict
 class KnowledgeService:
     def __init__(self, base_path: str):
         self.base_path = base_path
-        self.knowledge_dir = os.path.join(base_path, "知识点")
+        self.knowledge_dir = os.path.join(base_path, "knowledge_base")
 
-    def get_all_knowledge_points(self) -> List[Dict]:
+    def get_all_knowledge_points(self, exam_type: str = None) -> List[Dict]:
         """
         Parses all markdown files in the knowledge directory and extracts knowledge points.
         Supports tables and returns all columns as a dictionary.
+        If exam_type is provided, filters points that belong to that exam type.
         """
         points = []
-        if not os.path.exists(self.knowledge_dir):
-            return points
-
-        for filename in os.listdir(self.knowledge_dir):
-            if filename.endswith(".md"):
-                file_path = os.path.join(self.knowledge_dir, filename)
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        lines = f.readlines()
-                        
-                    headers = []
-                    for i, line in enumerate(lines):
-                        line = line.strip()
-                        if not line.startswith("|"):
-                            continue
-                        
-                        # Split by | and remove empty strings from both sides
-                        parts = [p.strip() for p in line.split("|") if p.strip()]
-                        
-                        # Header detection: if it's the first table line or contains N1/语法
-                        if not headers:
-                            if any(h in ["语法", "Knowledge Point", "项目"] for h in parts):
-                                headers = parts
-                                continue
-                        
-                        # Skip separator line
-                        if line.replace(" ", "").replace("|", "").replace("-", "") == "":
-                            continue
-                        if "---" in line and i > 0:
-                            continue
-
-                        if headers and parts:
-                            entry = {
-                                "point": parts[0],
-                                "source_file": filename
-                            }
-                            # Map additional columns to header names
-                            for idx, val in enumerate(parts):
-                                h_name = headers[idx] if idx < len(headers) else f"col_{idx}"
-                                entry[h_name] = val
+        mode_subfolder = (exam_type or "N1").lower()
+        target_dir = os.path.join(self.knowledge_dir, mode_subfolder)
+        
+        if os.path.exists(target_dir):
+            for filename in os.listdir(target_dir):
+                if filename.endswith(".md"):
+                    file_path = os.path.join(target_dir, filename)
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            lines = f.readlines()
                             
-                            # Fallback for description
-                                entry["description"] = parts[1] if len(parts) > 1 else ""
+                        headers = []
+                        for i, line in enumerate(lines):
+                            line = line.strip()
+                            if not line.startswith("|"):
+                                continue
+                            
+                            # Split by | and remove empty strings from both sides
+                            parts = [p.strip() for p in line.split("|") if p.strip()]
+                            
+                            # Header detection: if it's the first table line or contains N1/语法
+                            if not headers:
+                                if any(h in ["语法", "Knowledge Point", "项目"] for h in parts):
+                                    headers = parts
+                                    continue
+                            
+                            # Skip separator line
+                            if line.replace(" ", "").replace("|", "").replace("-", "") == "":
+                                continue
+                            if "---" in line and i > 0:
+                                continue
+
+                            if headers and parts:
+                                entry = {
+                                    "point": parts[0],
+                                    "source_file": filename
+                                }
+                                # Map additional columns to header names
+                                for idx, val in enumerate(parts):
+                                    h_name = headers[idx] if idx < len(headers) else f"col_{idx}"
+                                    entry[h_name] = val
                                 
-                            points.append(entry)
-                except Exception as e:
-                    print(f"Error parsing {filename}: {e}")
+                                # Fallback for description
+                                    entry["description"] = parts[1] if len(parts) > 1 else ""
+                                    
+                                points.append(entry)
+                    except Exception as e:
+                        print(f"Error parsing {filename}: {e}")
 
         # Scan generated JSON questions
-        json_dir = os.path.join(os.path.dirname(self.base_path), "backend", "json_questions")
+        mode_subfolder = (exam_type or "N1").lower()
+        json_dir = os.path.join(os.path.dirname(self.base_path), "backend", "json_questions", mode_subfolder)
         if os.path.exists(json_dir):
             existing_points = {p['point'] for p in points}
             for filename in os.listdir(json_dir):
