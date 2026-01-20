@@ -29,12 +29,18 @@ class AutoGenService:
         print("AutoGenService stopped.")
 
     def _run(self):
+        # Initial delay to allow the main app to start smoothly
+        print("AutoGenService: Initial delay of 60 seconds...")
+        time.sleep(60)
+
         while self.is_running:
             print("AutoGenService: Running check for question generation.")
             try:
                 self.check_and_generate_questions()
             except Exception as e:
                 print(f"Error in AutoGenService loop: {e}")
+            
+            print(f"AutoGenService: Check finished. Sleeping for 4 hours...")
             # Sleep for 4 hours
             time.sleep(4 * 60 * 60)
 
@@ -44,9 +50,13 @@ class AutoGenService:
             # 1. Get all distinct knowledge points
             knowledge_points = db.query(distinct(models.Question.knowledge_point)).all()
             knowledge_points = [kp[0] for kp in knowledge_points if kp[0]]
-            print(f"Found knowledge points: {knowledge_points}")
+            print(f"AutoGenService: Found {len(knowledge_points)} knowledge points to check.")
 
             for point in knowledge_points:
+                if not self.is_running:
+                    print("AutoGenService: Stopping check early.")
+                    break
+                    
                 # 2. For each point, count unanswered questions
                 answered_question_ids = db.query(distinct(models.AnswerAttempt.question_id)).join(models.Question).filter(models.Question.knowledge_point == point).subquery()
                 
@@ -55,13 +65,16 @@ class AutoGenService:
                     ~models.Question.id.in_(answered_question_ids)
                 ).count()
 
-                print(f"Knowledge point '{point}': {unanswered_count} unanswered questions.")
+                print(f"AutoGenService: Knowledge point '{point}' has {unanswered_count} unanswered questions.")
 
                 # 3. If count is low, generate more
                 if unanswered_count < min_unanswered:
                     num_to_generate = min_unanswered - unanswered_count
-                    print(f"Generating {num_to_generate} new questions for '{point}'...")
+                    print(f"AutoGenService: Generating {num_to_generate} new questions for '{point}'...")
                     self._generate_and_save(point, num_to_generate, db)
+                
+                # Yield control to other threads to avoid blocking the server
+                time.sleep(10)
 
         finally:
             db.close()
