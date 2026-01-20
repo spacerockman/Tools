@@ -300,7 +300,7 @@ def get_safe_filename(topic: str) -> str:
     """
     return re.sub(r'[\\/*?:"<>|]', "", topic).replace(" ", "_") + ".json"
 
-def save_generated_questions_to_file(topic: str, questions: List[Dict]):
+def save_generated_questions_to_file(topic: str, questions: List[Dict], exam_type: str = "N1"):
     """
     Saves generated questions to backend/json_questions/{topic}.json
     Appends if file exists.
@@ -398,7 +398,7 @@ def generate_quiz(req: GenerateRequest, db: Session = Depends(database.get_db), 
         raise HTTPException(status_code=500, detail="Failed to generate questions from AI.")
 
     # 2. Save to File
-    save_generated_questions_to_file(req.topic, generated_questions)
+    save_generated_questions_to_file(req.topic, generated_questions, req.exam_type)
 
     # 3. Save to DB
     saved_questions = []
