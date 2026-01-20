@@ -428,18 +428,6 @@ def get_suggestions():
         print(f"Error getting suggestions: {e}")
         return []
 
-@app.get("/api/knowledge/{name}")
-def get_knowledge_detail(name: str):
-    try:
-        points = knowledge_service.get_all_knowledge_points()
-        for p in points:
-            if p['point'] == name:
-                return p
-        raise HTTPException(status_code=404, detail="Knowledge point not found")
-    except Exception as e:
-        if isinstance(e, HTTPException): raise e
-        raise HTTPException(status_code=500, detail=str(e))
-
 @app.get("/api/knowledge/counts")
 def get_knowledge_counts(db: Session = Depends(database.get_db)):
     """
@@ -457,6 +445,18 @@ def get_knowledge_counts(db: Session = Depends(database.get_db)):
     except Exception as e:
         print(f"Error getting counts: {e}")
         return []
+
+@app.get("/api/knowledge/{name}")
+def get_knowledge_detail(name: str):
+    try:
+        points = knowledge_service.get_all_knowledge_points()
+        for p in points:
+            if p['point'] == name:
+                return p
+        raise HTTPException(status_code=404, detail="Knowledge point not found")
+    except Exception as e:
+        if isinstance(e, HTTPException): raise e
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/questions", response_model=List[Question])
 def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
@@ -568,55 +568,76 @@ def get_study_session(limit_new: int = 5, limit_review: int = 10, db: Session = 
             "memorization_tip": q.memorization_tip,
             "knowledge_point": q.knowledge_point
         }
-        new_structure.append(q_dict)
+    new_structure.append(q_dict)
     
     return review_structure + new_structure
 
 @app.get("/api/quiz/gap")
-def get_gap_quiz(num_per_point: int = 2, db: Session = Depends(database.get_db)):
+def get_gap_quiz(target_total: int = 20, num_per_point: int = 2, db: Session = Depends(database.get_db)):
     """
-    Randomly selects a small number of questions from EACH knowledge point
-    to help identify knowledge gaps.
+    Selects a mix of:
+    1. NEVER attempted questions.
+    2. Favorited questions.
+    3. Wrong questions (currently in SRS).
+    
+    Picks num_per_point from each point until target_total is reached.
     """
-    all_points = db.query(func.coalesce(models.Question.knowledge_point, "未分类")).distinct().all()
-    all_points = [p[0] if p[0] else "未分类" for p in all_points]
+    # 0. Data Hygiene: Clear any attempts with NULL question_id
+    db.query(models.AnswerAttempt).filter(models.AnswerAttempt.question_id == None).delete(synchronize_session=False)
+    db.commit()
+
+    # 1. Subqueries for filtering
+    attempted_ids = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.question_id != None)
+    wrong_ids = db.query(models.WrongQuestion.question_id)
+    
+    # 2. Get all distinct knowledge points
+    points_rows = db.query(func.coalesce(models.Question.knowledge_point, "未分类")).distinct().all()
+    points = [p[0] if p[0] else "未分类" for p in points_rows]
+    import random
+    random.shuffle(points) # Randomize point order
     
     selected_questions = []
-    import random
     
-    mastered_subquery = db.query(models.AnswerAttempt.question_id).filter(models.AnswerAttempt.is_correct == 1)
-
-    for point in all_points:
-        # Get questions for this point (exclude mastered unless favorite)
+    for point in points:
+        if len(selected_questions) >= target_total:
+            break
+            
         point_filter = (models.Question.knowledge_point == point)
         if point == "未分类":
             point_filter = (models.Question.knowledge_point == None) | (models.Question.knowledge_point == "")
 
+        # Pool: (Never Attempted) OR (Favorite) OR (Wrong)
         point_qs = db.query(models.Question).filter(
             point_filter,
-            (~models.Question.id.in_(mastered_subquery)) | (models.Question.is_favorite == True)
+            (
+                ~models.Question.id.in_(attempted_ids) | 
+                (models.Question.is_favorite == True) |
+                models.Question.id.in_(wrong_ids)
+            )
         ).all()
+        
         if point_qs:
-            # Pick random samples
             sample_size = min(len(point_qs), num_per_point)
+            # Ensure we don't exceed target_total in this step
+            remaining = target_total - len(selected_questions)
+            sample_size = min(sample_size, remaining)
+            
             samples = random.sample(point_qs, sample_size)
             selected_questions.extend(samples)
-            
-    # Final shuffle
+    
+    # Final shuffle for the session
     random.shuffle(selected_questions)
     
     results = []
     for q in selected_questions:
-        options = json.loads(q.options) if isinstance(q.options, str) else q.options
-        results.append({
-            "id": q.id,
-            "content": q.content,
-            "options": options,
-            "correct_answer": q.correct_answer,
-            "explanation": q.explanation,
-            "memorization_tip": q.memorization_tip,
-            "knowledge_point": q.knowledge_point
-        })
+        q_dict = q.__dict__.copy()
+        if isinstance(q_dict.get('options'), str):
+            try:
+                q_dict['options'] = json.loads(q_dict['options'])
+            except:
+                pass
+        results.append(q_dict)
+    
     return results
 
 @app.post("/api/questions/{question_id}/submit")
