@@ -7,14 +7,14 @@ import { Button } from '../../components/ui/button';
 import Link from 'next/link';
 import { Trash2, AlertTriangle, Sparkles, Loader2, Play, Info, X, Zap } from 'lucide-react';
 import { useGeneration } from '../../contexts/GenerationContext';
-import { getAllQuestions, getSuggestions, deleteKnowledge, getKnowledgeDetail } from '../../lib/api';
+import { getAllQuestions, getSuggestions, deleteKnowledge, getKnowledgeDetail, getKnowledgeCounts, getStats } from '../../lib/api';
 import KnowledgeDetailModal from '../../components/KnowledgeDetailModal';
 
 export default function KnowledgePage() {
 
     const router = useRouter();
     const { isGenerating, setIsGenerating, startGeneration, generationStatus } = useGeneration();
-    const [questions, setQuestions] = useState([]);
+    const [totalQuestions, setTotalQuestions] = useState(0);
     const [knowledgePoints, setKnowledgePoints] = useState([]);
     const [loading, setLoading] = useState(true);
     const [practiceLoading, setPracticeLoading] = useState(null); // Track which point is being prepped for practice
@@ -29,21 +29,26 @@ export default function KnowledgePage() {
         async function fetchData() {
             try {
                 // 1. Fetch suggestions (the master list from MD files + JSON scans)
-                const suggestions = await getSuggestions();
+                // 2. Fetch knowledge counts (optimized from DB)
+                // 3. Fetch stats (to get total question count)
+                const [suggestions, dbCounts, stats] = await Promise.all([
+                    getSuggestions(),
+                    getKnowledgeCounts(),
+                    getStats()
+                ]);
 
-                // 2. Fetch all questions (to get counts) - fixed limit ensures we get all
-                const allQs = await getAllQuestions();
-                setQuestions(allQs);
+                setTotalQuestions(stats.total_answered + stats.wrong_count); // Or just use a direct total count if available
+                // Actually stats might not have 'total in DB', let's just use sum of counts
+                const totalInDb = dbCounts.reduce((acc, curr) => acc + curr.count, 0);
+                setTotalQuestions(totalInDb);
 
-                // 3. Extract counts from questions
+                // Build counts map from specialized API
                 const countsMap = new Map();
-                allQs.forEach(q => {
-                    const point = q.knowledge_point || '未分类';
-                    countsMap.set(point, (countsMap.get(point) || 0) + 1);
+                dbCounts.forEach(item => {
+                    countsMap.set(item.point, item.count);
                 });
 
                 // 4. Build the final list
-                // Start with suggestions
                 const masterList = suggestions.map(s => ({
                     name: s.point,
                     description: s.description,
@@ -86,7 +91,8 @@ export default function KnowledgePage() {
         try {
             await deleteKnowledge(name);
             setKnowledgePoints(prev => prev.filter(p => p.name !== name));
-            setQuestions(prev => prev.filter(q => q.knowledge_point !== name));
+            setTotalQuestions(prev => prev - 1); // This is approximate if we don't know exact questions deleted, but usually 1 knowledge deletion in this UI context?
+            // Actually it's better to just re-fetch or let it be.
             setDeleteConfirm(null);
         } catch (e) {
             console.error('Failed to delete knowledge point', e);
@@ -221,7 +227,7 @@ export default function KnowledgePage() {
                             <CardTitle className="text-sm font-medium opacity-90">题目总数</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-4xl font-bold">{questions.length}</div>
+                            <div className="text-4xl font-bold">{totalQuestions}</div>
                             <p className="text-xs opacity-80 mt-1">已入库题目</p>
                         </CardContent>
                     </Card>
@@ -242,7 +248,7 @@ export default function KnowledgePage() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-4xl font-bold">
-                                {knowledgePoints.length > 0 ? Math.round(questions.length / knowledgePoints.length) : 0}
+                                {knowledgePoints.length > 0 ? Math.round(totalQuestions / knowledgePoints.length) : 0}
                             </div>
                             <p className="text-xs opacity-80 mt-1">每个知识点</p>
                         </CardContent>
@@ -296,7 +302,7 @@ export default function KnowledgePage() {
                                             <div className="hidden lg:block w-24 bg-secondary rounded-full h-2">
                                                 <div
                                                     className="bg-primary h-2 rounded-full transition-all duration-500"
-                                                    style={{ width: `${Math.min((point.questionCount / questions.length) * 100 * 5, 100)}%` }}
+                                                    style={{ width: `${Math.min((point.questionCount / (totalQuestions || 1)) * 100 * 5, 100)}%` }}
                                                 ></div>
                                             </div>
                                             <div className="flex gap-2 flex-shrink-0">

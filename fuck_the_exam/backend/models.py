@@ -12,7 +12,7 @@ class Question(Base):
     correct_answer = Column(String(1), nullable=False)
     explanation = Column(Text, nullable=True)
     memorization_tip = Column(Text, nullable=True)
-    knowledge_point = Column(Text, nullable=True)
+    knowledge_point = Column(Text, nullable=True, index=True)
     exam_type = Column(String(20), default='N1')
     hash = Column(String(64), unique=True, index=True)
     is_favorite = Column(Boolean, default=False)

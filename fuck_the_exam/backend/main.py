@@ -242,14 +242,18 @@ def ingest_json_questions():
     finally:
         db.close()
 
+def get_safe_filename(topic: str) -> str:
+    """
+    Consistently sanitizes a topic name for use as a filename.
+    """
+    return re.sub(r'[\\/*?:"<>|]', "", topic).replace(" ", "_") + ".json"
+
 def save_generated_questions_to_file(topic: str, questions: List[Dict]):
     """
     Saves generated questions to backend/json_questions/{topic}.json
     Appends if file exists.
     """
-    # Sanitize filename
-    safe_topic = re.sub(r'[\\/*?:"<>|]', "", topic).replace(" ", "_")
-    filename = f"{safe_topic}.json"
+    filename = get_safe_filename(topic)
     json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
     if not os.path.exists(json_dir):
         os.makedirs(json_dir)
@@ -459,7 +463,13 @@ def get_questions(topic: str = None, skip: int = 0, limit: int = 100, db: Sessio
     query = db.query(models.Question)
     if topic:
         query = query.filter(models.Question.knowledge_point == topic)
-    questions = query.offset(skip).limit(limit).all()
+    
+    if limit > 0:
+        query = query.offset(skip).limit(limit)
+    elif skip > 0:
+        query = query.offset(skip)
+        
+    questions = query.all()
     results = []
     for q in questions:
         q_dict = q.__dict__.copy()
@@ -754,7 +764,8 @@ def delete_knowledge_point(name: str, db: Session = Depends(database.get_db)):
     
     # 2. Delete the source JSON file if it exists
     json_dir = os.path.join(os.path.dirname(__file__), "json_questions")
-    json_path = os.path.join(json_dir, f"{name}.json")
+    filename = get_safe_filename(name)
+    json_path = os.path.join(json_dir, filename)
     
     if os.path.exists(json_path):
         try:
